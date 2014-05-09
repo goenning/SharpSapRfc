@@ -69,6 +69,7 @@ namespace SharpSapRfc.Test
                 var cliente = result.GetExportParameter<ZCliente>("e_cliente");
                 Assert.AreEqual(2, cliente.Codigo);
                 Assert.AreEqual("Padaria da Esquina", cliente.Nome);
+                Assert.AreEqual(false, cliente.Ativo);
             }
         }
 
@@ -84,9 +85,13 @@ namespace SharpSapRfc.Test
                     
                 Assert.AreEqual(1, clientes[0].Codigo);
                 Assert.AreEqual("Mercado da Maria", clientes[0].Nome);
+                Assert.AreEqual(0, clientes[0].Idade);
+                Assert.AreEqual(true, clientes[0].Ativo);
 
                 Assert.AreEqual(2, clientes[1].Codigo);
                 Assert.AreEqual("Padaria da Esquina", clientes[1].Nome);
+                Assert.AreEqual(0, clientes[1].Idade);
+                Assert.AreEqual(false, clientes[1].Ativo);
             }
         }
     }

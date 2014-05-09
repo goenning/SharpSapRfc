@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbapBool.cs" />
     <Compile Include="RfcImportParameter.cs" />
     <Compile Include="RfcResult.cs" />
     <Compile Include="RfcDestinationConfig.cs" />

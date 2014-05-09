@@ -64,6 +64,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AbapBoolTestCase.cs" />
     <Compile Include="ReadTableTestCase.cs" />
     <Compile Include="SimpleTestCase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

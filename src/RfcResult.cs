@@ -56,7 +56,15 @@ namespace SharpSapRfc
                 string fieldName = structure.Metadata[i].Name;
                 PropertyInfo property = null;
                 if (propertyByFieldName.TryGetValue(fieldName, out property))
-                    property.SetValue(returnValue, structure.GetValue(fieldName), null);
+                {
+                    object value = structure.GetValue(fieldName);
+                    if (property.PropertyType.Equals(typeof(Boolean)))
+                    {
+                        value = AbapBool.FromString(value.ToString());
+                    }
+
+                    property.SetValue(returnValue, value, null);
+                }
             }
             return returnValue;
         }
