@@ -68,7 +68,7 @@
     <Compile Include="ReadTableTestCase.cs" />
     <Compile Include="SimpleTestCase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ZCliente.cs" />
+    <Compile Include="ZCustomer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\SharpSapRfc.csproj">

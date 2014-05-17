@@ -11,9 +11,9 @@ namespace SharpSapRfc.Test
         {
             using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
             {
-                var result = conn.ExecuteFunction("ZSOMA", new RfcImportParameter[] {
-                    new RfcImportParameter("i_nro1", 2),
-                    new RfcImportParameter("i_nro2", 4)
+                var result = conn.ExecuteFunction("Z_SSRT_SUM", new RfcImportParameter[] {
+                    new RfcImportParameter("i_num1", 2),
+                    new RfcImportParameter("i_num2", 4)
                 });
 
                 var total = result.GetExportParameter<int>("e_result");
@@ -26,15 +26,15 @@ namespace SharpSapRfc.Test
         {
             using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
             {
-                var result = conn.ExecuteFunction("ZDIVIDE", new RfcImportParameter[] {
-                    new RfcImportParameter("i_nro1", 5),
-                    new RfcImportParameter("i_nro2", 2)
+                var result = conn.ExecuteFunction("Z_SSRT_DIVIDE", new RfcImportParameter[] {
+                    new RfcImportParameter("i_num1", 5),
+                    new RfcImportParameter("i_num2", 2)
                 });
 
-                var divisao = result.GetExportParameter<decimal>("e_divisao");
-                var resto = result.GetExportParameter<int>("e_resto");
-                Assert.AreEqual(2.5m, divisao);
-                Assert.AreEqual(1, resto);
+                var quotient = result.GetExportParameter<decimal>("e_quotient");
+                var remainder = result.GetExportParameter<int>("e_remainder");
+                Assert.AreEqual(2.5m, quotient);
+                Assert.AreEqual(1, remainder);
             }
         }
 
@@ -45,9 +45,9 @@ namespace SharpSapRfc.Test
             {
                 try
                 {
-                    var result = conn.ExecuteFunction("ZDIVIDE", new RfcImportParameter[] {
-                        new RfcImportParameter("i_nro1", 5),
-                        new RfcImportParameter("i_nro2", 0)
+                    var result = conn.ExecuteFunction("Z_SSRT_DIVIDE", new RfcImportParameter[] {
+                        new RfcImportParameter("i_num1", 5),
+                        new RfcImportParameter("i_num2", 0)
                     });
                 }
                 catch (RfcAbapException ex)
@@ -62,14 +62,14 @@ namespace SharpSapRfc.Test
         {
             using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
             {
-                var result = conn.ExecuteFunction("Z_GET_CLIENTE", new RfcImportParameter[] {
-                    new RfcImportParameter("i_codcli", 2)
+                var result = conn.ExecuteFunction("Z_SSRT_GET_CUSTOMER", new RfcImportParameter[] {
+                    new RfcImportParameter("i_id", 2)
                 });
 
-                var cliente = result.GetExportParameter<ZCliente>("e_cliente");
-                Assert.AreEqual(2, cliente.Codigo);
-                Assert.AreEqual("Padaria da Esquina", cliente.Nome);
-                Assert.AreEqual(false, cliente.Ativo);
+                var cliente = result.GetExportParameter<ZCustomer>("e_customer");
+                Assert.AreEqual(2, cliente.Id);
+                Assert.AreEqual("Walmart", cliente.Name);
+                Assert.AreEqual(false, cliente.IsActive);
             }
         }
 
@@ -78,20 +78,20 @@ namespace SharpSapRfc.Test
         {
             using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
             {
-                var result = conn.ExecuteFunction("Z_GET_CLIENTES");
+                var result = conn.ExecuteFunction("Z_SSRT_GET_ALL_CUSTOMERS");
 
-                var clientes = result.GetExportTable<ZCliente>("t_clientes");
+                var clientes = result.GetExportTable<ZCustomer>("t_customers");
                 Assert.AreEqual(2, clientes.Length);
                     
-                Assert.AreEqual(1, clientes[0].Codigo);
-                Assert.AreEqual("Mercado da Maria", clientes[0].Nome);
-                Assert.AreEqual(0, clientes[0].Idade);
-                Assert.AreEqual(true, clientes[0].Ativo);
+                Assert.AreEqual(1, clientes[0].Id);
+                Assert.AreEqual("Apple Store", clientes[0].Name);
+                Assert.AreEqual(0, clientes[0].Age);
+                Assert.AreEqual(true, clientes[0].IsActive);
 
-                Assert.AreEqual(2, clientes[1].Codigo);
-                Assert.AreEqual("Padaria da Esquina", clientes[1].Nome);
-                Assert.AreEqual(0, clientes[1].Idade);
-                Assert.AreEqual(false, clientes[1].Ativo);
+                Assert.AreEqual(2, clientes[1].Id);
+                Assert.AreEqual("Walmart", clientes[1].Name);
+                Assert.AreEqual(0, clientes[1].Age);
+                Assert.AreEqual(false, clientes[1].IsActive);
             }
         }
     }
