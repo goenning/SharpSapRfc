@@ -8,6 +8,7 @@ namespace SharpSapRfc
         private string connectionString;
         private RfcRepository repository;
         private RfcDestination destination;
+        private RfcStructureMapper mapper;
 
         public SharpSapRfcConnection(string connectionString)
         {
@@ -21,6 +22,7 @@ namespace SharpSapRfc
 
             this.destination = RfcDestinationManager.GetDestination("NSP");
             this.repository = destination.Repository;
+            this.mapper = new RfcStructureMapper();
         }
 
         public void Dispose()
@@ -29,17 +31,36 @@ namespace SharpSapRfc
 
         public RfcResult ExecuteFunction(string functionName)
         {
-            return this.ExecuteFunction(functionName, new RfcImportParameter[0]);
+            return this.ExecuteFunction(functionName, new RfcParameter[0]);
         }
 
-        public RfcResult ExecuteFunction(string functionName, RfcImportParameter[] importParameters)
+        public RfcResult ExecuteFunction(string functionName, params RfcParameter[] importParameters)
         {
             IRfcFunction function = this.repository.CreateFunction(functionName);
             foreach (var parameter in importParameters)
-                function.SetValue(parameter.Name, parameter.Value);
+            {
+                int idx = function.Metadata.TryNameToIndex(parameter.Name);
+                RfcDataType pType = function.Metadata[idx].DataType;
+                switch (pType)
+                {
+                    case RfcDataType.STRUCTURE:
+                        RfcStructureMetadata structureMetadata = function.GetStructure(idx).Metadata;
+                        IRfcStructure structure = this.mapper.CreateStructure(structureMetadata, parameter.Value);
+                        function.SetValue(parameter.Name, structure);
+                        break;
+                    case RfcDataType.TABLE:
+                        RfcTableMetadata tableMetadata = function.GetTable(idx).Metadata;
+                        IRfcTable table = this.mapper.CreateTable(tableMetadata, parameter.Value);
+                        function.SetValue(parameter.Name, table);
+                        break;
+                    default:
+                        function.SetValue(parameter.Name, parameter.Value);
+                        break;
+                }
+            }
 
             function.Invoke(destination);
-            return new RfcResult(function);
+            return new RfcResult(function, this.mapper);
         }
     }
 }

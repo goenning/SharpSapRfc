@@ -1,12 +1,12 @@
 ﻿
 namespace SharpSapRfc
 {
-    public class RfcImportParameter
+    public class RfcParameter
     {
         public string Name { get; private set; }
         public object Value { get; private set; }
 
-        public RfcImportParameter(string name, object value)
+        public RfcParameter(string name, object value)
         {
             this.Name = name;
             this.Value = value;

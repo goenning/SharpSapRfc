@@ -15,10 +15,24 @@ namespace SharpSapRfc.Test
         }
 
         [TestMethod]
+        public void TrueToXTest()
+        {
+            string X = AbapBool.ToString(true);
+            Assert.AreEqual("X", X);
+        }
+
+        [TestMethod]
         public void SpaceToFalseTest()
         {
             Boolean boolean = AbapBool.FromString(" ");
             Assert.AreEqual(false, boolean);
+        }
+
+        [TestMethod]
+        public void FalseToSpaceTest()
+        {
+            string X = AbapBool.ToString(false);
+            Assert.AreEqual(" ", X);
         }
 
         [TestMethod]
