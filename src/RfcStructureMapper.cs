@@ -48,18 +48,25 @@ namespace SharpSapRfc
 
         public IRfcTable CreateTable(RfcTableMetadata metadata, object parameterObject)
         {
-            IEnumerable  enumerable = parameterObject as IEnumerable;
-            if (enumerable == null)
-                return null;
 
             IRfcTable table = metadata.CreateTable();
             RfcStructureMetadata structureMetadata = metadata.LineType;
-            var enumerator = enumerable.GetEnumerator();
-            while (enumerator.MoveNext())
+
+            IEnumerable enumerable = parameterObject as IEnumerable;
+            if (enumerable == null)
             {
-                object current = enumerator.Current;
-                IRfcStructure row = this.CreateStructure(structureMetadata, current);
+                IRfcStructure row = this.CreateStructure(structureMetadata, parameterObject);
                 table.Append(row);
+            }
+            else 
+            { 
+                var enumerator = enumerable.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    object current = enumerator.Current;
+                    IRfcStructure row = this.CreateStructure(structureMetadata, current);
+                    table.Append(row);
+                }
             }
             return table;
         }

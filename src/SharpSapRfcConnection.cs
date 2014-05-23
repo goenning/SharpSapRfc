@@ -2,6 +2,7 @@
 using SharpSapRfc.Structure;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace SharpSapRfc
 {
@@ -27,41 +28,26 @@ namespace SharpSapRfc
             this.mapper = new RfcStructureMapper();
         }
 
-        public void Dispose()
-        {
-        }
-
-        public IEnumerable<T> ReadTable<T>(string tableName)
-        {
-            return this.ReadTable<T>(tableName, new string[0]);
-        }
-
-        public IEnumerable<T> ReadTable<T>(string tableName, string[] fields)
-        {
-            List<RfcDbField> dbFields = new List<RfcDbField>();
-            for (int i = 0; i < fields.Length; i++)
-                dbFields.Add(new RfcDbField(fields[i]));
-
-            var result = this.ExecuteFunction("RFC_READ_TABLE",
-                new RfcParameter("QUERY_TABLE", tableName),
-                new RfcParameter("FIELDS", dbFields)
-            );
-
-            return this.mapper.FromRfcReadTableToList<T>(
-                result.GetTable<Tab512>("DATA"), 
-                result.GetTable<RfcDbField>("FIELDS")
-            );
-        }
-
         public RfcResult ExecuteFunction(string functionName)
         {
             return this.ExecuteFunction(functionName, new RfcParameter[0]);
         }
 
-        public RfcResult ExecuteFunction(string functionName, params RfcParameter[] importParameters)
+        public RfcResult ExecuteFunction(string functionName, object parameters)
+        {
+            Type t = parameters.GetType();
+            PropertyInfo[] properties = t.GetProperties();
+            RfcParameter[] rfcParameters = new RfcParameter[properties.Length];
+            for (int i = 0; i < properties.Length; i++)
+                rfcParameters[i] = new RfcParameter(properties[i].Name, properties[i].GetValue(parameters, null));
+
+            return this.ExecuteFunction(functionName, rfcParameters);
+        }
+
+        public RfcResult ExecuteFunction(string functionName, params RfcParameter[] parameters)
         {
             IRfcFunction function = this.repository.CreateFunction(functionName);
-            foreach (var parameter in importParameters)
+            foreach (var parameter in parameters)
             {
                 int idx = function.Metadata.TryNameToIndex(parameter.Name);
                 RfcDataType pType = function.Metadata[idx].DataType;
@@ -85,6 +71,33 @@ namespace SharpSapRfc
 
             function.Invoke(destination);
             return new RfcResult(function, this.mapper);
+        }
+
+        public IEnumerable<T> ReadTable<T>(string tableName)
+        {
+            return this.ReadTable<T>(tableName, new string[0]);
+        }
+
+        public IEnumerable<T> ReadTable<T>(string tableName, string[] fields)
+        {
+            List<RfcDbField> dbFields = new List<RfcDbField>();
+            for (int i = 0; i < fields.Length; i++)
+                dbFields.Add(new RfcDbField(fields[i]));
+
+            var result = this.ExecuteFunction("RFC_READ_TABLE",
+                new RfcParameter("QUERY_TABLE", tableName),
+                new RfcParameter("FIELDS", dbFields)
+            );
+
+            return this.mapper.FromRfcReadTableToList<T>(
+                result.GetTable<Tab512>("DATA"),
+                result.GetTable<RfcDbField>("FIELDS")
+            );
+        }
+
+        public void Dispose()
+        {
+
         }
     }
 }

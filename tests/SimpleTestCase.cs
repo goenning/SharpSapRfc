@@ -22,6 +22,22 @@ namespace SharpSapRfc.Test
         }
 
         [TestMethod]
+        public void ExportSingleParameterTest_WithAnonymousType()
+        {
+            using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
+            {
+                var result = conn.ExecuteFunction("Z_SSRT_SUM", new
+                {
+                    i_num1 = 2,
+                    i_num2 = 7
+                });
+
+                var total = result.GetOutput<int>("e_result");
+                Assert.AreEqual(9, total);
+            }
+        }
+
+        [TestMethod]
         public void ChangingSingleParameterTest()
         {
             using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))

@@ -24,6 +24,22 @@ namespace SharpSapRfc.Test
         }
 
         [TestMethod]
+        public void ImportStructureTest_WithAnonymousType()
+        {
+            using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
+            {
+                var customer = new ZCustomer { Id = 3, Name = "Microsoft", IsActive = true };
+                var result = conn.ExecuteFunction("Z_SSRT_ADD_CUSTOMER", new
+                {
+                    i_customer = customer
+                });
+
+                string message = result.GetOutput<string>("e_success");
+                Assert.AreEqual("Created:    3 - Microsoft - X", message);
+            }
+        }
+
+        [TestMethod]
         public void ExportStructureTest()
         {
             using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
@@ -84,6 +100,27 @@ namespace SharpSapRfc.Test
         }
 
         [TestMethod]
+        public void ChangingSingleStructureAsTableTest()
+        {
+            using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
+            {
+                ZCustomer customer = new ZCustomer() { Id = 1 };
+
+                var result = conn.ExecuteFunction("Z_SSRT_QUERY_CUSTOMERS",
+                    new RfcParameter("c_customers", customer)
+                );
+
+                var customers = result.GetTable<ZCustomer>("c_customers");
+                Assert.AreEqual(1, customers.Count());
+
+                Assert.AreEqual(1, customers.ElementAt(0).Id);
+                Assert.AreEqual("Apple Store", customers.ElementAt(0).Name);
+                Assert.AreEqual(0, customers.ElementAt(0).Age);
+                Assert.AreEqual(true, customers.ElementAt(0).IsActive);
+            }
+        }
+
+        [TestMethod]
         public void ChangingTableCategoryTest()
         {
             using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
@@ -103,35 +140,6 @@ namespace SharpSapRfc.Test
                 Assert.AreEqual("Apple Store", customers.ElementAt(0).Name);
                 Assert.AreEqual(0, customers.ElementAt(0).Age);
                 Assert.AreEqual(true, customers.ElementAt(0).IsActive);
-            }
-        }
-
-        [TestMethod]
-        public void ChangingMultipleRowsTableCategoryTest()
-        {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
-            {
-                IEnumerable<ZCustomer> customers = new ZCustomer[] { 
-                    new ZCustomer() { Id = 1 },
-                    new ZCustomer() { Id = 2 }
-                };
-
-                var result = conn.ExecuteFunction("Z_SSRT_QUERY_CUSTOMERS",
-                    new RfcParameter("c_customers", customers)
-                );
-
-                customers = result.GetTable<ZCustomer>("c_customers");
-                Assert.AreEqual(2, customers.Count());
-
-                Assert.AreEqual(1, customers.ElementAt(0).Id);
-                Assert.AreEqual("Apple Store", customers.ElementAt(0).Name);
-                Assert.AreEqual(0, customers.ElementAt(0).Age);
-                Assert.AreEqual(true, customers.ElementAt(0).IsActive);
-
-                Assert.AreEqual(2, customers.ElementAt(1).Id);
-                Assert.AreEqual("Walmart", customers.ElementAt(1).Name);
-                Assert.AreEqual(0, customers.ElementAt(1).Age);
-                Assert.AreEqual(false, customers.ElementAt(1).IsActive);
             }
         }
     }
