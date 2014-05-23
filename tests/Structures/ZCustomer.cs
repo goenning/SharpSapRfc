@@ -1,5 +1,5 @@
 ﻿
-namespace SharpSapRfc.Test
+namespace SharpSapRfc.Test.Structures
 {
     public class ZCustomer
     {

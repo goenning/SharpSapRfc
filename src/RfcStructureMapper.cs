@@ -1,5 +1,6 @@
 ﻿
 using SAP.Middleware.Connector;
+using SharpSapRfc.Structure;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -106,11 +107,44 @@ namespace SharpSapRfc
                     {
                         value = AbapBool.FromString(value.ToString());
                     }
+                    else if (property.PropertyType.Equals(typeof(Int32)))
+                    {
+                        value = Convert.ToInt32(value);
+                    }
 
                     property.SetValue(returnValue, value, null);
                 }
             }
             return returnValue;
+        }
+
+        public IEnumerable<T> FromRfcReadTableToList<T>(IEnumerable<Tab512> table, IEnumerable<RfcDbField> fields)
+        {
+            Type type = typeof(T);
+            EnsureTypeIsCached(type);
+
+            List<T> entries = new List<T>();
+            foreach (var row in table)
+            {
+                T entry = Activator.CreateInstance<T>();
+                foreach (var field in fields)
+                {
+                    PropertyInfo property = null;
+                    if (typeProperties[type].TryGetValue(field.FieldName.ToLower(), out property))
+                    {
+                        string value = string.Empty;
+                        if (field.Length - field.Offset > row.Data.Length)
+                            value = row.Data.Substring(field.Offset).TrimEnd();
+                        else
+                            value = row.Data.Substring(field.Offset, field.Length).TrimEnd();
+
+                        object targetValue = Convert.ChangeType(value, property.PropertyType);
+                        property.SetValue(entry, targetValue, null);
+                    }
+                }
+                entries.Add(entry);
+            }
+            return entries;
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using SAP.Middleware.Connector;
+using SharpSapRfc.Structure;
 using System;
+using System.Collections.Generic;
 
 namespace SharpSapRfc
 {
@@ -27,6 +29,28 @@ namespace SharpSapRfc
 
         public void Dispose()
         {
+        }
+
+        public IEnumerable<T> ReadTable<T>(string tableName)
+        {
+            return this.ReadTable<T>(tableName, new string[0]);
+        }
+
+        public IEnumerable<T> ReadTable<T>(string tableName, string[] fields)
+        {
+            List<RfcDbField> dbFields = new List<RfcDbField>();
+            for (int i = 0; i < fields.Length; i++)
+                dbFields.Add(new RfcDbField(fields[i]));
+
+            var result = this.ExecuteFunction("RFC_READ_TABLE",
+                new RfcParameter("QUERY_TABLE", tableName),
+                new RfcParameter("FIELDS", dbFields)
+            );
+
+            return this.mapper.FromRfcReadTableToList<T>(
+                result.GetTable<Tab512>("DATA"), 
+                result.GetTable<RfcDbField>("FIELDS")
+            );
         }
 
         public RfcResult ExecuteFunction(string functionName)

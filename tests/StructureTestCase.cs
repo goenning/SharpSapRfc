@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SharpSapRfc.Test.Structures;
 using System.Collections.Generic;
 using System.Linq;
 
