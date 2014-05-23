@@ -8,10 +8,10 @@ namespace SharpSapRfc
 {
     public class SharpSapRfcConnection : IDisposable
     {
-        private string connectionString;
-        private RfcRepository repository;
-        private RfcDestination destination;
         private RfcStructureMapper mapper;
+        private string connectionString;
+        public RfcRepository Repository { get; private set; }
+        public RfcDestination Destination { get; private set; }
 
         public SharpSapRfcConnection(string connectionString)
         {
@@ -23,8 +23,8 @@ namespace SharpSapRfc
                 RfcDestinationManager.RegisterDestinationConfiguration(config);
             }
 
-            this.destination = RfcDestinationManager.GetDestination("NSP");
-            this.repository = destination.Repository;
+            this.Destination = RfcDestinationManager.GetDestination("NSP");
+            this.Repository = this.Destination.Repository;
             this.mapper = new RfcStructureMapper();
         }
 
@@ -46,7 +46,7 @@ namespace SharpSapRfc
 
         public RfcResult ExecuteFunction(string functionName, params RfcParameter[] parameters)
         {
-            IRfcFunction function = this.repository.CreateFunction(functionName);
+            IRfcFunction function = this.Repository.CreateFunction(functionName);
             foreach (var parameter in parameters)
             {
                 int idx = function.Metadata.TryNameToIndex(parameter.Name);
@@ -69,25 +69,30 @@ namespace SharpSapRfc
                 }
             }
 
-            function.Invoke(destination);
+            function.Invoke(this.Destination);
             return new RfcResult(function, this.mapper);
         }
 
-        public IEnumerable<T> ReadTable<T>(string tableName)
+        public IEnumerable<T> ReadTable<T>(string tableName, string[] fields = null, string[] where = null, int skip = 0, int count = 0)
         {
-            return this.ReadTable<T>(tableName, new string[0]);
-        }
+            fields = fields ?? new string[0];
+            where = where ?? new string[0];
 
-        public IEnumerable<T> ReadTable<T>(string tableName, string[] fields)
-        {
             List<RfcDbField> dbFields = new List<RfcDbField>();
             for (int i = 0; i < fields.Length; i++)
                 dbFields.Add(new RfcDbField(fields[i]));
 
-            var result = this.ExecuteFunction("RFC_READ_TABLE",
-                new RfcParameter("QUERY_TABLE", tableName),
-                new RfcParameter("FIELDS", dbFields)
-            );
+            List<RfcDbWhere> dbWhere = new List<RfcDbWhere>();
+            for (int i = 0; i < where.Length; i++)
+                dbWhere.Add(new RfcDbWhere(where[i]));
+
+            var result = this.ExecuteFunction("RFC_READ_TABLE", new {
+                Query_Table = tableName,
+                Fields = dbFields,
+                Options = dbWhere,
+                RowSkips = skip,
+                RowCount = count
+            });
 
             return this.mapper.FromRfcReadTableToList<T>(
                 result.GetTable<Tab512>("DATA"),

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SharpSapRfc</RootNamespace>
     <AssemblyName>SharpSapRfc</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -33,16 +33,13 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="rscp4n">
-      <HintPath>..\lib\rscp4n.dll</HintPath>
-    </Reference>
     <Reference Include="sapnco, Version=3.0.0.42, Culture=neutral, PublicKeyToken=50436dca5c7f7d23, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\sapnco.dll</HintPath>
+      <HintPath>..\packages\SAPNCo.x86.3.0.13.1\lib\net40\sapnco.dll</HintPath>
     </Reference>
     <Reference Include="sapnco_utils, Version=3.0.0.42, Culture=neutral, PublicKeyToken=50436dca5c7f7d23, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\sapnco_utils.dll</HintPath>
+      <HintPath>..\packages\SAPNCo.x86.3.0.13.1\lib\net40\sapnco_utils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -58,7 +55,11 @@
     <Compile Include="SharpSapRfcConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structure\RfcDbField.cs" />
+    <Compile Include="Structure\RfcDbWhere.cs" />
     <Compile Include="Structure\Tab512.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -38,16 +38,13 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="rscp4n">
-      <HintPath>..\lib\rscp4n.dll</HintPath>
-    </Reference>
     <Reference Include="sapnco, Version=3.0.0.42, Culture=neutral, PublicKeyToken=50436dca5c7f7d23, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\sapnco.dll</HintPath>
+      <HintPath>..\packages\SAPNCo.x86.3.0.13.1\lib\net40\sapnco.dll</HintPath>
     </Reference>
     <Reference Include="sapnco_utils, Version=3.0.0.42, Culture=neutral, PublicKeyToken=50436dca5c7f7d23, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\sapnco_utils.dll</HintPath>
+      <HintPath>..\packages\SAPNCo.x86.3.0.13.1\lib\net40\sapnco_utils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -77,6 +74,9 @@
       <Project>{db36edca-d7ce-4ce6-894e-8815f817c778}</Project>
       <Name>SharpSapRfc</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
