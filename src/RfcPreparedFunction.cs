@@ -1,7 +1,6 @@
 ﻿using SAP.Middleware.Connector;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -50,7 +49,7 @@ namespace SharpSapRfc
                 RfcDataType pType = function.Metadata[idx].DataType;
                 switch (pType)
                 {
-                    case RfcDataType.STRUCTURE:
+                    case RfcDataType.STRUCTURE:                        
                         RfcStructureMetadata structureMetadata = function.GetStructure(idx).Metadata;
                         IRfcStructure structure = RfcStructureMapper.CreateStructure(structureMetadata, parameter.Value);
                         function.SetValue(parameter.Name, structure);

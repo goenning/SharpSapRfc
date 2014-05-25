@@ -66,7 +66,7 @@ namespace SharpSapRfc
 
         public void Dispose()
         {
-
+            
         }
 
         public RfcPreparedFunction PrepareFunction(string functionName)

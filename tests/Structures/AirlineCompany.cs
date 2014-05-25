@@ -8,7 +8,7 @@ namespace SharpSapRfc.Test.Structures
     public class AirlineCompany
     {
         [RfcStructureField("MANDT")]
-        public int Mandante { get; set; }
+        public int Client { get; set; }
         [RfcStructureField("CARRID")]
         public string Code { get; set; }
         [RfcStructureField("CARRNAME")]

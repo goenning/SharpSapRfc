@@ -140,7 +140,7 @@ namespace SharpSapRfc
                     if (typeProperties[type].TryGetValue(field.FieldName.ToLower(), out property))
                     {
                         string value = string.Empty;
-                        if (field.Length - field.Offset > row.Data.Length)
+                        if (field.Length + field.Offset > row.Data.Length)
                             value = row.Data.Substring(field.Offset).TrimEnd();
                         else
                             value = row.Data.Substring(field.Offset, field.Length).TrimEnd();
