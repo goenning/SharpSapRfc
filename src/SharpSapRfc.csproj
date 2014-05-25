@@ -48,9 +48,9 @@
   <ItemGroup>
     <Compile Include="AbapBool.cs" />
     <Compile Include="RfcParameter.cs" />
+    <Compile Include="RfcPreparedFunction.cs" />
     <Compile Include="RfcStructureMapper.cs" />
     <Compile Include="RfcResult.cs" />
-    <Compile Include="RfcDestinationConfig.cs" />
     <Compile Include="RfcStructureFieldAttribute.cs" />
     <Compile Include="SharpSapRfcConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

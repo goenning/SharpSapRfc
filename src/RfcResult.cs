@@ -7,12 +7,9 @@ namespace SharpSapRfc
 {
     public class RfcResult
     {
-        private RfcStructureMapper mapper;
         private IRfcFunction function;
-
-        internal RfcResult(IRfcFunction function, RfcStructureMapper mapper)
+        internal RfcResult(IRfcFunction function)
         {
-            this.mapper = mapper;
             this.function = function;
         }
 
@@ -20,7 +17,7 @@ namespace SharpSapRfc
         {
             object returnValue = function.GetValue(name);
             if (returnValue is IRfcStructure)
-                return mapper.FromStructure<T>(returnValue as IRfcStructure);
+                return RfcStructureMapper.FromStructure<T>(returnValue as IRfcStructure);
 
             return (T)Convert.ChangeType(function.GetValue(name), typeof(T));
         }
@@ -30,7 +27,7 @@ namespace SharpSapRfc
             IRfcTable table = this.function.GetTable(name);
             List<T> returnTable = new List<T>(table.RowCount);
             for (int i = 0; i < table.RowCount; i++)
-                returnTable.Add(mapper.FromStructure<T>(table[i]));
+                returnTable.Add(RfcStructureMapper.FromStructure<T>(table[i]));
 
             return returnTable;
         }

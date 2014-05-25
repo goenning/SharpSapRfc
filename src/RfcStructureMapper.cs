@@ -13,7 +13,7 @@ namespace SharpSapRfc
     {
         private static IDictionary<Type, IDictionary<string, PropertyInfo>> typeProperties = new Dictionary<Type, IDictionary<string, PropertyInfo>>();
 
-        private void EnsureTypeIsCached(Type type)
+        private static void EnsureTypeIsCached(Type type)
         {
             if (typeProperties.ContainsKey(type))
                 return;
@@ -46,7 +46,7 @@ namespace SharpSapRfc
             }
         }
 
-        public IRfcTable CreateTable(RfcTableMetadata metadata, object parameterObject)
+        public static IRfcTable CreateTable(RfcTableMetadata metadata, object parameterObject)
         {
 
             IRfcTable table = metadata.CreateTable();
@@ -55,7 +55,7 @@ namespace SharpSapRfc
             IEnumerable enumerable = parameterObject as IEnumerable;
             if (enumerable == null)
             {
-                IRfcStructure row = this.CreateStructure(structureMetadata, parameterObject);
+                IRfcStructure row = CreateStructure(structureMetadata, parameterObject);
                 table.Append(row);
             }
             else 
@@ -64,14 +64,14 @@ namespace SharpSapRfc
                 while (enumerator.MoveNext())
                 {
                     object current = enumerator.Current;
-                    IRfcStructure row = this.CreateStructure(structureMetadata, current);
+                    IRfcStructure row = CreateStructure(structureMetadata, current);
                     table.Append(row);
                 }
             }
             return table;
         }
 
-        public IRfcStructure CreateStructure(RfcStructureMetadata metadata, object parameterObject)
+        public static IRfcStructure CreateStructure(RfcStructureMetadata metadata, object parameterObject)
         {
             if (parameterObject == null)
                 return null;
@@ -97,7 +97,7 @@ namespace SharpSapRfc
             return structure;
         }
 
-        public T FromStructure<T>(IRfcStructure structure)
+        public static T FromStructure<T>(IRfcStructure structure)
         {
             Type type = typeof(T);
             EnsureTypeIsCached(type);
@@ -125,7 +125,7 @@ namespace SharpSapRfc
             return returnValue;
         }
 
-        public IEnumerable<T> FromRfcReadTableToList<T>(IEnumerable<Tab512> table, IEnumerable<RfcDbField> fields)
+        public static IEnumerable<T> FromRfcReadTableToList<T>(IEnumerable<Tab512> table, IEnumerable<RfcDbField> fields)
         {
             Type type = typeof(T);
             EnsureTypeIsCached(type);

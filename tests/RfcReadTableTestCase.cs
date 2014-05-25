@@ -14,7 +14,7 @@ namespace SharpSapRfc.Test
         [TestMethod]
         public void ReadAllEntriesTest()
         {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
+            using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
             {
                 var scarr = conn.ReadTable<AirlineCompany>("SCARR");
                 Assert.AreEqual(18, scarr.Count());
@@ -24,7 +24,7 @@ namespace SharpSapRfc.Test
         [TestMethod]
         public void ReadAllFieldsTest()
         {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
+            using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
             {
                 var scarr = conn.ReadTable<AirlineCompany>("SCARR");
 
@@ -39,7 +39,7 @@ namespace SharpSapRfc.Test
         [TestMethod]
         public void ReadSingleFieldTest()
         {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
+            using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
             {
                 var scarr = conn.ReadTable<AirlineCompany>("SCARR", fields: new string[] { "CARRID" });
                 Assert.AreEqual(18, scarr.Count());
@@ -55,7 +55,7 @@ namespace SharpSapRfc.Test
         [TestMethod]
         public void ReadSingleEntryTest()
         {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
+            using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
             {
                 var scarr = conn.ReadTable<AirlineCompany>("SCARR", count:1);
                 Assert.AreEqual(1, scarr.Count());
@@ -69,7 +69,7 @@ namespace SharpSapRfc.Test
         [TestMethod]
         public void ReadDeltaAirlineCompanyTest()
         {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection(""))
+            using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
             {
                 var scarr = conn.ReadTable<AirlineCompany>("SCARR", where: new string[] { "CARRID = 'DL'" });
 

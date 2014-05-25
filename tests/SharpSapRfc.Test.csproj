@@ -47,6 +47,7 @@
       <HintPath>..\packages\SAPNCo.x86.3.0.13.1\lib\net40\sapnco_utils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -62,6 +63,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AbapBoolTestCase.cs" />
+    <Compile Include="PreparedFunctionTestCase.cs" />
     <Compile Include="RfcReadTableTestCase.cs" />
     <Compile Include="SimpleTestCase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,6 +78,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>
