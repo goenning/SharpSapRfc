@@ -33,7 +33,7 @@ int result = function.GetInt("e_result");
 You can write:
 
 ```C#
-using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
+using (SapRfcConnection conn = new SapRfcConnection("TST"))
 {
     var result = conn.ExecuteFunction("Z_SSRT_SUM", new {
         i_num1 = 2,
@@ -50,7 +50,7 @@ Well, yes, it is.
 But what about write this:
 
 ```C#
-using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
+using (SapRfcConnection conn = new SapRfcConnection("TST"))
 {
     var customer = new ZCustomer(3, "Some Company", true);
     var result = conn.ExecuteFunction("Z_SSRT_ADD_CUSTOMER", new {
@@ -97,7 +97,7 @@ But because of this class we can work with tables parameters!
 Check this out.
 
 ```C#
-using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
+using (SapRfcConnection conn = new SapRfcConnection("TST"))
 {
     var result = conn.ExecuteFunction("Z_SSRT_GET_ALL_CUSTOMERS");
     var customers = result.GetTable<ZCustomer>("t_customers");
@@ -129,14 +129,14 @@ public class AirlineCompany
 }
 
 //Reading all table entries
-using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
+using (SapRfcConnection conn = new SapRfcConnection("TST"))
 {
     var scarr = conn.ReadTable<AirlineCompany>("SCARR");
     Assert.AreEqual(18, scarr.Count());
 }
 
 //Reading two fields with where clause
-using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
+using (SapRfcConnection conn = new SapRfcConnection("TST"))
 {
     var scarr = conn.ReadTable<AirlineCompany>("SCARR", 
         fields: new string[] { "CARRID", "CARRNAME" }, 
