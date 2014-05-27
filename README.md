@@ -1,6 +1,8 @@
 SharpSapRfc
 ===========
 
+## How to install
+
 To install Sharp SAP RFC, run the following command in the Package Manager Console
 
 For x86 apps
@@ -10,6 +12,8 @@ For x86 apps
 For x64 apps
 	
 	PM> Install-Package SharpSapRfc.x64
+
+## Why should I use it?
 	
 SAP NCo 3 has a very easy to use API.
 **Sharp SAP RFC** makes it **even easier** to call remote functions on SAP systems.
