@@ -8,7 +8,7 @@ namespace SharpSapRfc.Test
         [TestMethod]
         public void PreparedFunctionWithTwoParametersTest()
         {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
             {
                 var function = conn.PrepareFunction("Z_SSRT_SUM");
                 function.AddParameter(new RfcParameter("i_num1", 2));

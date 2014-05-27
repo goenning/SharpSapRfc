@@ -6,12 +6,12 @@ using System.Reflection;
 
 namespace SharpSapRfc
 {
-    public class SharpSapRfcConnection : IDisposable
+    public class SapRfcConnection : IDisposable
     {
         public RfcRepository Repository { get; private set; }
         public RfcDestination Destination { get; private set; }
 
-        public SharpSapRfcConnection(string destinationName)
+        public SapRfcConnection(string destinationName)
         {
             this.Destination = RfcDestinationManager.GetDestination(destinationName);
             this.Repository = this.Destination.Repository;

@@ -1,7 +1,8 @@
 SharpSapRfc
 ===========
 
-SAP NCo 3 is an easy to use API. Sharp SAP RFC makes it *even easier* to call remote functions on SAP systems.
+SAP NCo 3 has a very easy to use API.
+**Sharp SAP RFC** makes it **even easier** to call remote functions on SAP systems.
 
 Instead of this:
 
@@ -14,6 +15,8 @@ function.SetValue("i_num2", 4);
 function.Invoke(destination);
 int result = function.GetInt("e_result");
 ```
+
+You can write:
 
 ```C#
 using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))

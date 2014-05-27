@@ -9,10 +9,10 @@ namespace SharpSapRfc
     public class RfcPreparedFunction
     {
         private string functionName;
-        private SharpSapRfcConnection connection;
+        private SapRfcConnection connection;
         private List<RfcParameter> rfcParameters;
 
-        public RfcPreparedFunction(string functionName, SharpSapRfcConnection connection)
+        public RfcPreparedFunction(string functionName, SapRfcConnection connection)
         {
             this.functionName = functionName;
             this.connection = connection;

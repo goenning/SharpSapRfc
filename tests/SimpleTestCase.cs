@@ -9,7 +9,7 @@ namespace SharpSapRfc.Test
         [TestMethod]
         public void ExportSingleParameterTest()
         {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
             {
                 var result = conn.ExecuteFunction("Z_SSRT_SUM", 
                     new RfcParameter("i_num1", 2),
@@ -24,7 +24,7 @@ namespace SharpSapRfc.Test
         [TestMethod]
         public void ExportSingleParameterTest_WithAnonymousType()
         {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
             {
                 var result = conn.ExecuteFunction("Z_SSRT_SUM", new
                 {
@@ -40,7 +40,7 @@ namespace SharpSapRfc.Test
         [TestMethod]
         public void ChangingSingleParameterTest()
         {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
             {
                 var result = conn.ExecuteFunction("Z_SSRT_ADD",
                     new RfcParameter("i_add", 4),
@@ -55,7 +55,7 @@ namespace SharpSapRfc.Test
         [TestMethod]
         public void ExportMultipleParametersTest()
         {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
             {
                 var result = conn.ExecuteFunction("Z_SSRT_DIVIDE", 
                     new RfcParameter("i_num1", 5),
@@ -72,7 +72,7 @@ namespace SharpSapRfc.Test
         [TestMethod]
         public void ExceptionTest()
         {
-            using (SharpSapRfcConnection conn = new SharpSapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
             {
                 try
                 {
