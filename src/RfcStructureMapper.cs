@@ -111,13 +111,9 @@ namespace SharpSapRfc
                 {
                     object value = structure.GetValue(fieldName);
                     if (property.PropertyType.Equals(typeof(Boolean)))
-                    {
                         value = AbapBool.FromString(value.ToString());
-                    }
                     else if (property.PropertyType.Equals(typeof(Int32)))
-                    {
                         value = Convert.ToInt32(value);
-                    }
 
                     property.SetValue(returnValue, value, null);
                 }
@@ -139,13 +135,19 @@ namespace SharpSapRfc
                     PropertyInfo property = null;
                     if (typeProperties[type].TryGetValue(field.FieldName.ToLower(), out property))
                     {
-                        string value = string.Empty;
-                        if (field.Length + field.Offset > row.Data.Length)
+                        string value = null;
+                        if (field.Offset >= row.Data.Length)
+                            value = string.Empty;
+                        else if (field.Length + field.Offset > row.Data.Length)
                             value = row.Data.Substring(field.Offset).TrimEnd();
                         else
                             value = row.Data.Substring(field.Offset, field.Length).TrimEnd();
 
-                        object targetValue = Convert.ChangeType(value, property.PropertyType);
+                        object targetValue = null; 
+                        if (property.PropertyType.Equals(typeof(Boolean)))
+                            targetValue = AbapBool.FromString(value.ToString());
+                        else
+                            targetValue = Convert.ChangeType(value, property.PropertyType);
                         property.SetValue(entry, targetValue, null);
                     }
                 }

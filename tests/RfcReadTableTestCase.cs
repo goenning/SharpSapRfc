@@ -98,5 +98,37 @@ namespace SharpSapRfc.Test
                 Assert.AreEqual(0, scarr.ElementAt(0).Client);
             }
         }
+
+        [TestMethod]
+        public void WhenChar1IsFirstField()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                var objects = conn.ReadTable<RepositoryObject>("TADIR",
+                    fields: new string[] { "DELFLAG", "OBJ_NAME" },
+                    where: new string[] { "OBJECT = 'TABL'", "AND OBJ_NAME = 'TADIR'" } 
+                );
+
+                Assert.AreEqual(1, objects.Count());
+                Assert.AreEqual("TADIR", objects.ElementAt(0).Name);
+                Assert.AreEqual(false, objects.ElementAt(0).DeletionFlag);
+            }
+        }
+
+        [TestMethod]
+        public void WhenChar1IsLastField()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                var objects = conn.ReadTable<RepositoryObject>("TADIR",
+                    fields: new string[] { "OBJ_NAME", "DELFLAG" },
+                    where: new string[] { "OBJECT = 'TABL'", "AND OBJ_NAME = 'TADIR'" }
+                );
+
+                Assert.AreEqual(1, objects.Count());
+                Assert.AreEqual("TADIR", objects.ElementAt(0).Name);
+                Assert.AreEqual(false, objects.ElementAt(0).DeletionFlag);
+            }
+        }
     }
 }
