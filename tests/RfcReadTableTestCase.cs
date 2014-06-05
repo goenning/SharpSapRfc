@@ -130,5 +130,41 @@ namespace SharpSapRfc.Test
                 Assert.AreEqual(false, objects.ElementAt(0).DeletionFlag);
             }
         }
+
+        [TestMethod]
+        public void ReadTableAllFieldsType()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                ZMara mara = null;
+                var maras = conn.ReadTable<ZMara>("ZSSRT_MARA");
+
+                Assert.AreEqual(3, maras.Count());
+
+                mara = maras.ElementAt(0);
+                Assert.AreEqual(1, mara.Id);
+                Assert.AreEqual("AOC MONITOR", mara.Name);
+                Assert.AreEqual(254.54m, mara.Price);
+                Assert.AreEqual(DateTime.MinValue, mara.Date);
+                Assert.AreEqual(DateTime.MinValue, mara.Time);
+                Assert.AreEqual(true, mara.IsActive);
+
+                mara = maras.ElementAt(1);
+                Assert.AreEqual(2, mara.Id);
+                Assert.AreEqual("KOBO GLO", mara.Name);
+                Assert.AreEqual(64m, mara.Price);
+                Assert.AreEqual(new DateTime(2014, 6, 4), mara.Date);
+                Assert.AreEqual(new DateTime(0001, 1, 1, 15, 42, 22), mara.Time);
+                Assert.AreEqual(true, mara.IsActive);
+
+                mara = maras.ElementAt(2);
+                Assert.AreEqual(3, mara.Id);
+                Assert.AreEqual("AVELL NOTEBOOK", mara.Name);
+                Assert.AreEqual(21253154.2464m, mara.Price);
+                Assert.AreEqual(new DateTime(2000, 1, 4), mara.Date);
+                Assert.AreEqual(new DateTime(0001, 1, 1, 10, 0, 23), mara.Time);
+                Assert.AreEqual(false, mara.IsActive);
+            }
+        }
     }
 }

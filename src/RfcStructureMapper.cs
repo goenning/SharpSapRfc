@@ -4,6 +4,7 @@ using SharpSapRfc.Structure;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 
@@ -12,6 +13,7 @@ namespace SharpSapRfc
     internal class RfcStructureMapper
     {
         private static IDictionary<Type, IDictionary<string, PropertyInfo>> typeProperties = new Dictionary<Type, IDictionary<string, PropertyInfo>>();
+        private static CultureInfo enUS = new CultureInfo("en-US");
 
         private static void EnsureTypeIsCached(Type type)
         {
@@ -88,9 +90,11 @@ namespace SharpSapRfc
                 {
                     object value = property.GetValue(parameterObject, null);
                     if (property.PropertyType.Equals(typeof(Boolean)))
-                    {
                         value = AbapBool.ToString((Boolean)value);
-                    }
+                    else if (metadata[i].DataType == RfcDataType.DATE)
+                        value = AbapDateTime.ToString((DateTime)value, AbapDateTimeType.Date);
+                    else if (metadata[i].DataType == RfcDataType.TIME)
+                        value = AbapDateTime.ToString((DateTime)value, AbapDateTimeType.Time);
                     structure.SetValue(fieldName, value);
                 }
             }
@@ -110,15 +114,22 @@ namespace SharpSapRfc
                 if (typeProperties[type].TryGetValue(fieldName.ToLower(), out property))
                 {
                     object value = structure.GetValue(fieldName);
-                    if (property.PropertyType.Equals(typeof(Boolean)))
-                        value = AbapBool.FromString(value.ToString());
-                    else if (property.PropertyType.Equals(typeof(Int32)))
-                        value = Convert.ToInt32(value);
-
+                    value = RfcStructureMapper.FromValue(property.PropertyType, value);
                     property.SetValue(returnValue, value, null);
                 }
             }
             return returnValue;
+        }
+
+        public static object FromValue(Type targetType, object value)
+        {
+            if (targetType.Equals(typeof(Boolean)))
+                value = AbapBool.FromString(value.ToString());
+            else if (targetType.Equals(typeof(DateTime)))
+                value = AbapDateTime.FromString(value.ToString());
+            else if (targetType.Equals(typeof(Int32)))
+                value = Convert.ToInt32(value);
+            return value;
         }
 
         public static IEnumerable<T> FromRfcReadTableToList<T>(IEnumerable<Tab512> table, IEnumerable<RfcDbField> fields)
@@ -143,9 +154,13 @@ namespace SharpSapRfc
                         else
                             value = row.Data.Substring(field.Offset, field.Length).TrimEnd();
 
-                        object targetValue = null; 
+                        object targetValue = null;
                         if (property.PropertyType.Equals(typeof(Boolean)))
                             targetValue = AbapBool.FromString(value.ToString());
+                        else if (property.PropertyType.Equals(typeof(DateTime)))
+                            targetValue = AbapDateTime.FromString(value.ToString());
+                        else if (field.Type == "P")
+                            targetValue = Convert.ToDecimal(value, enUS.NumberFormat);
                         else
                             targetValue = Convert.ChangeType(value, property.PropertyType);
                         property.SetValue(entry, targetValue, null);

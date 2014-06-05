@@ -60,7 +60,10 @@ namespace SharpSapRfc
                         function.SetValue(parameter.Name, table);
                         break;
                     default:
-                        function.SetValue(parameter.Name, parameter.Value);
+                        if (parameter.Value.GetType().Equals(typeof(Boolean)))
+                            function.SetValue(parameter.Name, AbapBool.ToString((Boolean)parameter.Value));
+                        else
+                            function.SetValue(parameter.Name, parameter.Value);
                         break;
                 }
             }

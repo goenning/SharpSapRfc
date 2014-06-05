@@ -6,6 +6,7 @@ namespace SharpSapRfc
     public class RfcStructureFieldAttribute : Attribute
     {
         public string FieldName { get; private set; }
+
         public RfcStructureFieldAttribute(string fieldName)
         {
             this.FieldName = fieldName;

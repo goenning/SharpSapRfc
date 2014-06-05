@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SAP.Middleware.Connector;
+using System;
 
 namespace SharpSapRfc.Test
 {
@@ -70,6 +71,28 @@ namespace SharpSapRfc.Test
         }
 
         [TestMethod]
+        public void AllTypesInOutTest()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
+                {
+                    I_ID = 2,
+                    I_PRICE = 464624.521,
+                    I_DATUM = new DateTime(2014, 4, 6),
+                    I_UZEIT = new DateTime(1, 1, 1, 12, 10, 53),
+                    i_active = true
+                });
+
+                Assert.AreEqual(2, result.GetOutput<int>("E_ID"));
+                Assert.AreEqual(464624.521m, result.GetOutput<decimal>("E_PRICE"));
+                Assert.AreEqual(new DateTime(2014, 4, 6), result.GetOutput<DateTime>("E_DATUM"));
+                Assert.AreEqual(new DateTime(1, 1, 1, 12, 10, 53), result.GetOutput<DateTime>("E_UZEIT"));
+                Assert.AreEqual(true, result.GetOutput<bool>("e_active"));
+            }
+        }
+
+        [TestMethod]
         public void ExceptionTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -80,6 +103,7 @@ namespace SharpSapRfc.Test
                         new RfcParameter("i_num1", 5),
                         new RfcParameter("i_num2", 0)
                     );
+                    Assert.Fail();
                 }
                 catch (RfcAbapException ex)
                 {

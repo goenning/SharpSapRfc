@@ -73,7 +73,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(Platform)' == 'x64' ">
     <Reference Include="sapnco">
       <SpecificVersion>False</SpecificVersion>
@@ -84,7 +83,6 @@
       <HintPath>..\packages\SAPNCo.x64.3.0.13.1\lib\net40\sapnco_utils.dll</HintPath>
     </Reference>
   </ItemGroup>
-  
   <ItemGroup Condition=" '$(Platform)' == 'x86' ">
     <Reference Include="sapnco">
       <SpecificVersion>False</SpecificVersion>
@@ -95,9 +93,10 @@
       <HintPath>..\packages\SAPNCo.x86.3.0.13.1\lib\net40\sapnco_utils.dll</HintPath>
     </Reference>
   </ItemGroup>
-  
   <ItemGroup>
     <Compile Include="AbapBool.cs" />
+    <Compile Include="AbapDateTime.cs" />
+    <Compile Include="AbapDateTimeType.cs" />
     <Compile Include="RfcParameter.cs" />
     <Compile Include="RfcPreparedFunction.cs" />
     <Compile Include="RfcStructureMapper.cs" />
