@@ -1,52 +1,53 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using SAP.Middleware.Connector;
 using System;
 
 namespace SharpSapRfc.Test
 {
-    [TestClass]
     public class AbapBoolTestCase
     {
-        [TestMethod]
+        [Fact]
         public void XToTrueTest()
         {
             Boolean boolean = AbapBool.FromString("X");
-            Assert.AreEqual(true, boolean);
+            Assert.Equal(true, boolean);
         }
 
-        [TestMethod]
+        [Fact]
         public void TrueToXTest()
         {
             string X = AbapBool.ToString(true);
-            Assert.AreEqual("X", X);
+            Assert.Equal("X", X);
         }
 
-        [TestMethod]
+        [Fact]
         public void SpaceToFalseTest()
         {
             Boolean boolean = AbapBool.FromString(" ");
-            Assert.AreEqual(false, boolean);
+            Assert.Equal(false, boolean);
         }
 
-        [TestMethod]
+        [Fact]
         public void FalseToSpaceTest()
         {
             string X = AbapBool.ToString(false);
-            Assert.AreEqual(" ", X);
+            Assert.Equal(" ", X);
         }
 
-        [TestMethod]
+        [Fact]
         public void EmptyToFalseTest()
         {
             Boolean boolean = AbapBool.FromString("");
-            Assert.AreEqual(false, boolean);
+            Assert.Equal(false, boolean);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(RfcAbapException))]
+        [Fact]
         public void UnknowToExceptionTest()
         {
-            AbapBool.FromString("A");
+            Assert.Throws(typeof(RfcAbapException), () =>
+            {
+                AbapBool.FromString("A");
+            });
         }
     }
 }

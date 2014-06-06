@@ -1,13 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SAP.Middleware.Connector;
+﻿using SAP.Middleware.Connector;
 using System;
+using Xunit;
 
 namespace SharpSapRfc.Test
 {
-    [TestClass]
     public class SimpleTestCase
     {
-        [TestMethod]
+        [Fact]
         public void ExportSingleParameterTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -18,11 +17,11 @@ namespace SharpSapRfc.Test
                 );
 
                 var total = result.GetOutput<int>("e_result");
-                Assert.AreEqual(6, total);
+                Assert.Equal(6, total);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ExportSingleParameterTest_WithAnonymousType()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -34,11 +33,11 @@ namespace SharpSapRfc.Test
                 });
 
                 var total = result.GetOutput<int>("e_result");
-                Assert.AreEqual(9, total);
+                Assert.Equal(9, total);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangingSingleParameterTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -49,11 +48,11 @@ namespace SharpSapRfc.Test
                 );
 
                 var total = result.GetOutput<int>("c_num");
-                Assert.AreEqual(8, total);
+                Assert.Equal(8, total);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ExportMultipleParametersTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -65,12 +64,12 @@ namespace SharpSapRfc.Test
 
                 var quotient = result.GetOutput<decimal>("e_quotient");
                 var remainder = result.GetOutput<int>("e_remainder");
-                Assert.AreEqual(2.5m, quotient);
-                Assert.AreEqual(1, remainder);
+                Assert.Equal(2.5m, quotient);
+                Assert.Equal(1, remainder);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AllTypesInOutTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -84,31 +83,26 @@ namespace SharpSapRfc.Test
                     i_active = true
                 });
 
-                Assert.AreEqual(2, result.GetOutput<int>("E_ID"));
-                Assert.AreEqual(464624.521m, result.GetOutput<decimal>("E_PRICE"));
-                Assert.AreEqual(new DateTime(2014, 4, 6), result.GetOutput<DateTime>("E_DATUM"));
-                Assert.AreEqual(new DateTime(1, 1, 1, 12, 10, 53), result.GetOutput<DateTime>("E_UZEIT"));
-                Assert.AreEqual(true, result.GetOutput<bool>("e_active"));
+                Assert.Equal(2, result.GetOutput<int>("E_ID"));
+                Assert.Equal(464624.521m, result.GetOutput<decimal>("E_PRICE"));
+                Assert.Equal(new DateTime(2014, 4, 6), result.GetOutput<DateTime>("E_DATUM"));
+                Assert.Equal(new DateTime(1, 1, 1, 12, 10, 53), result.GetOutput<DateTime>("E_UZEIT"));
+                Assert.Equal(true, result.GetOutput<bool>("e_active"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ExceptionTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
             {
-                try
+                Assert.Throws(typeof(RfcAbapException), () =>
                 {
-                    var result = conn.ExecuteFunction("Z_SSRT_DIVIDE", 
+                    var result = conn.ExecuteFunction("Z_SSRT_DIVIDE",
                         new RfcParameter("i_num1", 5),
                         new RfcParameter("i_num2", 0)
                     );
-                    Assert.Fail();
-                }
-                catch (RfcAbapException ex)
-                {
-                    Assert.AreEqual("DIVIDE_BY_ZERO", ex.Key);
-                }
+                });
             }
         }
     }

@@ -18,10 +18,8 @@ namespace SharpSapRfc
             object returnValue = function.GetValue(name);
             if (returnValue is IRfcStructure)
                 return RfcStructureMapper.FromStructure<T>(returnValue as IRfcStructure);
-            else
-                returnValue = RfcStructureMapper.FromValue(typeof(T), returnValue);
 
-            return (T)Convert.ChangeType(returnValue, typeof(T));
+            return (T)RfcValueMapper.FromRemoteValue(typeof(T), returnValue);
         }
 
         public IEnumerable<T> GetTable<T>(string name)

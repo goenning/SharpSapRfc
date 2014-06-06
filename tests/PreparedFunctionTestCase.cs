@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace SharpSapRfc.Test
 {
-    [TestClass]
     public class PreparedFunctionTestCase
     {
-        [TestMethod]
+        [Fact]
         public void PreparedFunctionWithTwoParametersTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -16,7 +15,7 @@ namespace SharpSapRfc.Test
                 var result = function.Execute();
 
                 var total = result.GetOutput<int>("e_result");
-                Assert.AreEqual(6, total);
+                Assert.Equal(6, total);
             }
         }
     }

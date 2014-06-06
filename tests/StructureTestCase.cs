@@ -1,14 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SharpSapRfc.Test.Structures;
+﻿using SharpSapRfc.Test.Structures;
 using System.Collections.Generic;
 using System.Linq;
+using Xunit;
 
 namespace SharpSapRfc.Test
 {
-    [TestClass]
     public class StructureTestCase
     {
-        [TestMethod]
+        [Fact]
         public void ImportStructureTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -19,11 +18,11 @@ namespace SharpSapRfc.Test
                 );
 
                 string message = result.GetOutput<string>("e_success");
-                Assert.AreEqual("Created:    3 - Microsoft - X", message);
+                Assert.Equal("Created:    3 - Microsoft - X", message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ImportStructureTest_WithAnonymousType()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -35,11 +34,11 @@ namespace SharpSapRfc.Test
                 });
 
                 string message = result.GetOutput<string>("e_success");
-                Assert.AreEqual("Created:    3 - Microsoft - X", message);
+                Assert.Equal("Created:    3 - Microsoft - X", message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ExportStructureTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -49,13 +48,13 @@ namespace SharpSapRfc.Test
                 );
 
                 var customer = result.GetOutput<ZCustomer>("e_customer");
-                Assert.AreEqual(2, customer.Id);
-                Assert.AreEqual("Walmart", customer.Name);
-                Assert.AreEqual(false, customer.IsActive);
+                Assert.Equal(2, customer.Id);
+                Assert.Equal("Walmart", customer.Name);
+                Assert.Equal(false, customer.IsActive);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ExportTableTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -63,21 +62,21 @@ namespace SharpSapRfc.Test
                 var result = conn.ExecuteFunction("Z_SSRT_GET_ALL_CUSTOMERS");
 
                 var customers = result.GetTable<ZCustomer>("t_customers");
-                Assert.AreEqual(2, customers.Count());
+                Assert.Equal(2, customers.Count());
 
-                Assert.AreEqual(1, customers.ElementAt(0).Id);
-                Assert.AreEqual("Apple Store", customers.ElementAt(0).Name);
-                Assert.AreEqual(0, customers.ElementAt(0).Age);
-                Assert.AreEqual(true, customers.ElementAt(0).IsActive);
+                Assert.Equal(1, customers.ElementAt(0).Id);
+                Assert.Equal("Apple Store", customers.ElementAt(0).Name);
+                Assert.Equal(0, customers.ElementAt(0).Age);
+                Assert.Equal(true, customers.ElementAt(0).IsActive);
 
-                Assert.AreEqual(2, customers.ElementAt(1).Id);
-                Assert.AreEqual("Walmart", customers.ElementAt(1).Name);
-                Assert.AreEqual(0, customers.ElementAt(1).Age);
-                Assert.AreEqual(false, customers.ElementAt(1).IsActive);
+                Assert.Equal(2, customers.ElementAt(1).Id);
+                Assert.Equal("Walmart", customers.ElementAt(1).Name);
+                Assert.Equal(0, customers.ElementAt(1).Age);
+                Assert.Equal(false, customers.ElementAt(1).IsActive);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ExportTableCategoryTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -85,21 +84,21 @@ namespace SharpSapRfc.Test
                 var result = conn.ExecuteFunction("Z_SSRT_GET_ALL_CUSTOMERS2");
 
                 var customers = result.GetTable<ZCustomer>("e_customers");
-                Assert.AreEqual(2, customers.Count());
+                Assert.Equal(2, customers.Count());
 
-                Assert.AreEqual(1, customers.ElementAt(0).Id);
-                Assert.AreEqual("Apple Store", customers.ElementAt(0).Name);
-                Assert.AreEqual(0, customers.ElementAt(0).Age);
-                Assert.AreEqual(true, customers.ElementAt(0).IsActive);
+                Assert.Equal(1, customers.ElementAt(0).Id);
+                Assert.Equal("Apple Store", customers.ElementAt(0).Name);
+                Assert.Equal(0, customers.ElementAt(0).Age);
+                Assert.Equal(true, customers.ElementAt(0).IsActive);
 
-                Assert.AreEqual(2, customers.ElementAt(1).Id);
-                Assert.AreEqual("Walmart", customers.ElementAt(1).Name);
-                Assert.AreEqual(0, customers.ElementAt(1).Age);
-                Assert.AreEqual(false, customers.ElementAt(1).IsActive);
+                Assert.Equal(2, customers.ElementAt(1).Id);
+                Assert.Equal("Walmart", customers.ElementAt(1).Name);
+                Assert.Equal(0, customers.ElementAt(1).Age);
+                Assert.Equal(false, customers.ElementAt(1).IsActive);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangingSingleStructureAsTableTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -111,16 +110,16 @@ namespace SharpSapRfc.Test
                 );
 
                 var customers = result.GetTable<ZCustomer>("c_customers");
-                Assert.AreEqual(1, customers.Count());
+                Assert.Equal(1, customers.Count());
 
-                Assert.AreEqual(1, customers.ElementAt(0).Id);
-                Assert.AreEqual("Apple Store", customers.ElementAt(0).Name);
-                Assert.AreEqual(0, customers.ElementAt(0).Age);
-                Assert.AreEqual(true, customers.ElementAt(0).IsActive);
+                Assert.Equal(1, customers.ElementAt(0).Id);
+                Assert.Equal("Apple Store", customers.ElementAt(0).Name);
+                Assert.Equal(0, customers.ElementAt(0).Age);
+                Assert.Equal(true, customers.ElementAt(0).IsActive);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangingTableCategoryTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
@@ -134,12 +133,12 @@ namespace SharpSapRfc.Test
                 );
 
                 customers = result.GetTable<ZCustomer>("c_customers");
-                Assert.AreEqual(1, customers.Count());
+                Assert.Equal(1, customers.Count());
 
-                Assert.AreEqual(1, customers.ElementAt(0).Id);
-                Assert.AreEqual("Apple Store", customers.ElementAt(0).Name);
-                Assert.AreEqual(0, customers.ElementAt(0).Age);
-                Assert.AreEqual(true, customers.ElementAt(0).IsActive);
+                Assert.Equal(1, customers.ElementAt(0).Id);
+                Assert.Equal("Apple Store", customers.ElementAt(0).Name);
+                Assert.Equal(0, customers.ElementAt(0).Age);
+                Assert.Equal(true, customers.ElementAt(0).IsActive);
             }
         }
     }

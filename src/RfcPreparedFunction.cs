@@ -60,10 +60,8 @@ namespace SharpSapRfc
                         function.SetValue(parameter.Name, table);
                         break;
                     default:
-                        if (parameter.Value.GetType().Equals(typeof(Boolean)))
-                            function.SetValue(parameter.Name, AbapBool.ToString((Boolean)parameter.Value));
-                        else
-                            function.SetValue(parameter.Name, parameter.Value);
+                        object formattedValue = RfcValueMapper.ToRemoteValue(function.Metadata[idx].DataType, parameter.Value);
+                        function.SetValue(parameter.Name, formattedValue);
                         break;
                 }
             }
