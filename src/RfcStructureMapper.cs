@@ -39,6 +39,8 @@ namespace SharpSapRfc
                         {
                             var attribute = ((RfcStructureFieldAttribute[])property.GetCustomAttributes(typeof(RfcStructureFieldAttribute), true))[0];
                             propertyByFieldName.Add(attribute.FieldName.ToLower(), property);
+                            if (!string.IsNullOrWhiteSpace(attribute.SecondFieldName))
+                                propertyByFieldName.Add(attribute.SecondFieldName.ToLower(), property);
                         }
                         else
                             propertyByFieldName.Add(property.Name.ToLower(), property);
@@ -101,7 +103,7 @@ namespace SharpSapRfc
             Type type = typeof(T);
             EnsureTypeIsCached(type);
 
-            T returnValue = Activator.CreateInstance<T>();
+            T returnObject = Activator.CreateInstance<T>();
             for (int i = 0; i < structure.Metadata.FieldCount; i++)
             {
                 string fieldName = structure.Metadata[i].Name;
@@ -109,11 +111,25 @@ namespace SharpSapRfc
                 if (typeProperties[type].TryGetValue(fieldName.ToLower(), out property))
                 {
                     object value = structure.GetValue(fieldName);
-                    object formattedValue = RfcValueMapper.FromRemoteValue(property.PropertyType, value);
-                    property.SetValue(returnValue, formattedValue, null);
+                    SetProperty(returnObject, property, value);
                 }
             }
-            return returnValue;
+            return returnObject;
+        }
+
+        public static void SetProperty(object targetObject, PropertyInfo property, object remoteValue)
+        {
+            object formattedValue = RfcValueMapper.FromRemoteValue(property.PropertyType, remoteValue);
+
+            if (property.PropertyType == typeof(DateTime))
+            {
+                DateTime formattedDateTimeValue = (DateTime)formattedValue;
+                DateTime actualValue = (DateTime)property.GetValue(targetObject, null);
+                if (actualValue != DateTime.MinValue)
+                    formattedValue = actualValue.AddTicks(formattedDateTimeValue.Ticks);
+            }
+
+            property.SetValue(targetObject, formattedValue, null);
         }
 
         public static IEnumerable<T> FromRfcReadTableToList<T>(IEnumerable<Tab512> table, IEnumerable<RfcDbField> fields)
@@ -138,8 +154,7 @@ namespace SharpSapRfc
                         else
                             value = row.Data.Substring(field.Offset, field.Length).TrimEnd();
 
-                        object formattedValue = RfcValueMapper.FromRemoteValue(property.PropertyType, value);
-                        property.SetValue(entry, formattedValue, null);
+                        SetProperty(entry, property, value);
                     }
                 }
                 entries.Add(entry);

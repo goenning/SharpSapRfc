@@ -168,5 +168,29 @@ namespace SharpSapRfc.Test
                 Assert.Equal(MaterialState.Available, mara.State);
             }
         }
+
+        [Fact]
+        public void ReadDateTimeSingleField()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                ZMaraSingleDateTime mara = null;
+                var maras = conn.ReadTable<ZMaraSingleDateTime>("ZSSRT_MARA");
+
+                Assert.Equal(3, maras.Count());
+
+                mara = maras.ElementAt(0);
+                Assert.Equal(1, mara.Id);
+                Assert.Equal(DateTime.MinValue, mara.DateTime);
+
+                mara = maras.ElementAt(1);
+                Assert.Equal(2, mara.Id);
+                Assert.Equal(new DateTime(2014, 6, 4, 15, 42, 22), mara.DateTime);
+
+                mara = maras.ElementAt(2);
+                Assert.Equal(3, mara.Id);
+                Assert.Equal(new DateTime(2000, 1, 4, 10, 0, 23), mara.DateTime);
+            }
+        }
     }
 }

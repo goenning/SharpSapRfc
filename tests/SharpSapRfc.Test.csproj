@@ -113,6 +113,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AbapBoolTestCase.cs" />
+    <Compile Include="Model\ZMaraSingleDateTime.cs" />
     <Compile Include="PreparedFunctionTestCase.cs" />
     <Compile Include="RfcReadTableTestCase.cs" />
     <Compile Include="RfcValueMapperTestCase.cs" />
