@@ -44,7 +44,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void UnknowToExceptionTest()
         {
-            Assert.Throws(typeof(RfcAbapException), () =>
+            Assert.Throws(typeof(RfcMappingException), () =>
             {
                 AbapBool.FromString("A");
             });

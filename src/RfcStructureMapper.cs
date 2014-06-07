@@ -20,7 +20,7 @@ namespace SharpSapRfc
             if (typeProperties.ContainsKey(type))
                 return;
 
-            lock (type.GetType())
+            lock (type)
             {
                 if (typeProperties.ContainsKey(type))
                     return;

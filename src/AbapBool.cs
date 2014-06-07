@@ -14,8 +14,8 @@ namespace SharpSapRfc
             if (expectedValues.Contains(value))
                 return value == "X";
 
-            string message = string.Format("{0} is not a valid boolean value", value);
-            throw new RfcAbapException("UNKNOWN_BOOL_VALUE", message, message);
+            string message = string.Format("'{0}' is not a valid boolean value", value);
+            throw new RfcMappingException(message);
         }
 
         public static string ToString(bool value)

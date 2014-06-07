@@ -1,4 +1,4 @@
-﻿using SharpSapRfc.Test.Structures;
+﻿using SharpSapRfc.Test.Model;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;

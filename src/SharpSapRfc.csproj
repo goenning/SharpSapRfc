@@ -97,6 +97,8 @@
     <Compile Include="AbapBool.cs" />
     <Compile Include="AbapDateTime.cs" />
     <Compile Include="AbapDateTimeType.cs" />
+    <Compile Include="RfcEnumValueAttribute.cs" />
+    <Compile Include="RfcMappingException.cs" />
     <Compile Include="RfcParameter.cs" />
     <Compile Include="RfcPreparedFunction.cs" />
     <Compile Include="RfcStructureMapper.cs" />

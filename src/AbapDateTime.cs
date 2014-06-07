@@ -27,7 +27,7 @@ namespace SharpSapRfc
             else
             {
                 string message = string.Format("{0} is not a valid Date format.", value);
-                throw new RfcAbapException("UNKNOWN_DATETIME_FORMAT", message, message);
+                throw new RfcMappingException(message);
             }
         }
 

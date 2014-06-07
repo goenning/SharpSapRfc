@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SharpSapRfc.Test.Structures
+namespace SharpSapRfc.Test.Model
 {
     public class ZMara
     {
@@ -19,5 +19,7 @@ namespace SharpSapRfc.Test.Structures
         public DateTime Time { get; set; }
         [RfcStructureField("Active")]
         public bool IsActive { get; set; }
+        [RfcStructureField("STATE")]
+        public MaterialState State { get; set; }
     }
 }

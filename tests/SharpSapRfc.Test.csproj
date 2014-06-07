@@ -118,11 +118,12 @@
     <Compile Include="RfcValueMapperTestCase.cs" />
     <Compile Include="SimpleTestCase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Structures\AirlineCompany.cs" />
-    <Compile Include="Structures\RepositoryObject.cs" />
-    <Compile Include="Structures\ZMara.cs" />
+    <Compile Include="Model\AirlineCompany.cs" />
+    <Compile Include="Model\RepositoryObject.cs" />
+    <Compile Include="Model\MaterialState.cs" />
+    <Compile Include="Model\ZMara.cs" />
     <Compile Include="StructureTestCase.cs" />
-    <Compile Include="Structures\ZCustomer.cs" />
+    <Compile Include="Model\ZCustomer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\SharpSapRfc.csproj">

@@ -1,5 +1,5 @@
 ﻿using SharpSapRfc.Structure;
-using SharpSapRfc.Test.Structures;
+using SharpSapRfc.Test.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -147,6 +147,7 @@ namespace SharpSapRfc.Test
                 Assert.Equal(DateTime.MinValue, mara.Date);
                 Assert.Equal(DateTime.MinValue, mara.Time);
                 Assert.Equal(true, mara.IsActive);
+                Assert.Equal(MaterialState.Blocked, mara.State);
 
                 mara = maras.ElementAt(1);
                 Assert.Equal(2, mara.Id);
@@ -155,6 +156,7 @@ namespace SharpSapRfc.Test
                 Assert.Equal(new DateTime(2014, 6, 4), mara.Date);
                 Assert.Equal(new DateTime(0001, 1, 1, 15, 42, 22), mara.Time);
                 Assert.Equal(true, mara.IsActive);
+                Assert.Equal(MaterialState.OutOfStock, mara.State);
 
                 mara = maras.ElementAt(2);
                 Assert.Equal(3, mara.Id);
@@ -163,6 +165,7 @@ namespace SharpSapRfc.Test
                 Assert.Equal(new DateTime(2000, 1, 4), mara.Date);
                 Assert.Equal(new DateTime(0001, 1, 1, 10, 0, 23), mara.Time);
                 Assert.Equal(false, mara.IsActive);
+                Assert.Equal(MaterialState.Available, mara.State);
             }
         }
     }

@@ -12,6 +12,33 @@ namespace SharpSapRfc
         private static CultureInfo enUS = new CultureInfo("en-US");
         private static CultureInfo ptBR = new CultureInfo("pt-BR");
 
+        private static Dictionary<Type, Dictionary<string, string>> cachedEnumMembers = new Dictionary<Type, Dictionary<string, string>>();
+
+        private static void EnsureEnumTypeIsCached(Type enumType)
+        {
+            if (!enumType.IsEnum || cachedEnumMembers.ContainsKey(enumType))
+                return;
+
+            lock (enumType)
+            {
+                if (cachedEnumMembers.ContainsKey(enumType))
+                    return;
+
+                Dictionary<string, string> membersByName = new Dictionary<string, string>();
+                foreach (string name in Enum.GetNames(enumType))
+                {
+                    var memInfo = enumType.GetMember(name);
+                    var attributes = memInfo[0].GetCustomAttributes(typeof(RfcEnumValueAttribute), false);
+                    if (attributes.Length > 0)
+                    {
+                        var enumValue = ((RfcEnumValueAttribute)attributes[0]).Value;
+                        membersByName.Add(name, enumValue);
+                    }
+                }
+                cachedEnumMembers.Add(enumType, membersByName);
+            }
+        }
+
         public static object FromRemoteValue(Type type, object value)
         {
             object returnValue = null;
@@ -25,10 +52,32 @@ namespace SharpSapRfc
                 returnValue = Convert.ToDecimal(value, value.ToString().Contains(",") ? ptBR : enUS);
             else if (type.Equals(typeof(Double)))
                 returnValue = Convert.ToDouble(value, value.ToString().Contains(",") ? ptBR : enUS);
+            else if (type.IsEnum)
+                returnValue = ConvertToEnum(type, value);
             else
                 returnValue = Convert.ChangeType(value, type);
 
             return returnValue;
+        }
+
+        private static object ConvertToEnum(Type enumType, object remoteValue)
+        {
+            if (remoteValue != null)
+            { 
+                int hashCode = 0;
+                if (int.TryParse(remoteValue.ToString(), out hashCode))
+                    if (Enum.IsDefined(enumType, hashCode))
+                        return Enum.ToObject(enumType, hashCode);
+
+                EnsureEnumTypeIsCached(enumType);
+                foreach (var keyPair in cachedEnumMembers[enumType])
+                {
+                    if (keyPair.Value == remoteValue.ToString())
+                        return Enum.Parse(enumType, keyPair.Key);
+                }
+            }
+
+            throw new RfcMappingException(string.Format("Cannot convert from remote value '{0}' to enum type '{1}'.", remoteValue, enumType.Name));
         }
 
         public static object ToRemoteValue(RfcDataType remoteType, object value)
@@ -45,8 +94,34 @@ namespace SharpSapRfc
                 returnValue = AbapDateTime.ToString((DateTime)value, AbapDateTimeType.Date);
             else if (remoteType == RfcDataType.TIME)
                 returnValue = AbapDateTime.ToString((DateTime)value, AbapDateTimeType.Time);
+            else if (valueType.IsEnum)
+                returnValue = ConvertFromEnum(remoteType, value);
 
             return returnValue;
+        }
+
+        private static object ConvertFromEnum(RfcDataType remoteType, object value)
+        {
+            if (remoteType == RfcDataType.INT1 || remoteType == RfcDataType.INT2 ||
+                remoteType == RfcDataType.INT4 || remoteType == RfcDataType.INT8)
+                return value.GetHashCode();
+
+            if (remoteType == RfcDataType.NUM)
+                return value.GetHashCode().ToString();
+
+            if (remoteType == RfcDataType.CHAR || remoteType == RfcDataType.STRING)
+            {
+                Type enumType = value.GetType();
+                EnsureEnumTypeIsCached(enumType);
+                foreach (var keyPair in cachedEnumMembers[enumType])
+                {
+                    if (keyPair.Key == value.ToString())
+                        return keyPair.Value;
+                }
+                return string.Empty;
+            }
+
+            throw new RfcMappingException(string.Format("Cannot convert from Enum '{0}' to remote type '{1}'.", value, remoteType.ToString()));
         }
     }
 }
