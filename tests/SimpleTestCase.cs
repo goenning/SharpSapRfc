@@ -1,4 +1,5 @@
 ﻿using SAP.Middleware.Connector;
+using SharpSapRfc.Test.Model;
 using System;
 using Xunit;
 
@@ -80,7 +81,8 @@ namespace SharpSapRfc.Test
                     I_PRICE = 464624.521,
                     I_DATUM = new DateTime(2014, 4, 6),
                     I_UZEIT = new DateTime(1, 1, 1, 12, 10, 53),
-                    i_active = true
+                    i_active = true,
+                    i_mara = new ZMaraSingleDateTime { Id = 4, DateTime = new DateTime(2014, 4, 6, 12, 10, 53) }
                 });
 
                 Assert.Equal(2, result.GetOutput<int>("E_ID"));
@@ -88,6 +90,10 @@ namespace SharpSapRfc.Test
                 Assert.Equal(new DateTime(2014, 4, 6), result.GetOutput<DateTime>("E_DATUM"));
                 Assert.Equal(new DateTime(1, 1, 1, 12, 10, 53), result.GetOutput<DateTime>("E_UZEIT"));
                 Assert.Equal(true, result.GetOutput<bool>("e_active"));
+
+                Assert.Equal(4, result.GetOutput<int>("e_mara_id"));
+                Assert.Equal(new DateTime(2014, 4, 6), result.GetOutput<DateTime>("e_mara_datum"));
+                Assert.Equal(new DateTime(1, 1, 1, 12, 10, 53), result.GetOutput<DateTime>("e_mara_UZEIT"));
             }
         }
 
