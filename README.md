@@ -144,3 +144,15 @@ using (SapRfcConnection conn = new SapRfcConnection("TST"))
     );
 }
 ```
+
+
+## All Features
+
+- Mapping for Structures and Tables
+- 2 remote fields (DATE and TIME) mapped to a single DateTime property
+- Enum Mapping (both numbers and strings)
+- Boolean. Use True and False instead of "X" and "
+- Shortcut to RFC_READ_TABLE
+- Easier RFC calls
+
+Take a look at the **tests** project for more examples.
