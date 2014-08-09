@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -54,6 +55,8 @@ namespace SharpSapRfc
                 returnValue = Convert.ToDouble(value, value.ToString().Contains(",") ? ptBR : enUS);
             else if (type.IsEnum)
                 returnValue = ConvertToEnum(type, value);
+            else if (type.Equals(typeof(Stream)))
+                returnValue = new MemoryStream((byte[])value);
             else
                 returnValue = Convert.ChangeType(value, type);
 

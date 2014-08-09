@@ -1,6 +1,9 @@
 ﻿using SAP.Middleware.Connector;
 using SharpSapRfc.Test.Model;
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using Xunit;
 
 namespace SharpSapRfc.Test
@@ -12,7 +15,7 @@ namespace SharpSapRfc.Test
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
             {
-                var result = conn.ExecuteFunction("Z_SSRT_SUM", 
+                var result = conn.ExecuteFunction("Z_SSRT_SUM",
                     new RfcParameter("i_num1", 2),
                     new RfcParameter("i_num2", 4)
                 );
@@ -58,7 +61,7 @@ namespace SharpSapRfc.Test
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))
             {
-                var result = conn.ExecuteFunction("Z_SSRT_DIVIDE", 
+                var result = conn.ExecuteFunction("Z_SSRT_DIVIDE",
                     new RfcParameter("i_num1", 5),
                     new RfcParameter("i_num2", 2)
                 );
@@ -109,6 +112,59 @@ namespace SharpSapRfc.Test
                         new RfcParameter("i_num2", 0)
                     );
                 });
+            }
+        }
+
+        [Fact]
+        public void ExportBinaryParameterAsByteArrayTest()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                var result = conn.ExecuteFunction("Z_SSRT_GET_BMP_IMAGE", new
+                {
+                    i_object = "GRAPHICS",
+                    i_name = "IDES_LOGO",
+                    i_id = "BMAP",
+                    i_btype = "BMON"
+                });
+
+                var bytes = result.GetOutput<byte[]>("e_image");
+                using (Bitmap local = (Bitmap)Bitmap.FromFile(@"Assets\IDES_LOGO.bmp"))
+                {
+                    using (MemoryStream ms = new MemoryStream(bytes))
+                    {
+                        using (Bitmap remote = (Bitmap)Bitmap.FromStream(ms))
+                        {
+                            ImageAssert.AreEqual(local, remote);
+                        }
+                    }
+                }
+            }
+        }
+
+        [Fact]
+        public void ExportBinaryParameterAsStreamTest()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                var result = conn.ExecuteFunction("Z_SSRT_GET_BMP_IMAGE", new
+                {
+                    i_object = "GRAPHICS",
+                    i_name = "IDES_LOGO",
+                    i_id = "BMAP",
+                    i_btype = "BMON"
+                });
+
+                using (var stream = result.GetOutput<Stream>("e_image"))
+                {
+                    using (Bitmap remote = (Bitmap)Bitmap.FromStream(stream))
+                    {
+                        using (Bitmap local = (Bitmap)Bitmap.FromFile(@"Assets\IDES_LOGO.bmp"))
+                        {
+                            ImageAssert.AreEqual(local, remote);
+                        }
+                    }
+                }
             }
         }
     }
