@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="AbapBoolTestCase.cs" />
     <Compile Include="ImageAssert.cs" />
+    <Compile Include="Model\RepositoryObject.cs" />
     <Compile Include="Model\ZMaraSingleDateTime.cs" />
     <Compile Include="PreparedFunctionTestCase.cs" />
     <Compile Include="RfcReadTableTestCase.cs" />
@@ -122,17 +123,10 @@
     <Compile Include="SimpleTestCase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\AirlineCompany.cs" />
-    <Compile Include="Model\RepositoryObject.cs" />
     <Compile Include="Model\MaterialState.cs" />
     <Compile Include="Model\ZMara.cs" />
     <Compile Include="StructureTestCase.cs" />
     <Compile Include="Model\ZCustomer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\src\SharpSapRfc.csproj">
-      <Project>{db36edca-d7ce-4ce6-894e-8815f817c778}</Project>
-      <Name>SharpSapRfc</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -142,6 +136,12 @@
     <Content Include="Assets\IDES_LOGO.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\SharpSapRfc.csproj">
+      <Project>{db36edca-d7ce-4ce6-894e-8815f817c778}</Project>
+      <Name>SharpSapRfc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

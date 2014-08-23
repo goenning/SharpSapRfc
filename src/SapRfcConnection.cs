@@ -10,11 +10,22 @@ namespace SharpSapRfc
     {
         public RfcRepository Repository { get; private set; }
         public RfcDestination Destination { get; private set; }
+        private string destinationName;
+        private bool isOpen = false;
 
         public SapRfcConnection(string destinationName)
         {
-            this.Destination = RfcDestinationManager.GetDestination(destinationName);
-            this.Repository = this.Destination.Repository;
+            this.destinationName = destinationName;
+        }
+
+        private void EnsureConnectionIsOpen()
+        {
+            if (!isOpen)
+            {
+                this.Destination = RfcDestinationManager.GetDestination(destinationName);
+                this.Repository = this.Destination.Repository;
+                this.isOpen = true;
+            }
         }
 
         public RfcResult ExecuteFunction(string functionName)
@@ -39,6 +50,7 @@ namespace SharpSapRfc
 
         public IEnumerable<T> ReadTable<T>(string tableName, string[] fields = null, string[] where = null, int skip = 0, int count = 0)
         {
+            EnsureConnectionIsOpen();
             fields = fields ?? new string[0];
             where = where ?? new string[0];
 
@@ -50,7 +62,8 @@ namespace SharpSapRfc
             for (int i = 0; i < where.Length; i++)
                 dbWhere.Add(new RfcDbWhere(where[i]));
 
-            var result = this.ExecuteFunction("RFC_READ_TABLE", new {
+            var result = this.ExecuteFunction("RFC_READ_TABLE", new
+            {
                 Query_Table = tableName,
                 Fields = dbFields,
                 Options = dbWhere,
@@ -64,14 +77,14 @@ namespace SharpSapRfc
             );
         }
 
-        public void Dispose()
-        {
-            
-        }
-
         public RfcPreparedFunction PrepareFunction(string functionName)
         {
+            EnsureConnectionIsOpen();
             return new RfcPreparedFunction(functionName, this);
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
