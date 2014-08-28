@@ -8,21 +8,32 @@ namespace SharpSapRfc
     {
         private static CultureInfo enUS = new CultureInfo("en-US");
 
-        public static DateTime FromString(string value)
+        public static DateTime? FromString(string value)
+        {
+            return FromString(value, false);
+        }
+
+        public static DateTime? FromString(string value, bool acceptNull)
         {
             DateTime date;
 
-            if (DateTime.TryParseExact(value, new string[] { "yyyy-MM-dd", "yyyyMMdd" }, enUS, DateTimeStyles.AssumeLocal, out date))
+
+            if (value == "00000000" ||
+                     value == "000000" ||
+                     value == "00:00:00" ||
+                     value == "0000-00-00") // ABAP Date and Time initial value
+            {
+                if (acceptNull)
+                    return null;
+                return DateTime.MinValue;
+            } 
+            else if (DateTime.TryParseExact(value, new string[] { "yyyy-MM-dd", "yyyyMMdd" }, enUS, DateTimeStyles.AssumeLocal, out date))
             {
                 return date;
             }
             else if (DateTime.TryParseExact(value, new string[] { "HH:mm:ss", "HHmmss" }, enUS, DateTimeStyles.AssumeLocal, out date))
             {
                 return DateTime.MinValue.Add(new TimeSpan(date.Hour, date.Minute, date.Second));
-            }
-            else if (value == "00000000" || value == "000000") // ABAP Date and Time initial value
-            {
-                return DateTime.MinValue;
             }
             else
             {

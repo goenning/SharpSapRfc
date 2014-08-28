@@ -101,6 +101,82 @@ namespace SharpSapRfc.Test
         }
 
         [Fact]
+        public void NullDateInOutTest()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
+                {
+                    I_DATUM = (DateTime?)null
+                });
+
+                Assert.Equal(null, result.GetOutput<DateTime?>("E_DATUM"));
+            }
+        }
+
+        [Fact]
+        public void NullDateInOutTest2()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
+                {
+                    I_DATUM = (DateTime?)null
+                });
+
+                Assert.Equal(DateTime.MinValue, result.GetOutput<DateTime>("E_DATUM"));
+            }
+        }
+
+        [Fact]
+        public void MinDateInOutTest()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
+                {
+                    I_DATUM = DateTime.MinValue
+                });
+
+                Assert.Equal(DateTime.MinValue, result.GetOutput<DateTime>("E_DATUM"));
+            }
+        }
+
+        [Fact]
+        public void MaxDateInOutTest()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
+                {
+                    I_DATUM = DateTime.MaxValue
+                });
+
+                Assert.Equal(DateTime.MaxValue.Date, result.GetOutput<DateTime>("E_DATUM"));
+            }
+        }
+
+        [Fact]
+        public void EmptyDateOutTest()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                var result = conn.ExecuteFunction("Z_SSRT_EMPTY_DATE");
+                Assert.Equal(DateTime.MinValue, result.GetOutput<DateTime>("E_DATUM"));
+            }
+        }
+
+        [Fact]
+        public void NullDateOutTest()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                var result = conn.ExecuteFunction("Z_SSRT_EMPTY_DATE");
+                Assert.Equal(null, result.GetOutput<DateTime?>("E_DATUM"));
+            }
+        }
+
+        [Fact]
         public void ExceptionTest()
         {
             using (SapRfcConnection conn = new SapRfcConnection("TST"))

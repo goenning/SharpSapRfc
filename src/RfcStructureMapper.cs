@@ -121,12 +121,13 @@ namespace SharpSapRfc
         {
             object formattedValue = RfcValueMapper.FromRemoteValue(property.PropertyType, remoteValue);
 
-            if (property.PropertyType == typeof(DateTime))
+            if (property.PropertyType == typeof(DateTime) ||
+                property.PropertyType == typeof(DateTime?))
             {
-                DateTime formattedDateTimeValue = (DateTime)formattedValue;
-                DateTime actualValue = (DateTime)property.GetValue(targetObject, null);
-                if (actualValue != DateTime.MinValue)
-                    formattedValue = actualValue.AddTicks(formattedDateTimeValue.Ticks);
+                DateTime? formattedDateTimeValue = (DateTime?)formattedValue;
+                DateTime? actualValue = (DateTime?)property.GetValue(targetObject, null);
+                if (actualValue.HasValue && formattedDateTimeValue.HasValue && actualValue.Value != DateTime.MinValue)
+                    formattedValue = actualValue.Value.AddTicks(formattedDateTimeValue.Value.Ticks);
             }
 
             property.SetValue(targetObject, formattedValue, null);

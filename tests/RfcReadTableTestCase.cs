@@ -181,7 +181,7 @@ namespace SharpSapRfc.Test
 
                 mara = maras.ElementAt(0);
                 Assert.Equal(1, mara.Id);
-                Assert.Equal(DateTime.MinValue, mara.DateTime);
+                Assert.Equal(null, mara.DateTime);
 
                 mara = maras.ElementAt(1);
                 Assert.Equal(2, mara.Id);

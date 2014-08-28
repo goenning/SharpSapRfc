@@ -10,6 +10,6 @@ namespace SharpSapRfc.Test.Model
         [RfcStructureField("ID")]
         public int Id { get; set; }
         [RfcStructureField("DATUM", "UZEIT")]
-        public DateTime DateTime { get; set; }
+        public DateTime? DateTime { get; set; }
     }
 }

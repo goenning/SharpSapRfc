@@ -47,6 +47,8 @@ namespace SharpSapRfc
                 returnValue = AbapBool.FromString(value.ToString());
             else if (type.Equals(typeof(DateTime)))
                 returnValue = AbapDateTime.FromString(value.ToString());
+            else if (type.Equals(typeof(DateTime?)))
+                returnValue = AbapDateTime.FromString(value.ToString(), true);
             else if (type.Equals(typeof(Int32)))
                 returnValue = Convert.ToInt32(value);
             else if (type.Equals(typeof(Decimal)))
