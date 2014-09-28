@@ -107,6 +107,7 @@
     <Compile Include="RfcValueMapper.cs" />
     <Compile Include="SapRfcConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnknownRfcParameterException.cs" />
     <Compile Include="Structure\RfcDbField.cs" />
     <Compile Include="Structure\RfcDbWhere.cs" />
     <Compile Include="Structure\Tab512.cs" />

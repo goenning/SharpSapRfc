@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace SharpSapRfc
 {
@@ -46,6 +45,9 @@ namespace SharpSapRfc
             foreach (var parameter in this.rfcParameters)
             {
                 int idx = function.Metadata.TryNameToIndex(parameter.Name);
+                if (idx == -1)
+                    throw new UnknownRfcParameterException(parameter.Name, functionName);
+
                 RfcDataType pType = function.Metadata[idx].DataType;
                 switch (pType)
                 {

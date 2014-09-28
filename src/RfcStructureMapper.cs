@@ -88,12 +88,17 @@ namespace SharpSapRfc
             {
                 string fieldName = metadata[i].Name;
                 PropertyInfo property = null;
+                
+                object formattedValue = null;
                 if (typeProperties[type].TryGetValue(fieldName.ToLower(), out property))
                 {
                     object value = property.GetValue(parameterObject, null);
-                    object formattedValue = RfcValueMapper.ToRemoteValue(metadata[i].DataType, value);
-                    structure.SetValue(fieldName, formattedValue);
+                    formattedValue = RfcValueMapper.ToRemoteValue(metadata[i].DataType, value);
                 }
+                else if (string.IsNullOrEmpty(fieldName))
+                    formattedValue = RfcValueMapper.ToRemoteValue(metadata[i].DataType, parameterObject);
+
+                structure.SetValue(fieldName, formattedValue);
             }
             return structure;
         }
@@ -103,16 +108,20 @@ namespace SharpSapRfc
             Type type = typeof(T);
             EnsureTypeIsCached(type);
 
-            T returnObject = Activator.CreateInstance<T>();
+            T returnObject = default(T);
+            if (!type.Equals(typeof(string)))
+                returnObject= Activator.CreateInstance<T>();
+
             for (int i = 0; i < structure.Metadata.FieldCount; i++)
             {
                 string fieldName = structure.Metadata[i].Name;
+                object value = structure.GetValue(fieldName);
+                if (string.IsNullOrEmpty(fieldName))
+                    return (T)RfcValueMapper.FromRemoteValue(type, value);
+
                 PropertyInfo property = null;
                 if (typeProperties[type].TryGetValue(fieldName.ToLower(), out property))
-                {
-                    object value = structure.GetValue(fieldName);
                     SetProperty(returnObject, property, value);
-                }
             }
             return returnObject;
         }

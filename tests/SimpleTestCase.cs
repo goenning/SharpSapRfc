@@ -2,7 +2,6 @@
 using SharpSapRfc.Test.Model;
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using Xunit;
 
@@ -85,6 +84,8 @@ namespace SharpSapRfc.Test
                     I_DATUM = new DateTime(2014, 4, 6),
                     I_UZEIT = new DateTime(1, 1, 1, 12, 10, 53),
                     i_active = true,
+                    i_multiple_id = new int[] { 10, 20, 30 },
+                    i_multiple_name = new string[] { "A", "B", "C", "D" },
                     i_mara = new ZMaraSingleDateTime { Id = 4, DateTime = new DateTime(2014, 4, 6, 12, 10, 53) }
                 });
 
@@ -95,6 +96,8 @@ namespace SharpSapRfc.Test
                 Assert.Equal(true, result.GetOutput<bool>("e_active"));
 
                 Assert.Equal(4, result.GetOutput<int>("e_mara_id"));
+                Assert.Equal(new int[] { 10, 20, 30 }, result.GetTable<int>("e_multiple_id"));
+                Assert.Equal(new string[] { "A", "B", "C", "D" }, result.GetTable<string>("e_multiple_name"));
                 Assert.Equal(new DateTime(2014, 4, 6), result.GetOutput<DateTime>("e_mara_datum"));
                 Assert.Equal(new DateTime(1, 1, 1, 12, 10, 53), result.GetOutput<DateTime>("e_mara_UZEIT"));
             }
@@ -111,6 +114,23 @@ namespace SharpSapRfc.Test
                 });
 
                 Assert.Equal(null, result.GetOutput<DateTime?>("E_DATUM"));
+            }
+        }
+
+        [Fact]
+        public void CustomExceptionOnInvalidParameter()
+        {
+            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            {
+                Exception ex = Assert.Throws<UnknownRfcParameterException>(() =>
+                {
+                    var result = conn.ExecuteFunction("Z_SSRT_SUM",
+                        new RfcParameter("i_num1", 2),
+                        new RfcParameter("i_num2", 4),
+                        new RfcParameter("i_num3", 4)
+                    );
+                });
+                Assert.Equal("Parameter i_num3 was not found on function Z_SSRT_SUM.", ex.Message);
             }
         }
 
