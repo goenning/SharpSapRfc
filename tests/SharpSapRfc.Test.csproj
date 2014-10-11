@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="AbapBoolTestCase.cs" />
     <Compile Include="ImageAssert.cs" />
+    <Compile Include="Metadata\FunctionMetadataTestCase.cs" />
     <Compile Include="Model\RepositoryObject.cs" />
     <Compile Include="Model\ZMaraSingleDateTime.cs" />
     <Compile Include="PreparedFunctionTestCase.cs" />

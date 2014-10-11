@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbapValueMapper.cs" />
+    <Compile Include="AbapMetadataCache.cs" />
     <Compile Include="Metadata\FieldMetadata.cs" />
     <Compile Include="Metadata\FunctionMetadata.cs" />
     <Compile Include="Metadata\ParameterMetadata.cs" />

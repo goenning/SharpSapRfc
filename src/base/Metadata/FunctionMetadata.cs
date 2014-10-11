@@ -7,18 +7,25 @@ namespace SharpSapRfc.Metadata
 {
     public class FunctionMetadata
     {
-        public string Name { get; private set; }
-        public IEnumerable<ParameterMetadata> Parameters { get; private set; }
+        public string FunctionName { get; private set; }
+        public ParameterMetadata[] ImportParameters { get; private set; }
+        public ParameterMetadata[] ExportParameters { get; private set; }
 
-        public FunctionMetadata(string name, IEnumerable<ParameterMetadata> fields)
+        public FunctionMetadata(string functionName, IEnumerable<ParameterMetadata> importParameters, IEnumerable<ParameterMetadata> emportParameters)
         {
-            this.Name = name;
-            this.Parameters = fields;
+            this.FunctionName = functionName;
+            this.ImportParameters = importParameters.ToArray();
+            this.ExportParameters = emportParameters.ToArray();
         }
 
-        public ParameterMetadata this[int index] 
+        public ParameterMetadata GetImportParameter(int index) 
         {
-            get { return this.Parameters.ElementAt(index); }
+            return this.ImportParameters[index];
+        }
+
+        public ParameterMetadata GetExportParameter(int index)
+        {
+            return this.ExportParameters[index];
         }
     }
 }

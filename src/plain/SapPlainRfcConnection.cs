@@ -9,8 +9,23 @@ namespace SharpSapRfc.Plain
 {
     public class SapPlainRfcConnection : SapRfcConnection
     {
-        public RfcRepository Repository { get; private set; }
-        public RfcDestination Destination { get; private set; }
+        public RfcRepository Repository 
+        {
+            get {
+                this.EnsureConnectionIsOpen();
+                return this._repository;
+            }
+        }
+
+        public RfcDestination Destination
+        {
+            get
+            {
+                this.EnsureConnectionIsOpen();
+                return this._destination;
+            }
+        }
+
         private string destinationName;
         private bool isOpen = false;
 
@@ -23,8 +38,8 @@ namespace SharpSapRfc.Plain
         {
             if (!isOpen)
             {
-                this.Destination = RfcDestinationManager.GetDestination(destinationName);
-                this.Repository = this.Destination.Repository;
+                this._destination = RfcDestinationManager.GetDestination(destinationName);
+                this._repository = this._destination.Repository;
                 this.isOpen = true;
             }
         }
@@ -67,5 +82,8 @@ namespace SharpSapRfc.Plain
                 result.GetTable<RfcDbField>("FIELDS")
             );
         }
+
+        private RfcRepository _repository;
+        private RfcDestination _destination;
     }
 }
