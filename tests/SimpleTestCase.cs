@@ -1,4 +1,6 @@
 ﻿using SAP.Middleware.Connector;
+using SharpSapRfc.Plain;
+using SharpSapRfc.Soap;
 using SharpSapRfc.Test.Model;
 using System;
 using System.Drawing;
@@ -7,12 +9,30 @@ using Xunit;
 
 namespace SharpSapRfc.Test
 {
-    public class SimpleTestCase
+    public class Soap_SimpleTestCase : SimpleTestCase
     {
+        public override SapRfcConnection GetConnection()
+        {
+            return new SapSoapRfcConnection();
+        }
+    }
+
+    public class Plain_SimpleTestCase : SimpleTestCase
+    {
+        public override SapRfcConnection GetConnection()
+        {
+            return new SapPlainRfcConnection("TST");
+        }
+    }
+
+    public abstract class SimpleTestCase
+    {
+        public abstract SapRfcConnection GetConnection();
+
         [Fact]
         public void ExportSingleParameterTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_SUM",
                     new RfcParameter("i_num1", 2),
@@ -27,7 +47,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ExportSingleParameterTest_WithAnonymousType()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_SUM", new
                 {
@@ -43,7 +63,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ChangingSingleParameterTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_ADD",
                     new RfcParameter("i_add", 4),
@@ -58,7 +78,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ExportMultipleParametersTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_DIVIDE",
                     new RfcParameter("i_num1", 5),
@@ -75,7 +95,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void AllTypesInOutTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
                 {
@@ -106,7 +126,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void NullDateInOutTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
                 {
@@ -120,7 +140,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void CustomExceptionOnInvalidParameter()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 Exception ex = Assert.Throws<UnknownRfcParameterException>(() =>
                 {
@@ -137,7 +157,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void NullDateInOutTest2()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
                 {
@@ -151,7 +171,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void MinDateInOutTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
                 {
@@ -165,7 +185,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void MaxDateInOutTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
                 {
@@ -179,7 +199,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void EmptyDateOutTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_EMPTY_DATE");
                 Assert.Equal(DateTime.MinValue, result.GetOutput<DateTime>("E_DATUM"));
@@ -189,7 +209,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void NullDateOutTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_EMPTY_DATE");
                 Assert.Equal(null, result.GetOutput<DateTime?>("E_DATUM"));
@@ -199,22 +219,23 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ExceptionTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
-                Assert.Throws(typeof(RfcAbapException), () =>
+                Exception ex = Assert.Throws(typeof(RfcAbapException), () =>
                 {
                     var result = conn.ExecuteFunction("Z_SSRT_DIVIDE",
                         new RfcParameter("i_num1", 5),
                         new RfcParameter("i_num2", 0)
                     );
                 });
+                Assert.Equal("DIVIDE_BY_ZERO", ex.Message);
             }
         }
 
         [Fact]
         public void ExportBinaryParameterAsByteArrayTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_GET_BMP_IMAGE", new
                 {
@@ -241,7 +262,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ExportBinaryParameterAsStreamTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var result = conn.ExecuteFunction("Z_SSRT_GET_BMP_IMAGE", new
                 {

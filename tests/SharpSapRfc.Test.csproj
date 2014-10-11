@@ -119,7 +119,7 @@
     <Compile Include="Model\ZMaraSingleDateTime.cs" />
     <Compile Include="PreparedFunctionTestCase.cs" />
     <Compile Include="RfcReadTableTestCase.cs" />
-    <Compile Include="RfcValueMapperTestCase.cs" />
+    <Compile Include="AbapValueMapperTestCase.cs" />
     <Compile Include="SimpleTestCase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\AirlineCompany.cs" />
@@ -138,9 +138,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\SharpSapRfc.csproj">
+    <ProjectReference Include="..\src\base\SharpSapRfc.csproj">
       <Project>{db36edca-d7ce-4ce6-894e-8815f817c778}</Project>
       <Name>SharpSapRfc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\plain\SharpSapRfc.Plain.csproj">
+      <Project>{64507431-51d3-4b2e-bee3-a1bbe333b228}</Project>
+      <Name>SharpSapRfc.Plain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\soap\SharpSapRfc.Soap.csproj">
+      <Project>{936443d3-2181-4cce-ae1d-bdb0ebdb64dd}</Project>
+      <Name>SharpSapRfc.Soap</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

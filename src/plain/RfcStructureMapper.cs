@@ -6,9 +6,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using System.Text;
+using System.Xml;
 
-namespace SharpSapRfc
+namespace SharpSapRfc.Plain
 {
     internal class RfcStructureMapper
     {
@@ -93,10 +93,10 @@ namespace SharpSapRfc
                 if (typeProperties[type].TryGetValue(fieldName.ToLower(), out property))
                 {
                     object value = property.GetValue(parameterObject, null);
-                    formattedValue = RfcValueMapper.ToRemoteValue(metadata[i].DataType, value);
+                    formattedValue = AbapValueMapper.ToRemoteValue(metadata[i].GetAbapDataType(), value);
                 }
                 else if (string.IsNullOrEmpty(fieldName))
-                    formattedValue = RfcValueMapper.ToRemoteValue(metadata[i].DataType, parameterObject);
+                    formattedValue = AbapValueMapper.ToRemoteValue(metadata[i].GetAbapDataType(), parameterObject);
 
                 structure.SetValue(fieldName, formattedValue);
             }
@@ -117,7 +117,7 @@ namespace SharpSapRfc
                 string fieldName = structure.Metadata[i].Name;
                 object value = structure.GetValue(fieldName);
                 if (string.IsNullOrEmpty(fieldName))
-                    return (T)RfcValueMapper.FromRemoteValue(type, value);
+                    return (T)AbapValueMapper.FromRemoteValue(type, value);
 
                 PropertyInfo property = null;
                 if (typeProperties[type].TryGetValue(fieldName.ToLower(), out property))
@@ -128,7 +128,7 @@ namespace SharpSapRfc
 
         public static void SetProperty(object targetObject, PropertyInfo property, object remoteValue)
         {
-            object formattedValue = RfcValueMapper.FromRemoteValue(property.PropertyType, remoteValue);
+            object formattedValue = AbapValueMapper.FromRemoteValue(property.PropertyType, remoteValue);
 
             if (property.PropertyType == typeof(DateTime) ||
                 property.PropertyType == typeof(DateTime?))

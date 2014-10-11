@@ -1,5 +1,4 @@
-﻿using SAP.Middleware.Connector;
-using System;
+﻿using System;
 using System.Globalization;
 
 namespace SharpSapRfc
@@ -17,11 +16,9 @@ namespace SharpSapRfc
         {
             DateTime date;
 
-
-            if (value == "00000000" ||
-                     value == "000000" ||
-                     value == "00:00:00" ||
-                     value == "0000-00-00") // ABAP Date and Time initial value
+            // ABAP Date and Time initial value
+            if (value == "00000000" || value == "000000" ||
+                value == "00:00:00" || value == "0000-00-00")
             {
                 if (acceptNull)
                     return null;

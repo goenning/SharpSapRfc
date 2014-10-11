@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using SharpSapRfc.Plain;
+using Xunit;
 
 namespace SharpSapRfc.Test
 {
@@ -7,7 +8,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void PreparedFunctionWithTwoParametersTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
             {
                 var function = conn.PrepareFunction("Z_SSRT_SUM");
                 function.AddParameter(new RfcParameter("i_num1", 2));

@@ -1,4 +1,4 @@
-﻿using SAP.Middleware.Connector;
+﻿using SharpSapRfc.Types;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6,9 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace SharpSapRfc
+namespace SharpSapRfc.Plain
 {
-    public class RfcValueMapper
+    public class AbapValueMapper
     {
         private static CultureInfo enUS = new CultureInfo("en-US");
         private static CultureInfo ptBR = new CultureInfo("pt-BR");
@@ -57,8 +57,20 @@ namespace SharpSapRfc
                 returnValue = Convert.ToDouble(value, value.ToString().Contains(",") ? ptBR : enUS);
             else if (type.IsEnum)
                 returnValue = ConvertToEnum(type, value);
+            else if (type.Equals(typeof(byte[])))
+            {
+                if (value is string)
+                    returnValue = Convert.FromBase64String(value.ToString());
+                else
+                    returnValue = (byte[])value;
+            }
             else if (type.Equals(typeof(Stream)))
-                returnValue = new MemoryStream((byte[])value);
+            {
+                if (value is string)
+                    returnValue = new MemoryStream(Convert.FromBase64String(value.ToString()));
+                else
+                    returnValue = new MemoryStream((byte[])value);
+            }
             else
                 returnValue = Convert.ChangeType(value, type);
 
@@ -85,7 +97,7 @@ namespace SharpSapRfc
             throw new RfcMappingException(string.Format("Cannot convert from remote value '{0}' to enum type '{1}'.", remoteValue, enumType.Name));
         }
 
-        public static object ToRemoteValue(RfcDataType remoteType, object value)
+        public static object ToRemoteValue(AbapDataType remoteType, object value)
         {
             if (value == null)
                 return null;
@@ -95,9 +107,9 @@ namespace SharpSapRfc
 
             if (valueType.Equals(typeof(Boolean)))
                 returnValue = AbapBool.ToString((Boolean)value);
-            else if (remoteType == RfcDataType.DATE)
+            else if (remoteType == AbapDataType.DATE)
                 returnValue = AbapDateTime.ToString((DateTime)value, AbapDateTimeType.Date);
-            else if (remoteType == RfcDataType.TIME)
+            else if (remoteType == AbapDataType.TIME)
                 returnValue = AbapDateTime.ToString((DateTime)value, AbapDateTimeType.Time);
             else if (valueType.IsEnum)
                 returnValue = ConvertFromEnum(remoteType, value);
@@ -105,16 +117,15 @@ namespace SharpSapRfc
             return returnValue;
         }
 
-        private static object ConvertFromEnum(RfcDataType remoteType, object value)
+        private static object ConvertFromEnum(AbapDataType remoteType, object value)
         {
-            if (remoteType == RfcDataType.INT1 || remoteType == RfcDataType.INT2 ||
-                remoteType == RfcDataType.INT4 || remoteType == RfcDataType.INT8)
+            if (remoteType == AbapDataType.INTEGER)
                 return value.GetHashCode();
 
-            if (remoteType == RfcDataType.NUM)
+            if (remoteType == AbapDataType.NUMERIC)
                 return value.GetHashCode().ToString();
 
-            if (remoteType == RfcDataType.CHAR || remoteType == RfcDataType.STRING)
+            if (remoteType == AbapDataType.CHAR)
             {
                 Type enumType = value.GetType();
                 EnsureEnumTypeIsCached(enumType);

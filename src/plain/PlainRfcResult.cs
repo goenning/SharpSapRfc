@@ -1,28 +1,26 @@
 ﻿using SAP.Middleware.Connector;
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 
-namespace SharpSapRfc
+namespace SharpSapRfc.Plain
 {
-    public class RfcResult
+    public class PlainRfcResult : RfcResult
     {
         private IRfcFunction function;
-        internal RfcResult(IRfcFunction function)
+        internal PlainRfcResult(IRfcFunction function)
         {
             this.function = function;
         }
 
-        public T GetOutput<T>(string name)
+        public override T GetOutput<T>(string name)
         {
             object returnValue = function.GetValue(name);
             if (returnValue is IRfcStructure)
                 return RfcStructureMapper.FromStructure<T>(returnValue as IRfcStructure);
 
-            return (T)RfcValueMapper.FromRemoteValue(typeof(T), returnValue);
+            return (T)AbapValueMapper.FromRemoteValue(typeof(T), returnValue);
         }
 
-        public IEnumerable<T> GetTable<T>(string name)
+        public override IEnumerable<T> GetTable<T>(string name)
         {
             IRfcTable table = this.function.GetTable(name);
             List<T> returnTable = new List<T>(table.RowCount);

@@ -1,4 +1,5 @@
-﻿using SharpSapRfc.Test.Model;
+﻿using SharpSapRfc.Plain;
+using SharpSapRfc.Test.Model;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -10,7 +11,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ImportStructureTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
             {
                 var customer = new ZCustomer { Id = 3, Name = "Microsoft", IsActive = true };
                 var result = conn.ExecuteFunction("Z_SSRT_ADD_CUSTOMER", 
@@ -25,7 +26,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ImportStructureTest_WithAnonymousType()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
             {
                 var customer = new ZCustomer { Id = 3, Name = "Microsoft", IsActive = true };
                 var result = conn.ExecuteFunction("Z_SSRT_ADD_CUSTOMER", new
@@ -41,7 +42,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ExportStructureTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
             {
                 var result = conn.ExecuteFunction("Z_SSRT_GET_CUSTOMER", 
                     new RfcParameter("i_id", 2)
@@ -57,7 +58,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ExportTableTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
             {
                 var result = conn.ExecuteFunction("Z_SSRT_GET_ALL_CUSTOMERS");
 
@@ -79,7 +80,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ExportTableCategoryTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
             {
                 var result = conn.ExecuteFunction("Z_SSRT_GET_ALL_CUSTOMERS2");
 
@@ -101,7 +102,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ChangingSingleStructureAsTableTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
             {
                 ZCustomer customer = new ZCustomer() { Id = 1 };
 
@@ -122,7 +123,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ChangingTableCategoryTest()
         {
-            using (SapRfcConnection conn = new SapRfcConnection("TST"))
+            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
             {
                 IEnumerable<ZCustomer> customers = new ZCustomer[] { 
                     new ZCustomer() { Id = 1 }

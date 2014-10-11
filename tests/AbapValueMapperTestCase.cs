@@ -1,5 +1,7 @@
 ﻿using SAP.Middleware.Connector;
+using SharpSapRfc.Plain;
 using SharpSapRfc.Test.Model;
+using SharpSapRfc.Types;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -7,13 +9,13 @@ using Xunit.Extensions;
 
 namespace SharpSapRfc.Test
 {
-    public class RfcValueMapperTestCase
+    public class AbapValueMapperTestCase
     {
         [Theory]
         [PropertyData("FromRemoteTestData")]
         public void FromRemoteTest(object expected, Type expectedType, object remoteValue)
         {
-            object result = RfcValueMapper.FromRemoteValue(expectedType, remoteValue);
+            object result = AbapValueMapper.FromRemoteValue(expectedType, remoteValue);
             Assert.IsType(expectedType, result);
             Assert.Equal(expected, result);
         }
@@ -67,7 +69,7 @@ namespace SharpSapRfc.Test
         {
             Assert.Throws<RfcMappingException>(() =>
             {
-                RfcValueMapper.FromRemoteValue(expectedType, remoteValue);
+                AbapValueMapper.FromRemoteValue(expectedType, remoteValue);
             });
         }
 
@@ -87,9 +89,9 @@ namespace SharpSapRfc.Test
 
         [Theory]
         [PropertyData("ToRemoteTestData")]
-        public void ToRemoteValueTest(object expected, RfcDataType expectedType, object inputValue)
+        public void ToRemoteValueTest(object expected, AbapDataType expectedType, object inputValue)
         {
-            object result = RfcValueMapper.ToRemoteValue(expectedType, inputValue);
+            object result = AbapValueMapper.ToRemoteValue(expectedType, inputValue);
             Assert.Equal(expected, result);
         }
 
@@ -99,47 +101,33 @@ namespace SharpSapRfc.Test
             {
                 return new[]
                 {
-                    new object[] { "X", RfcDataType.CHAR, true },
-                    new object[] { " ", RfcDataType.CHAR, false },
+                    new object[] { "X", AbapDataType.CHAR, true },
+                    new object[] { " ", AbapDataType.CHAR, false },
                     
-                    new object[] { "My test", RfcDataType.CHAR, "My test" },
+                    new object[] { "My test", AbapDataType.CHAR, "My test" },
                     
-                    new object[] { 12424m, RfcDataType.FLOAT, 12424m },
-                    new object[] { 464m, RfcDataType.DECF16, 464m },
-                    new object[] { 56m, RfcDataType.DECF34, 56m },
+                    new object[] { 12424m, AbapDataType.DECIMAL, 12424m },
+                    new object[] { 464m, AbapDataType.DECIMAL, 464m },
+                    new object[] { 56m, AbapDataType.DECIMAL, 56m },
 
-                    new object[] { "20140406", RfcDataType.DATE, new DateTime(2014, 4, 6) },
-                    new object[] { "124253", RfcDataType.TIME, new DateTime(2014, 4, 6, 12, 42, 53) },
+                    new object[] { "20140406", AbapDataType.DATE, new DateTime(2014, 4, 6) },
+                    new object[] { "124253", AbapDataType.TIME, new DateTime(2014, 4, 6, 12, 42, 53) },
 
-                    new object[] { "AVAL", RfcDataType.CHAR, MaterialState.Available },
-                    new object[] { "BLOK", RfcDataType.CHAR, MaterialState.Blocked },
-                    new object[] { "OOS", RfcDataType.CHAR, MaterialState.OutOfStock },
-                    new object[] { "", RfcDataType.CHAR, default(MaterialState) },
+                    new object[] { "AVAL", AbapDataType.CHAR, MaterialState.Available },
+                    new object[] { "BLOK", AbapDataType.CHAR, MaterialState.Blocked },
+                    new object[] { "OOS", AbapDataType.CHAR, MaterialState.OutOfStock },
+                    new object[] { "", AbapDataType.CHAR, default(MaterialState) },
 
-                    new object[] { "1", RfcDataType.NUM, MaterialState.Available },
-                    new object[] { "2", RfcDataType.NUM, MaterialState.Blocked },
-                    new object[] { "3", RfcDataType.NUM, MaterialState.OutOfStock },
-                    new object[] { "0", RfcDataType.NUM, default(MaterialState) },
+                    new object[] { "1", AbapDataType.NUMERIC, MaterialState.Available },
+                    new object[] { "2", AbapDataType.NUMERIC, MaterialState.Blocked },
+                    new object[] { "3", AbapDataType.NUMERIC, MaterialState.OutOfStock },
+                    new object[] { "0", AbapDataType.NUMERIC, default(MaterialState) },
                     
-                    new object[] { 1, RfcDataType.INT1, MaterialState.Available },
-                    new object[] { 2, RfcDataType.INT1, MaterialState.Blocked },
-                    new object[] { 3, RfcDataType.INT1, MaterialState.OutOfStock },
-                    new object[] { 0, RfcDataType.INT1, default(MaterialState) },
+                    new object[] { 1, AbapDataType.INTEGER, MaterialState.Available },
+                    new object[] { 2, AbapDataType.INTEGER, MaterialState.Blocked },
+                    new object[] { 3, AbapDataType.INTEGER, MaterialState.OutOfStock },
+                    new object[] { 0, AbapDataType.INTEGER, default(MaterialState) }
                     
-                    new object[] { 1, RfcDataType.INT2, MaterialState.Available },
-                    new object[] { 2, RfcDataType.INT2, MaterialState.Blocked },
-                    new object[] { 3, RfcDataType.INT2, MaterialState.OutOfStock },
-                    new object[] { 0, RfcDataType.INT2, default(MaterialState) },
-                    
-                    new object[] { 1, RfcDataType.INT4, MaterialState.Available },
-                    new object[] { 2, RfcDataType.INT4, MaterialState.Blocked },
-                    new object[] { 3, RfcDataType.INT4, MaterialState.OutOfStock },
-                    new object[] { 0, RfcDataType.INT4, default(MaterialState) },
-                    
-                    new object[] { 1, RfcDataType.INT8, MaterialState.Available },
-                    new object[] { 2, RfcDataType.INT8, MaterialState.Blocked },
-                    new object[] { 3, RfcDataType.INT8, MaterialState.OutOfStock },
-                    new object[] { 0, RfcDataType.INT8, default(MaterialState) }
                 };
             }
         }

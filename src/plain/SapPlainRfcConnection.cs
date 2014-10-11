@@ -2,18 +2,19 @@
 using SharpSapRfc.Structure;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
+using System.Text;
 
-namespace SharpSapRfc
+namespace SharpSapRfc.Plain
 {
-    public class SapRfcConnection : IDisposable
+    public class SapPlainRfcConnection : SapRfcConnection
     {
         public RfcRepository Repository { get; private set; }
         public RfcDestination Destination { get; private set; }
         private string destinationName;
         private bool isOpen = false;
 
-        public SapRfcConnection(string destinationName)
+        public SapPlainRfcConnection(string destinationName)
         {
             this.destinationName = destinationName;
         }
@@ -28,29 +29,19 @@ namespace SharpSapRfc
             }
         }
 
-        public RfcResult ExecuteFunction(string functionName)
-        {
-            return this.PrepareFunction(functionName)
-                       .Execute();
-        }
-
-        public RfcResult ExecuteFunction(string functionName, object parameters)
-        {
-            return this.PrepareFunction(functionName)
-                       .AddParameter(parameters)
-                       .Execute();
-        }
-
-        public RfcResult ExecuteFunction(string functionName, params RfcParameter[] parameters)
-        {
-            return this.PrepareFunction(functionName)
-                       .AddParameter(parameters)
-                       .Execute();
-        }
-
-        public IEnumerable<T> ReadTable<T>(string tableName, string[] fields = null, string[] where = null, int skip = 0, int count = 0)
+        public override RfcPreparedFunction PrepareFunction(string functionName)
         {
             EnsureConnectionIsOpen();
+            return new PlainRfcPreparedFunction(functionName, this.Repository, this.Destination);
+        }
+
+        public override void Dispose()
+        {
+            
+        }
+
+        public override IEnumerable<T> ReadTable<T>(string tableName, string[] fields = null, string[] where = null, int skip = 0, int count = 0)
+        {
             fields = fields ?? new string[0];
             where = where ?? new string[0];
 
@@ -75,16 +66,6 @@ namespace SharpSapRfc
                 result.GetTable<Tab512>("DATA"),
                 result.GetTable<RfcDbField>("FIELDS")
             );
-        }
-
-        public RfcPreparedFunction PrepareFunction(string functionName)
-        {
-            EnsureConnectionIsOpen();
-            return new RfcPreparedFunction(functionName, this);
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

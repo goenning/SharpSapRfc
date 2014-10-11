@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -73,40 +73,26 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(Platform)' == 'x64' ">
-    <Reference Include="sapnco">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SAPNCo.x64.3.0.13.1\lib\net40\sapnco.dll</HintPath>
-    </Reference>
-    <Reference Include="sapnco_utils">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SAPNCo.x64.3.0.13.1\lib\net40\sapnco_utils.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(Platform)' == 'x86' ">
-    <Reference Include="sapnco">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SAPNCo.x86.3.0.13.1\lib\net40\sapnco.dll</HintPath>
-    </Reference>
-    <Reference Include="sapnco_utils">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SAPNCo.x86.3.0.13.1\lib\net40\sapnco_utils.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbapBool.cs" />
-    <Compile Include="AbapDateTime.cs" />
+    <Compile Include="AbapValueMapper.cs" />
+    <Compile Include="Metadata\FieldMetadata.cs" />
+    <Compile Include="Metadata\FunctionMetadata.cs" />
+    <Compile Include="Metadata\ParameterMetadata.cs" />
+    <Compile Include="Metadata\StructureMetadata.cs" />
+    <Compile Include="Metadata\TableMetadata.cs" />
+    <Compile Include="Types\AbapBool.cs" />
+    <Compile Include="Types\AbapDateTime.cs" />
     <Compile Include="AbapDateTimeType.cs" />
     <Compile Include="RfcEnumValueAttribute.cs" />
+    <Compile Include="RfcException.cs" />
     <Compile Include="RfcMappingException.cs" />
     <Compile Include="RfcParameter.cs" />
-    <Compile Include="RfcPreparedFunction.cs" />
-    <Compile Include="RfcStructureMapper.cs" />
+    <Compile Include="IRfcPreparedFunction.cs" />
     <Compile Include="RfcResult.cs" />
     <Compile Include="RfcStructureFieldAttribute.cs" />
-    <Compile Include="RfcValueMapper.cs" />
     <Compile Include="SapRfcConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\AbapDataType.cs" />
     <Compile Include="UnknownRfcParameterException.cs" />
     <Compile Include="Structure\RfcDbField.cs" />
     <Compile Include="Structure\RfcDbWhere.cs" />
@@ -115,6 +101,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
