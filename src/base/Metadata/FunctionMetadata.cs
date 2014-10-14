@@ -1,31 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SharpSapRfc.Metadata
 {
     public class FunctionMetadata
     {
-        public string FunctionName { get; private set; }
-        public ParameterMetadata[] ImportParameters { get; private set; }
-        public ParameterMetadata[] ExportParameters { get; private set; }
+        public string Name { get; private set; }
+        public ParameterMetadata[] InputParameters { get; private set; }
+        public ParameterMetadata[] OutputParameters { get; private set; }
 
-        public FunctionMetadata(string functionName, IEnumerable<ParameterMetadata> importParameters, IEnumerable<ParameterMetadata> emportParameters)
+        public FunctionMetadata(string name, IEnumerable<ParameterMetadata> inputParameters, IEnumerable<ParameterMetadata> outputParameters)
         {
-            this.FunctionName = functionName;
-            this.ImportParameters = importParameters.ToArray();
-            this.ExportParameters = emportParameters.ToArray();
+            this.Name = name;
+            this.InputParameters = inputParameters.ToArray();
+            this.OutputParameters = outputParameters.ToArray();
         }
 
-        public ParameterMetadata GetImportParameter(int index) 
+        public ParameterMetadata GetInputParameter(int index) 
         {
-            return this.ImportParameters[index];
+            return this.InputParameters[index];
         }
 
-        public ParameterMetadata GetExportParameter(int index)
+        public ParameterMetadata GetInputParameter(string name)
         {
-            return this.ExportParameters[index];
+            var parameter = this.InputParameters.FirstOrDefault(x => x.Name == name.ToUpper());
+            if (parameter == null)
+                throw new UnknownRfcParameterException(name, this.Name);
+            return parameter;
+        }
+
+        public ParameterMetadata GetOutputParameter(int index)
+        {
+            return this.OutputParameters[index];
+        }
+
+        public ParameterMetadata GetOutputParameter(string name)
+        {
+            var parameter = this.OutputParameters.FirstOrDefault(x => x.Name == name.ToUpper());
+            if (parameter == null)
+                throw new UnknownRfcParameterException(name, this.Name);
+            return parameter;
         }
     }
 }

@@ -20,6 +20,7 @@ namespace SharpSapRfc.Plain
                 case RfcDataType.DATE:
                     return AbapDataType.DATE;
 
+                case RfcDataType.BCD:
                 case RfcDataType.DECF16:
                 case RfcDataType.DECF34:
                 case RfcDataType.FLOAT:
@@ -43,8 +44,10 @@ namespace SharpSapRfc.Plain
                 case RfcDataType.TIME:
                     return AbapDataType.TIME;
 
-                case RfcDataType.BCD:
                 case RfcDataType.BYTE:
+                case RfcDataType.XSTRING:
+                    return AbapDataType.BYTE;
+
                 case RfcDataType.CDAY:
                 case RfcDataType.CLASS:
                 case RfcDataType.DTDAY:
@@ -56,7 +59,6 @@ namespace SharpSapRfc.Plain
                 case RfcDataType.UTCLONG:
                 case RfcDataType.UTCMINUTE:
                 case RfcDataType.UTCSECOND:
-                case RfcDataType.XSTRING:
                 default:
                     throw new RfcException(string.Format("Could not map RfcDataType '{0}' to AbapDataType", metadata.DataType.ToString()));
 

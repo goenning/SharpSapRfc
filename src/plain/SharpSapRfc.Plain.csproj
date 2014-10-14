@@ -78,7 +78,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RfcElementMetadataExtension.cs" />
     <Compile Include="RfcStructureMapper.cs" />
-    <Compile Include="RfcValueMapper.cs" />
     <Compile Include="SapPlainRfcConnection.cs" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Platform)' == 'x64' ">

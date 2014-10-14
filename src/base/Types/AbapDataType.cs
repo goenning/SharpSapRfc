@@ -10,6 +10,7 @@ namespace SharpSapRfc.Types
         DATE,
         TIME,
         STRUCTURE,
-        TABLE
+        TABLE,
+        BYTE
     }
 }

@@ -4,12 +4,12 @@ namespace SharpSapRfc.Metadata
 {
     public class FieldMetadata
     {
-        public string FieldName { get; private set; }
+        public string Name { get; private set; }
         public AbapDataType DataType { get; private set; }
 
-        public FieldMetadata(string fieldName, AbapDataType dataType)
+        public FieldMetadata(string name, AbapDataType dataType)
         {
-            this.FieldName = fieldName;
+            this.Name = name;
             this.DataType = dataType;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using SharpSapRfc.Metadata;
 using SharpSapRfc.Plain;
 using SharpSapRfc.Soap;
+using SharpSapRfc.Soap.Configuration;
 using SharpSapRfc.Types;
 using System;
 using Xunit;
@@ -13,8 +14,8 @@ namespace SharpSapRfc.Test.Metadata
 
         public override AbapMetadataCache GetMetadataCache()
         {
-            this.conn = new SapSoapRfcConnection();
-            return new SoapAbapMetadataCache();
+            this.conn = new SapSoapRfcConnection("TST-SOAP");
+            return new SoapAbapMetadataCache(this.conn.WebClient);
         }
 
         public override void Dispose()
@@ -48,24 +49,59 @@ namespace SharpSapRfc.Test.Metadata
         {
             var cache = GetMetadataCache();
             var metadata = cache.GetFunctionMetadata("Z_SSRT_SUM");
-            Assert.Equal(2, metadata.ImportParameters.Length);
-            Assert.Equal(1, metadata.ExportParameters.Length);
 
-            Assert.Equal("Z_SSRT_SUM", metadata.FunctionName);
+            Assert.Equal(2, metadata.InputParameters.Length);
+            Assert.Equal(1, metadata.OutputParameters.Length);
+            Assert.Equal("Z_SSRT_SUM", metadata.Name);
 
-            ParameterMetadata parameter = null;
+            AssertInputParameter(metadata, "I_NUM1", AbapDataType.INTEGER);
+            AssertInputParameter(metadata, "I_NUM2", AbapDataType.INTEGER);
+            AssertOutputParameter(metadata, "E_RESULT", AbapDataType.INTEGER);
+        }
 
-            parameter = metadata.GetImportParameter(0);
-            Assert.Equal("I_NUM1", parameter.Name);
-            Assert.Equal(AbapDataType.INTEGER, parameter.DataType);
+        [Fact]
+        public void InOutFunctionMetadataTest()
+        {
+            var cache = GetMetadataCache();
+            var metadata = cache.GetFunctionMetadata("Z_SSRT_IN_OUT");
+           
+            Assert.Equal(8, metadata.InputParameters.Length);
+            Assert.Equal(10, metadata.OutputParameters.Length);
+            Assert.Equal("Z_SSRT_IN_OUT", metadata.Name);
 
-            parameter = metadata.GetImportParameter(1);
-            Assert.Equal("I_NUM2", parameter.Name);
-            Assert.Equal(AbapDataType.INTEGER, parameter.DataType);
+            AssertInputParameter(metadata, "I_ID", AbapDataType.INTEGER);
+            AssertInputParameter(metadata, "I_PRICE", AbapDataType.DECIMAL);
+            AssertInputParameter(metadata, "I_DATUM", AbapDataType.DATE);
+            AssertInputParameter(metadata, "I_UZEIT", AbapDataType.TIME);
+            AssertInputParameter(metadata, "I_ACTIVE", AbapDataType.CHAR);
+            AssertInputParameter(metadata, "I_MARA", AbapDataType.STRUCTURE);
+            AssertInputParameter(metadata, "I_MULTIPLE_ID", AbapDataType.TABLE);
+            AssertInputParameter(metadata, "I_MULTIPLE_NAME", AbapDataType.TABLE);
 
-            parameter = metadata.GetExportParameter(0);
-            Assert.Equal("E_RESULT", parameter.Name);
-            Assert.Equal(AbapDataType.INTEGER, parameter.DataType);
+            AssertOutputParameter(metadata, "E_ID", AbapDataType.INTEGER);
+            AssertOutputParameter(metadata, "E_PRICE", AbapDataType.DECIMAL);
+            AssertOutputParameter(metadata, "E_DATUM", AbapDataType.DATE);
+            AssertOutputParameter(metadata, "E_UZEIT", AbapDataType.TIME);
+            AssertOutputParameter(metadata, "E_ACTIVE", AbapDataType.CHAR);
+            AssertOutputParameter(metadata, "E_MARA_DATUM", AbapDataType.DATE);
+            AssertOutputParameter(metadata, "E_MARA_UZEIT", AbapDataType.TIME);
+            AssertOutputParameter(metadata, "E_MARA_ID", AbapDataType.INTEGER);
+            AssertOutputParameter(metadata, "E_MULTIPLE_ID", AbapDataType.TABLE);
+            AssertOutputParameter(metadata, "E_MULTIPLE_NAME", AbapDataType.TABLE);
+        }
+
+        private void AssertInputParameter(FunctionMetadata metadata, string name, AbapDataType dataType)
+        {
+            var parameter = metadata.GetInputParameter(name);
+            Assert.Equal(name, parameter.Name);
+            Assert.Equal(dataType, parameter.DataType);
+        }
+
+        private void AssertOutputParameter(FunctionMetadata metadata,  string name, AbapDataType dataType)
+        {
+            var parameter = metadata.GetOutputParameter(name);
+            Assert.Equal(name, parameter.Name);
+            Assert.Equal(dataType, parameter.DataType);
         }
 
         public abstract void Dispose();

@@ -11,15 +11,15 @@ namespace SharpSapRfc.Test
 {
     public class Soap_SimpleTestCase : SimpleTestCase
     {
-        public override SapRfcConnection GetConnection()
+        protected override SapRfcConnection GetConnection()
         {
-            return new SapSoapRfcConnection();
+            return new SapSoapRfcConnection("TST-SOAP");
         }
     }
 
     public class Plain_SimpleTestCase : SimpleTestCase
     {
-        public override SapRfcConnection GetConnection()
+        protected override SapRfcConnection GetConnection()
         {
             return new SapPlainRfcConnection("TST");
         }
@@ -27,7 +27,7 @@ namespace SharpSapRfc.Test
 
     public abstract class SimpleTestCase
     {
-        public abstract SapRfcConnection GetConnection();
+        protected abstract SapRfcConnection GetConnection();
 
         [Fact]
         public void ExportSingleParameterTest()
@@ -124,20 +124,6 @@ namespace SharpSapRfc.Test
         }
 
         [Fact]
-        public void NullDateInOutTest()
-        {
-            using (SapRfcConnection conn = this.GetConnection())
-            {
-                var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
-                {
-                    I_DATUM = (DateTime?)null
-                });
-
-                Assert.Equal(null, result.GetOutput<DateTime?>("E_DATUM"));
-            }
-        }
-
-        [Fact]
         public void CustomExceptionOnInvalidParameter()
         {
             using (SapRfcConnection conn = this.GetConnection())
@@ -155,7 +141,21 @@ namespace SharpSapRfc.Test
         }
 
         [Fact]
-        public void NullDateInOutTest2()
+        public void NullDateInOutTest()
+        {
+            using (SapRfcConnection conn = this.GetConnection())
+            {
+                var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
+                {
+                    I_DATUM = (DateTime?)null
+                });
+
+                Assert.Equal(null, result.GetOutput<DateTime?>("E_DATUM"));
+            }
+        }
+
+        [Fact]
+        public void NullDateInOutTest_NonNullableStruct()
         {
             using (SapRfcConnection conn = this.GetConnection())
             {
@@ -221,7 +221,7 @@ namespace SharpSapRfc.Test
         {
             using (SapRfcConnection conn = this.GetConnection())
             {
-                Exception ex = Assert.Throws(typeof(RfcAbapException), () =>
+                Exception ex = Assert.Throws(typeof(RfcException), () =>
                 {
                     var result = conn.ExecuteFunction("Z_SSRT_DIVIDE",
                         new RfcParameter("i_num1", 5),

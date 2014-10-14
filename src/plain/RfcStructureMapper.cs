@@ -52,7 +52,6 @@ namespace SharpSapRfc.Plain
 
         public static IRfcTable CreateTable(RfcTableMetadata metadata, object parameterObject)
         {
-
             IRfcTable table = metadata.CreateTable();
             RfcStructureMetadata structureMetadata = metadata.LineType;
 

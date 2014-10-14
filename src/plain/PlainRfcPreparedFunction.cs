@@ -44,7 +44,14 @@ namespace SharpSapRfc.Plain
                 }
             }
 
-            function.Invoke(this.destination);
+            try
+            {
+                function.Invoke(this.destination);
+            }
+            catch (RfcAbapException ex)
+            {
+                throw new RfcException(ex.Message, ex);
+            }
             return new PlainRfcResult(function);
         }
     }

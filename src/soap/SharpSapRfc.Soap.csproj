@@ -49,16 +49,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbapDataTypeParser.cs" />
+    <Compile Include="Configuration\SapSoapRfcDestinationCollection.cs" />
+    <Compile Include="Configuration\SapSoapRfcDestinationElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SapSoapRfcConnection.cs" />
+    <Compile Include="Configuration\SapSoapRfcConfigurationSection.cs" />
+    <Compile Include="SapSoapRfcWebClient.cs" />
     <Compile Include="SoapAbapMetadataCache.cs" />
-    <Compile Include="SoapRfcMetadata.cs" />
     <Compile Include="SoapRfcPreparedFunction.cs" />
     <Compile Include="SoapRfcResult.cs" />
   </ItemGroup>

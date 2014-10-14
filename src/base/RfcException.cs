@@ -9,5 +9,10 @@ namespace SharpSapRfc
         {
 
         }
+
+        public RfcException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
     }
 }

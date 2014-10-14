@@ -11,5 +11,10 @@ namespace SharpSapRfc
             this.Name = name;
             this.Value = value;
         }
+
+        public override string ToString()
+        {
+            return string.Format("Name: {0} (Value: {1})", this.Name, this.Value);           
+        }
     }
 }

@@ -14,9 +14,13 @@ namespace SharpSapRfc.Metadata
             this.Fields = fields;
         }
 
-        public FieldMetadata this[int index]
+        public FieldMetadata GetField(string name)
         {
-            get { return this.Fields.ElementAt(index); }
+            var field = this.Fields.FirstOrDefault(x => x.Name == name.ToUpper());
+            if (field == null)
+                throw new RfcException(string.Format("Structure {0} does not have field named {1}.", this.Name, name));
+
+            return field;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace SharpSapRfc.Plain
+namespace SharpSapRfc
 {
     public class AbapValueMapper
     {

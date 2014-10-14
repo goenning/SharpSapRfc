@@ -116,6 +116,7 @@
     <Compile Include="AbapBoolTestCase.cs" />
     <Compile Include="ImageAssert.cs" />
     <Compile Include="Metadata\FunctionMetadataTestCase.cs" />
+    <Compile Include="Metadata\StructureMetadataTestCase.cs" />
     <Compile Include="Model\RepositoryObject.cs" />
     <Compile Include="Model\ZMaraSingleDateTime.cs" />
     <Compile Include="PreparedFunctionTestCase.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Model\AirlineCompany.cs" />
     <Compile Include="Model\MaterialState.cs" />
     <Compile Include="Model\ZMara.cs" />
+    <Compile Include="SoapConfigurationSectionTestCase.cs" />
     <Compile Include="StructureTestCase.cs" />
     <Compile Include="Model\ZCustomer.cs" />
   </ItemGroup>
