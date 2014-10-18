@@ -17,17 +17,18 @@ namespace SharpSapRfc.Plain
                     return AbapDataType.DATE;
 
                 case RfcDataType.BCD:
-                case RfcDataType.DECF16:
-                case RfcDataType.DECF34:
-                case RfcDataType.FLOAT:
                     return AbapDataType.DECIMAL;
 
+                case RfcDataType.FLOAT:
+                    return AbapDataType.DOUBLE;
+
                 case RfcDataType.INT1:
+                    return AbapDataType.BYTE;
+
                 case RfcDataType.INT2:
                     return AbapDataType.SHORT;
 
                 case RfcDataType.INT4:
-                case RfcDataType.INT8:
                     return AbapDataType.INTEGER;
 
                 case RfcDataType.NUM:

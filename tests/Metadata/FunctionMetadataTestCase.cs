@@ -66,12 +66,16 @@ namespace SharpSapRfc.Test.Metadata
             var cache = GetMetadataCache();
             var metadata = cache.GetFunctionMetadata("Z_SSRT_IN_OUT");
            
-            Assert.Equal(8, metadata.InputParameters.Length);
-            Assert.Equal(10, metadata.OutputParameters.Length);
+            Assert.Equal(12, metadata.InputParameters.Length);
+            Assert.Equal(14, metadata.OutputParameters.Length);
             Assert.Equal("Z_SSRT_IN_OUT", metadata.Name);
 
             AssertInputParameter(metadata, "I_ID", AbapDataType.INTEGER);
-            AssertInputParameter(metadata, "I_PRICE", AbapDataType.DECIMAL);
+            AssertInputParameter(metadata, "I_INT1", AbapDataType.BYTE);
+            AssertInputParameter(metadata, "I_FLOAT", AbapDataType.DOUBLE);
+            AssertInputParameter(metadata, "I_DEC_3_2", AbapDataType.DECIMAL);
+            AssertInputParameter(metadata, "I_DEC_23_4", AbapDataType.DECIMAL);
+            AssertInputParameter(metadata, "I_DEC_30_7", AbapDataType.DECIMAL);
             AssertInputParameter(metadata, "I_DATUM", AbapDataType.DATE);
             AssertInputParameter(metadata, "I_UZEIT", AbapDataType.TIME);
             AssertInputParameter(metadata, "I_ACTIVE", AbapDataType.CHAR);
@@ -80,7 +84,11 @@ namespace SharpSapRfc.Test.Metadata
             AssertInputParameter(metadata, "I_MULTIPLE_NAME", AbapDataType.TABLE);
 
             AssertOutputParameter(metadata, "E_ID", AbapDataType.INTEGER);
-            AssertOutputParameter(metadata, "E_PRICE", AbapDataType.DECIMAL);
+            AssertOutputParameter(metadata, "E_INT1", AbapDataType.BYTE);
+            AssertOutputParameter(metadata, "E_FLOAT", AbapDataType.DOUBLE);
+            AssertOutputParameter(metadata, "E_DEC_3_2", AbapDataType.DECIMAL);
+            AssertOutputParameter(metadata, "E_DEC_23_4", AbapDataType.DECIMAL);
+            AssertOutputParameter(metadata, "E_DEC_30_7", AbapDataType.DECIMAL);
             AssertOutputParameter(metadata, "E_DATUM", AbapDataType.DATE);
             AssertOutputParameter(metadata, "E_UZEIT", AbapDataType.TIME);
             AssertOutputParameter(metadata, "E_ACTIVE", AbapDataType.CHAR);

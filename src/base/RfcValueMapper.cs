@@ -121,6 +121,12 @@ namespace SharpSapRfc
 
             if (valueType == typeof(Boolean))
                 return AbapBool.ToString((Boolean)value);
+
+            if (valueType.Equals(typeof(double)))
+                return ((double)value).ToString(this.GetNumberFormat());
+
+            if (valueType.Equals(typeof(float)))
+                return ((float)value).ToString(this.GetNumberFormat());
             
             if (valueType.Equals(typeof(Decimal)))
                 return ((Decimal)value).ToString(this.GetNumberFormat());

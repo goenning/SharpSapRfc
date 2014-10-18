@@ -100,7 +100,11 @@ namespace SharpSapRfc.Test.TestCases
                 var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
                 {
                     I_ID = 2,
-                    I_PRICE = 464624.521,
+                    I_INT1 = 200,
+                    I_FLOAT = 20.12f,
+                    I_DEC_3_2 = 4.52,
+                    I_DEC_23_4 = 999999999.999,
+                    I_DEC_30_7 = 999999999.9999,
                     I_DATUM = new DateTime(2014, 4, 6),
                     I_UZEIT = new DateTime(1, 1, 1, 12, 10, 53),
                     i_active = true,
@@ -110,7 +114,11 @@ namespace SharpSapRfc.Test.TestCases
                 });
 
                 Assert.Equal(2, result.GetOutput<int>("E_ID"));
-                Assert.Equal(464624.521m, result.GetOutput<decimal>("E_PRICE"));
+                Assert.Equal(200, result.GetOutput<byte>("E_INT1"));
+                Assert.Equal(4.52m, result.GetOutput<decimal>("E_DEC_3_2"));
+                Assert.Equal(999999999.999m, result.GetOutput<decimal>("E_DEC_23_4"));
+                Assert.Equal(999999999.9999m, result.GetOutput<decimal>("E_DEC_30_7"));
+                Assert.Equal(20.12f, result.GetOutput<double>("E_FLOAT"), 1);
                 Assert.Equal(new DateTime(2014, 4, 6), result.GetOutput<DateTime>("E_DATUM"));
                 Assert.Equal(new DateTime(1, 1, 1, 12, 10, 53), result.GetOutput<DateTime>("E_UZEIT"));
                 Assert.Equal(true, result.GetOutput<bool>("e_active"));

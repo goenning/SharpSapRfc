@@ -12,6 +12,8 @@ namespace SharpSapRfc.Types
         TIME,
         STRUCTURE,
         TABLE,
-        BYTE
+        BYTE,
+        FLOAT,
+        DOUBLE
     }
 }

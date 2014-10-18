@@ -11,6 +11,7 @@ namespace SharpSapRfc.Soap
 
             switch (type)
             {
+                case "xsd:byte":
                 case "xsd:base64Binary":
                     return AbapDataType.BYTE;
 
@@ -28,6 +29,10 @@ namespace SharpSapRfc.Soap
 
                 case "xsd:short":
                     return AbapDataType.SHORT;
+
+                case "xsd:double":
+                case "xsd:float":
+                    return AbapDataType.DOUBLE;
 
                 case "xsd:int":
                     return AbapDataType.INTEGER;
