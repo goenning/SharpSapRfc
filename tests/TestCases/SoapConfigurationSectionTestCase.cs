@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace SharpSapRfc.Test
+namespace SharpSapRfc.Test.TestCases
 {
     public class SoapConfigurationSectionTestCase
     {

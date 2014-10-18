@@ -10,13 +10,13 @@ namespace SharpSapRfc.Metadata
 
         public ParameterMetadata(string name, AbapDataType dataType)
         {
-            this.Name = name;
+            this.Name = name.ToUpper();
             this.DataType = dataType;
         }
 
         public ParameterMetadata(string name, AbapDataType dataType, StructureMetadata structureMetadata)
         {
-            this.Name = name;
+            this.Name = name.ToUpper();
             this.DataType = dataType;
             this.StructureMetadata = structureMetadata;
         }

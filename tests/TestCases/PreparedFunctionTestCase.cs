@@ -2,13 +2,13 @@
 using SharpSapRfc.Soap;
 using Xunit;
 
-namespace SharpSapRfc.Test
+namespace SharpSapRfc.Test.TestCases
 {
     public class Soap_PreparedFunctionTestCase  : PreparedFunctionTestCase
     {
         protected override SapRfcConnection GetConnection()
         {
-            return new SapSoapRfcConnection("TST-SOAP");
+            return new SoapSapRfcConnection("TST-SOAP");
         }
     }
 
@@ -16,7 +16,7 @@ namespace SharpSapRfc.Test
     {
         protected override SapRfcConnection GetConnection()
         {
-            return new SapPlainRfcConnection("TST");
+            return new PlainSapRfcConnection("TST");
         }
     }
 

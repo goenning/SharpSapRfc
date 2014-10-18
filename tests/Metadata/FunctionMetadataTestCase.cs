@@ -10,12 +10,13 @@ namespace SharpSapRfc.Test.Metadata
 {
     public class Soap_FunctionMetadataTestCase : FunctionMetadataTestCase
     {
-        private SapSoapRfcConnection conn;
+        private SoapSapRfcConnection conn;
 
-        public override AbapMetadataCache GetMetadataCache()
+        public override RfcMetadataCache GetMetadataCache()
         {
-            this.conn = new SapSoapRfcConnection("TST-SOAP");
-            return new SoapAbapMetadataCache(this.conn.WebClient);
+            this.conn = new SoapSapRfcConnection("TST-SOAP");
+            SoapRfcWebClient webClient = new SoapRfcWebClient(this.conn.Destination);
+            return new SoapRfcMetadataCache(webClient);
         }
 
         public override void Dispose()
@@ -26,12 +27,12 @@ namespace SharpSapRfc.Test.Metadata
 
     public class Plain_FunctionMetadataTestCase : FunctionMetadataTestCase
     {
-        private SapPlainRfcConnection conn;
+        private PlainSapRfcConnection conn;
 
-        public override AbapMetadataCache GetMetadataCache()
+        public override RfcMetadataCache GetMetadataCache()
         {
-            this.conn = new SapPlainRfcConnection("TST");
-            return new PlainAbapMetadataCache(this.conn);
+            this.conn = new PlainSapRfcConnection("TST");
+            return new PlainRfcMetadataCache(this.conn);
         }
 
         public override void Dispose()
@@ -42,7 +43,7 @@ namespace SharpSapRfc.Test.Metadata
 
     public abstract class FunctionMetadataTestCase : IDisposable
     {
-        public abstract AbapMetadataCache GetMetadataCache();
+        public abstract RfcMetadataCache GetMetadataCache();
 
         [Fact]
         public void SimpleFunctionMetadataTest()

@@ -3,17 +3,11 @@ using System.Collections.Generic;
 
 namespace SharpSapRfc
 {
-    public abstract class AbapMetadataCache
+    public abstract class RfcMetadataCache
     {
-        private static Dictionary<string, FunctionMetadata> _functionMetadataCache;
-        private static Dictionary<string, StructureMetadata> _structureMetadataCache;
+        private static Dictionary<string, FunctionMetadata> _functionMetadataCache = new Dictionary<string, FunctionMetadata>();
+        private static Dictionary<string, StructureMetadata> _structureMetadataCache = new Dictionary<string, StructureMetadata>();
         private static object _syncObject = new object();
-
-        public AbapMetadataCache()
-        {
-            _functionMetadataCache = new Dictionary<string, FunctionMetadata>();
-            _structureMetadataCache = new Dictionary<string, StructureMetadata>();
-        }
 
         public FunctionMetadata GetFunctionMetadata(string functionName) 
         {

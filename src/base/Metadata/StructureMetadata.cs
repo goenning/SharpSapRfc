@@ -18,7 +18,7 @@ namespace SharpSapRfc.Metadata
         {
             var field = this.Fields.FirstOrDefault(x => x.Name == name.ToUpper());
             if (field == null)
-                throw new RfcException(string.Format("Structure {0} does not have field named {1}.", this.Name, name));
+                throw new SharpRfcException(string.Format("Structure {0} does not have field named {1}.", this.Name, name));
 
             return field;
         }

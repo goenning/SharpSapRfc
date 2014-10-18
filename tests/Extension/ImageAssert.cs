@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace SharpSapRfc.Test
+namespace Xunit
 {
     public static class ImageAssert
     {

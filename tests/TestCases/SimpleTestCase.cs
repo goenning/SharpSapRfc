@@ -7,13 +7,13 @@ using System.Drawing;
 using System.IO;
 using Xunit;
 
-namespace SharpSapRfc.Test
+namespace SharpSapRfc.Test.TestCases
 {
     public class Soap_SimpleTestCase : SimpleTestCase
     {
         protected override SapRfcConnection GetConnection()
         {
-            return new SapSoapRfcConnection("TST-SOAP");
+            return new SoapSapRfcConnection("TST-SOAP");
         }
     }
 
@@ -21,7 +21,7 @@ namespace SharpSapRfc.Test
     {
         protected override SapRfcConnection GetConnection()
         {
-            return new SapPlainRfcConnection("TST");
+            return new PlainSapRfcConnection("TST");
         }
     }
 
@@ -136,7 +136,7 @@ namespace SharpSapRfc.Test
                         new RfcParameter("i_num3", 4)
                     );
                 });
-                Assert.Equal("Parameter i_num3 was not found on function Z_SSRT_SUM.", ex.Message);
+                Assert.Equal("Parameter I_NUM3 was not found on function Z_SSRT_SUM.", ex.Message);
             }
         }
 
@@ -221,7 +221,7 @@ namespace SharpSapRfc.Test
         {
             using (SapRfcConnection conn = this.GetConnection())
             {
-                Exception ex = Assert.Throws(typeof(RfcException), () =>
+                Exception ex = Assert.Throws(typeof(SharpRfcException), () =>
                 {
                     var result = conn.ExecuteFunction("Z_SSRT_DIVIDE",
                         new RfcParameter("i_num1", 5),

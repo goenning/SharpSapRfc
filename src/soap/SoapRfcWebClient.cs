@@ -9,10 +9,10 @@ using System.Xml;
 
 namespace SharpSapRfc.Soap
 {
-    public class SapSoapRfcWebClient
+    public class SoapRfcWebClient
     {
         private SapSoapRfcDestinationElement destination;
-        public SapSoapRfcWebClient(SapSoapRfcDestinationElement destination)
+        public SoapRfcWebClient(SapSoapRfcDestinationElement destination)
         {
             this.destination = destination;
         }
@@ -26,9 +26,9 @@ namespace SharpSapRfc.Soap
             <soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:urn=""urn:sap-com:document:sap:rfc:functions"">
                <soapenv:Header/>
                <soapenv:Body>
-                     {1}
+                     {0}
                </soapenv:Body>
-            </soapenv:Envelope>", functionName, soapBody.InnerXml.ToString()));
+            </soapenv:Envelope>", soapBody.InnerXml.ToString()));
 
             using (Stream stream = request.GetRequestStream())
                 soapEnvelopeXml.Save(stream);
@@ -61,6 +61,9 @@ namespace SharpSapRfc.Soap
                     using (StreamReader rd = new StreamReader(response.GetResponseStream()))
                         responseXml.Load(rd);
                 }
+
+                if (responseXml.InnerXml.Length == 0)
+                    throw ex;
             }
 
             return responseXml;
@@ -70,10 +73,13 @@ namespace SharpSapRfc.Soap
         {
             string url = string.Format("{0}?sap-client={1}&services={2}", baseUrl, this.destination.Client, functionName);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.ContentType = "text/xml;charset=\"utf-8\"";
+            request.ContentType = "text/xml; charset=\"UTF-8\"";
             request.Accept = "text/xml";
             request.Method = httpMethod;
+            request.KeepAlive = false;
+            request.PreAuthenticate = true;
             request.Credentials = new NetworkCredential(this.destination.User, this.destination.Password);
+            request.Headers.Add("SOAPAction", "urn:sap-com:document:sap:rfc:functions");
             return request;
         }
     }

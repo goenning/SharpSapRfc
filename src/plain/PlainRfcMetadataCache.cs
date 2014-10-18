@@ -8,10 +8,10 @@ using System.Text;
 
 namespace SharpSapRfc.Plain
 {
-    public class PlainAbapMetadataCache : AbapMetadataCache
+    public class PlainRfcMetadataCache : RfcMetadataCache
     {
-        private SapPlainRfcConnection connection;
-        public PlainAbapMetadataCache(SapPlainRfcConnection connection)
+        private PlainSapRfcConnection connection;
+        public PlainRfcMetadataCache(PlainSapRfcConnection connection)
         {
             this.connection = connection;
         }

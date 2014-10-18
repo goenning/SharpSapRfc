@@ -59,11 +59,13 @@
     <Compile Include="AbapDataTypeParser.cs" />
     <Compile Include="Configuration\SapSoapRfcDestinationCollection.cs" />
     <Compile Include="Configuration\SapSoapRfcDestinationElement.cs" />
+    <Compile Include="SoapRfcStructureMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SapSoapRfcConnection.cs" />
+    <Compile Include="SoapSapRfcConnection.cs" />
     <Compile Include="Configuration\SapSoapRfcConfigurationSection.cs" />
-    <Compile Include="SapSoapRfcWebClient.cs" />
-    <Compile Include="SoapAbapMetadataCache.cs" />
+    <Compile Include="SoapRfcValueMapper.cs" />
+    <Compile Include="SoapRfcWebClient.cs" />
+    <Compile Include="SoapRfcMetadataCache.cs" />
     <Compile Include="SoapRfcPreparedFunction.cs" />
     <Compile Include="SoapRfcResult.cs" />
   </ItemGroup>

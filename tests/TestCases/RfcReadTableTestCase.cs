@@ -1,20 +1,36 @@
 ﻿using SharpSapRfc.Plain;
-using SharpSapRfc.Structure;
+using SharpSapRfc.Soap;
 using SharpSapRfc.Test.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
-namespace SharpSapRfc.Test
+namespace SharpSapRfc.Test.TestCases
 {
-    public class RfcReadTableTestCase
+    public class Soap_RfcReadTableTestCase : RfcReadTableTestCase
     {
+        protected override SapRfcConnection GetConnection()
+        {
+            return new SoapSapRfcConnection("TST-SOAP");
+        }
+    }
+
+    public class Plain_RfcReadTableTestCase : RfcReadTableTestCase
+    {
+        protected override SapRfcConnection GetConnection()
+        {
+            return new PlainSapRfcConnection("TST");
+        }
+    }
+
+    public abstract class RfcReadTableTestCase
+    {
+        protected abstract SapRfcConnection GetConnection();
+
         [Fact]
         public void ReadAllEntriesTest()
         {
-            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var scarr = conn.ReadTable<AirlineCompany>("SCARR");
                 Assert.Equal(18, scarr.Count());
@@ -24,7 +40,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ReadAllFieldsTest()
         {
-            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var scarr = conn.ReadTable<AirlineCompany>("SCARR");
 
@@ -39,7 +55,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ReadSingleFieldTest()
         {
-            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var scarr = conn.ReadTable<AirlineCompany>("SCARR", fields: new string[] { "CARRID" });
                 Assert.Equal(18, scarr.Count());
@@ -55,7 +71,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ReadSingleEntryTest()
         {
-            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var scarr = conn.ReadTable<AirlineCompany>("SCARR", count:1);
                 Assert.Equal(1, scarr.Count());
@@ -69,7 +85,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ReadDeltaAirlineCompanyTest()
         {
-            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var scarr = conn.ReadTable<AirlineCompany>("SCARR", where: new string[] { "CARRID = 'DL'" });
 
@@ -82,7 +98,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ReadTwoFieldDeltaAirlineCompanyTest()
         {
-            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var scarr = conn.ReadTable<AirlineCompany>("SCARR", 
                     fields: new string[] { "CARRID", "CURRCODE" }, 
@@ -102,7 +118,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void WhenChar1IsFirstField()
         {
-            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var objects = conn.ReadTable<RepositoryObject>("TADIR",
                     fields: new string[] { "DELFLAG", "OBJ_NAME" },
@@ -118,7 +134,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void WhenChar1IsLastField()
         {
-            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 var objects = conn.ReadTable<RepositoryObject>("TADIR",
                     fields: new string[] { "OBJ_NAME", "DELFLAG" },
@@ -134,7 +150,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ReadTableAllFieldsType()
         {
-            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 ZMara mara = null;
                 var maras = conn.ReadTable<ZMara>("ZSSRT_MARA");
@@ -173,7 +189,7 @@ namespace SharpSapRfc.Test
         [Fact]
         public void ReadDateTimeSingleField()
         {
-            using (SapRfcConnection conn = new SapPlainRfcConnection("TST"))
+            using (SapRfcConnection conn = this.GetConnection())
             {
                 ZMaraSingleDateTime mara = null;
                 var maras = conn.ReadTable<ZMaraSingleDateTime>("ZSSRT_MARA");

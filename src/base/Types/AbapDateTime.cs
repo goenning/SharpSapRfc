@@ -24,35 +24,25 @@ namespace SharpSapRfc
                     return null;
                 return DateTime.MinValue;
             } 
-            else if (DateTime.TryParseExact(value, new string[] { "yyyy-MM-dd", "yyyyMMdd" }, enUS, DateTimeStyles.AssumeLocal, out date))
-            {
+
+            if (DateTime.TryParseExact(value, new string[] { "yyyy-MM-dd", "yyyyMMdd" }, enUS, DateTimeStyles.AssumeLocal, out date))
                 return date;
-            }
-            else if (DateTime.TryParseExact(value, new string[] { "HH:mm:ss", "HHmmss" }, enUS, DateTimeStyles.AssumeLocal, out date))
-            {
+
+            if (DateTime.TryParseExact(value, new string[] { "HH:mm:ss", "HHmmss" }, enUS, DateTimeStyles.AssumeLocal, out date))
                 return DateTime.MinValue.Add(new TimeSpan(date.Hour, date.Minute, date.Second));
-            }
-            else
-            {
-                string message = string.Format("{0} is not a valid Date format.", value);
-                throw new RfcMappingException(message);
-            }
+
+            string message = string.Format("{0} is not a valid Date format.", value);
+            throw new RfcMappingException(message);
         }
 
-        public static string ToString(DateTime value, AbapDateTimeType type)
+        public static string ToDateString(DateTime value)
         {
-            if (type == AbapDateTimeType.Date)
-            {
-                return value.ToString("yyyyMMdd");
-            }
-            else if (type == AbapDateTimeType.Time)
-            {
-                return value.ToString("HHmmss");
-            }
-            else
-            {
-                return value.ToString();
-            }
+            return value.ToString("yyyyMMdd");
+        }
+
+        public static string ToTimeString(DateTime value)
+        {
+            return value.ToString("HHmmss");
         }
     }
 }

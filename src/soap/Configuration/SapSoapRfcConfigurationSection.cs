@@ -34,7 +34,7 @@ namespace SharpSapRfc.Soap.Configuration
             }
 
 
-            throw new RfcException(string.Format("Could not find configuration for destination named '{0}' under sapSoapRfc section", name));
+            throw new SharpRfcException(string.Format("Could not find configuration for destination named '{0}' under sapSoapRfc section", name));
         }
 
         [ConfigurationProperty("destinations")]

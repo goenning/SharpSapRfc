@@ -12,12 +12,13 @@ namespace SharpSapRfc.Test.Metadata
 {
     public class Soap_StructureMetadataTestCase : StructureMetadataTestCase
     {
-        private SapSoapRfcConnection conn;
+        private SoapSapRfcConnection conn;
 
-        public override AbapMetadataCache GetMetadataCache()
+        public override RfcMetadataCache GetMetadataCache()
         {
-            this.conn = new SapSoapRfcConnection("TST-SOAP");
-            return new SoapAbapMetadataCache(this.conn.WebClient);
+            this.conn = new SoapSapRfcConnection("TST-SOAP");
+            SoapRfcWebClient webClient = new SoapRfcWebClient(this.conn.Destination);
+            return new SoapRfcMetadataCache(webClient);
         }
 
         public override void Dispose()
@@ -28,12 +29,12 @@ namespace SharpSapRfc.Test.Metadata
 
     public class Plain_StructureMetadataTestCase : StructureMetadataTestCase
     {
-        private SapPlainRfcConnection conn;
+        private PlainSapRfcConnection conn;
 
-        public override AbapMetadataCache GetMetadataCache()
+        public override RfcMetadataCache GetMetadataCache()
         {
-            this.conn = new SapPlainRfcConnection("TST");
-            return new PlainAbapMetadataCache(this.conn);
+            this.conn = new PlainSapRfcConnection("TST");
+            return new PlainRfcMetadataCache(this.conn);
         }
 
         public override void Dispose()
@@ -44,7 +45,7 @@ namespace SharpSapRfc.Test.Metadata
 
     public abstract class StructureMetadataTestCase : IDisposable
     {
-        public abstract AbapMetadataCache GetMetadataCache();
+        public abstract RfcMetadataCache GetMetadataCache();
 
         [Fact]
         public void InputStructureMetadataTest()
@@ -62,7 +63,7 @@ namespace SharpSapRfc.Test.Metadata
             AssertStructureMetadataField(parameter.StructureMetadata, "DATUM", AbapDataType.DATE);
             AssertStructureMetadataField(parameter.StructureMetadata, "UZEIT", AbapDataType.TIME);
             AssertStructureMetadataField(parameter.StructureMetadata, "ACTIVE", AbapDataType.CHAR);
-            AssertStructureMetadataField(parameter.StructureMetadata, "STATE", AbapDataType.INTEGER);
+            AssertStructureMetadataField(parameter.StructureMetadata, "STATE", AbapDataType.SHORT);
         }
 
         private void AssertStructureMetadataField(StructureMetadata metadata, string name, AbapDataType dataType)

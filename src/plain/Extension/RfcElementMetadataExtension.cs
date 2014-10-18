@@ -1,9 +1,5 @@
 ﻿using SAP.Middleware.Connector;
 using SharpSapRfc.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SharpSapRfc.Plain
 {
@@ -28,6 +24,8 @@ namespace SharpSapRfc.Plain
 
                 case RfcDataType.INT1:
                 case RfcDataType.INT2:
+                    return AbapDataType.SHORT;
+
                 case RfcDataType.INT4:
                 case RfcDataType.INT8:
                     return AbapDataType.INTEGER;
@@ -60,7 +58,7 @@ namespace SharpSapRfc.Plain
                 case RfcDataType.UTCMINUTE:
                 case RfcDataType.UTCSECOND:
                 default:
-                    throw new RfcException(string.Format("Could not map RfcDataType '{0}' to AbapDataType", metadata.DataType.ToString()));
+                    throw new SharpRfcException(string.Format("Could not map RfcDataType '{0}' to AbapDataType", metadata.DataType.ToString()));
 
             }
         }

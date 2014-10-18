@@ -7,12 +7,17 @@ namespace SharpSapRfc.Plain
         private string functionName;
         private RfcRepository repository;
         private RfcDestination destination;
+        private PlainRfcStructureMapper structureMapper;
 
-        public PlainRfcPreparedFunction(string functionName, RfcRepository repository, RfcDestination destination)
+        public PlainRfcPreparedFunction(string functionName,
+                                        PlainRfcStructureMapper structureMapper, 
+                                        RfcRepository repository, 
+                                        RfcDestination destination)
         {
             this.functionName = functionName;
             this.repository = repository;
             this.destination = destination;
+            this.structureMapper = structureMapper;
         }
 
         public override RfcResult Execute()
@@ -29,16 +34,16 @@ namespace SharpSapRfc.Plain
                 {
                     case RfcDataType.STRUCTURE:
                         RfcStructureMetadata structureMetadata = function.GetStructure(idx).Metadata;
-                        IRfcStructure structure = RfcStructureMapper.CreateStructure(structureMetadata, parameter.Value);
+                        IRfcStructure structure = this.structureMapper.CreateStructure(structureMetadata, parameter.Value);
                         function.SetValue(parameter.Name, structure);
                         break;
                     case RfcDataType.TABLE:
                         RfcTableMetadata tableMetadata = function.GetTable(idx).Metadata;
-                        IRfcTable table = RfcStructureMapper.CreateTable(tableMetadata, parameter.Value);
+                        IRfcTable table = this.structureMapper.CreateTable(tableMetadata, parameter.Value);
                         function.SetValue(parameter.Name, table);
                         break;
                     default:
-                        object formattedValue = AbapValueMapper.ToRemoteValue(function.Metadata[idx].GetAbapDataType(), parameter.Value);
+                        object formattedValue = this.structureMapper.ToRemoteValue(function.Metadata[idx].GetAbapDataType(), parameter.Value);
                         function.SetValue(parameter.Name, formattedValue);
                         break;
                 }
@@ -50,9 +55,9 @@ namespace SharpSapRfc.Plain
             }
             catch (RfcAbapException ex)
             {
-                throw new RfcException(ex.Message, ex);
+                throw new SharpRfcException(ex.Message, ex);
             }
-            return new PlainRfcResult(function);
+            return new PlainRfcResult(function, this.structureMapper);
         }
     }
 }

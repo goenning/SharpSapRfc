@@ -2,7 +2,7 @@
 using SAP.Middleware.Connector;
 using System;
 
-namespace SharpSapRfc.Test
+namespace SharpSapRfc.Test.TestCases
 {
     public class AbapBoolTestCase
     {

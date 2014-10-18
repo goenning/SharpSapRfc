@@ -26,6 +26,9 @@ namespace SharpSapRfc.Soap
                 case "xsd:string":
                     return AbapDataType.CHAR;
 
+                case "xsd:short":
+                    return AbapDataType.SHORT;
+
                 case "xsd:int":
                     return AbapDataType.INTEGER;
             }
@@ -33,7 +36,7 @@ namespace SharpSapRfc.Soap
             if (type.StartsWith("s0:"))
                 return AbapDataType.STRUCTURE;
 
-            throw new RfcException(string.Format("Could not map xml type attribute '{0}' to AbapDataType.", type));
+            throw new SharpRfcException(string.Format("Could not map xml type attribute '{0}' to AbapDataType.", type));
         }
     }
 }

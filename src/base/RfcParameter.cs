@@ -8,7 +8,7 @@ namespace SharpSapRfc
 
         public RfcParameter(string name, object value)
         {
-            this.Name = name;
+            this.Name = name.ToUpper();
             this.Value = value;
         }
 
