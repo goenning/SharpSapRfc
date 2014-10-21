@@ -1,17 +1,31 @@
 SharpSapRfc
 ===========
 
+## Two options available
+
+SharpSapRfc comes with two flavors: RFC and SOAP. Both options have the same interface, so you can swap between them with a single line of code. ABAP requiriments are the same for both libraries, just create an RFC-enable Function Module and you're good to go, be it with RFC or SOAP.
+
+## Which one should I use?
+
+We generally recommend RFC protocol because it is faster than SOAP. The main advantage of SOAP is that enables you to publish you application outside your LAN and connect to SAP thought a common protocol (HTTP) combined with a DMZ and Reverse Proxy, for example. 
+
+## How to swap between Plain RFC and SOAP
+
+All examples on this document are using Plain RFC (type is **PlainSapRfcConnection**). If you want to use SOAP, just change to **SoapSapRfcConnection**. The configuration file is different for each library. Examples are on the bottom of this document.
+
 ## How to install
 
-To install Sharp SAP RFC, run the following command in the Package Manager Console
+For Plain RFC x86 apps
 
-For x86 apps
+	PM> Install-Package SharpSapRfc.Plain.x86
+	
+For Plain RFC x64 apps
+	
+	PM> Install-Package SharpSapRfc.Plain.x64
 
-	PM> Install-Package SharpSapRfc.x86
-	
-For x64 apps
-	
-	PM> Install-Package SharpSapRfc.x64
+For SOAP
+
+	PM> Install-Package SharpSapRfc.Soap
 
 ## Why should I use it?
 	
@@ -145,6 +159,49 @@ using (SapRfcConnection conn = new SapRfcConnection("TST"))
 }
 ```
 
+## Configuration Example
+
+###### Plain RFC
+<configuration>
+  <configSections>
+    <sectionGroup name="SAP.Middleware.Connector">
+      <section name="GeneralSettings" type="SAP.Middleware.Connector.RfcGeneralConfiguration,sapnco" />
+      <sectionGroup name="ClientSettings">
+        <section name="DestinationConfiguration" type="SAP.Middleware.Connector.RfcDestinationConfiguration, sapnco"/>
+      </sectionGroup>
+    </sectionGroup>
+  </configSections>
+  
+  <SAP.Middleware.Connector>
+    <ClientSettings>
+      <DestinationConfiguration>
+        <destinations >
+          <add NAME="TST" USER="bcuser" PASSWD="sapadmin2" CLIENT="001"
+             LANG="EN" ASHOST="sap-vm" SYSNR="00" />
+        </destinations>
+      </DestinationConfiguration>
+    </ClientSettings>
+  </SAP.Middleware.Connector>
+</configuration>
+
+
+###### SOAP
+<configuration>
+  <configSections>
+    <section name="sapSoapRfc" type="SharpSapRfc.Soap.Configuration.SapSoapRfcConfigurationSection, SharpSapRfc.Soap" />
+  </configSections>
+
+  <sapSoapRfc>
+    <destinations>
+      <add name="TST-SOAP" 
+           rfcUrl="http://sap-vm:8000/sap/bc/soap/rfc"
+           wsdlUrl="http://sap-vm:8000/sap/bc/soap/wsdl"
+           client="001" 
+           user="bcuser" 
+           password="sapadmin2"/>
+    </destinations>    
+  </sapSoapRfc>
+</configuration>
 
 ## All Features
 
