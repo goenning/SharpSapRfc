@@ -113,19 +113,27 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="AbapBoolTestCase.cs" />
-    <Compile Include="ImageAssert.cs" />
+    <Compile Include="TestCases\AbapBoolTestCase.cs" />
+    <Compile Include="Extension\ImageAssert.cs" />
+    <Compile Include="Mapper\AbapValueMapperFromRemoteExceptionTestData.cs" />
+    <Compile Include="Mapper\AbapValueMapperToRemoteTestData.cs" />
+    <Compile Include="TestCases\Soap_AbapValueMapperTestCase.cs" />
+    <Compile Include="TestCases\Plain_AbapValueMapperTestCase.cs" />
+    <Compile Include="Metadata\FunctionMetadataTestCase.cs" />
+    <Compile Include="Metadata\StructureMetadataTestCase.cs" />
     <Compile Include="Model\RepositoryObject.cs" />
     <Compile Include="Model\ZMaraSingleDateTime.cs" />
-    <Compile Include="PreparedFunctionTestCase.cs" />
-    <Compile Include="RfcReadTableTestCase.cs" />
-    <Compile Include="RfcValueMapperTestCase.cs" />
-    <Compile Include="SimpleTestCase.cs" />
+    <Compile Include="TestCases\ParallelTestCase.cs" />
+    <Compile Include="TestCases\PreparedFunctionTestCase.cs" />
+    <Compile Include="TestCases\RfcReadTableTestCase.cs" />
+    <Compile Include="Mapper\AbapValueMapperFromRemoteTestData.cs" />
+    <Compile Include="TestCases\SimpleTestCase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\AirlineCompany.cs" />
     <Compile Include="Model\MaterialState.cs" />
     <Compile Include="Model\ZMara.cs" />
-    <Compile Include="StructureTestCase.cs" />
+    <Compile Include="TestCases\SoapConfigurationSectionTestCase.cs" />
+    <Compile Include="TestCases\StructureTestCase.cs" />
     <Compile Include="Model\ZCustomer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -138,9 +146,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\SharpSapRfc.csproj">
+    <ProjectReference Include="..\src\base\SharpSapRfc.csproj">
       <Project>{db36edca-d7ce-4ce6-894e-8815f817c778}</Project>
       <Name>SharpSapRfc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\plain\SharpSapRfc.Plain.csproj">
+      <Project>{64507431-51d3-4b2e-bee3-a1bbe333b228}</Project>
+      <Name>SharpSapRfc.Plain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\soap\SharpSapRfc.Soap.csproj">
+      <Project>{936443d3-2181-4cce-ae1d-bdb0ebdb64dd}</Project>
+      <Name>SharpSapRfc.Soap</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
