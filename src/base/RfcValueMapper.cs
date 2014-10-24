@@ -52,6 +52,9 @@ namespace SharpSapRfc
              if (type.IsEnum)
                 return this.ConvertToEnum(type, value);
 
+             if (type.Equals(typeof(string)))
+                 return value == null ? "" : value.ToString();
+
             if (value == null || value.ToString().Equals(""))
             {
                 if (type.IsNullable())

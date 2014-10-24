@@ -51,6 +51,12 @@ namespace SharpSapRfc.Test.Mapper
                 new object[] { true, typeof(Boolean), "X" },
                 new object[] { false, typeof(Boolean), " " },
                 new object[] { false, typeof(Boolean), "" },
+                
+                new object[] { "", typeof(string), "" },
+                new object[] { "", typeof(string), null },                
+                new object[] { " ", typeof(string), " " },             
+                new object[] { "abc", typeof(string), "abc" },        
+                new object[] { "A@b2", typeof(string), "A@b2" },
 
                 new object[] { "My Name is", typeof(String), "My Name is" },
                 new object[] { 1, typeof(int), "0001" },
