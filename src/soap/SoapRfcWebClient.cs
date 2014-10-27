@@ -17,21 +17,23 @@ namespace SharpSapRfc.Soap
             this.destination = destination;
         }
 
-        public XmlDocument SendRfcRequest(string functionName, XmlDocument soapBody)
+        public XmlDocument SendRfcRequest(string functionName, string soapBody)
         {
             HttpWebRequest request = CreateRequest(this.destination.RfcUrl, functionName, "POST");
 
-            XmlDocument soapEnvelopeXml = new XmlDocument();
-            soapEnvelopeXml.LoadXml(string.Format(@"<?xml version=""1.0"" encoding=""utf-8""?>
+            string postData = string.Format(@"<?xml version=""1.0"" encoding=""utf-8""?>
             <soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:urn=""urn:sap-com:document:sap:rfc:functions"">
                <soapenv:Header/>
                <soapenv:Body>
                      {0}
                </soapenv:Body>
-            </soapenv:Envelope>", soapBody.InnerXml.ToString()));
+            </soapenv:Envelope>", soapBody);
+
+            UTF8Encoding encoding = new UTF8Encoding();
+            byte[] bytes = encoding.GetBytes(postData);
 
             using (Stream stream = request.GetRequestStream())
-                soapEnvelopeXml.Save(stream);
+                stream.Write(bytes, 0, bytes.Length);
 
             return this.ResponseToXml(request);
         }

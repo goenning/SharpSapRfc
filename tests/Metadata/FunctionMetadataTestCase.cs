@@ -66,8 +66,8 @@ namespace SharpSapRfc.Test.Metadata
             var cache = GetMetadataCache();
             var metadata = cache.GetFunctionMetadata("Z_SSRT_IN_OUT");
            
-            Assert.Equal(12, metadata.InputParameters.Length);
-            Assert.Equal(14, metadata.OutputParameters.Length);
+            Assert.Equal(13, metadata.InputParameters.Length);
+            Assert.Equal(15, metadata.OutputParameters.Length);
             Assert.Equal("Z_SSRT_IN_OUT", metadata.Name);
 
             AssertInputParameter(metadata, "I_ID", AbapDataType.INTEGER);

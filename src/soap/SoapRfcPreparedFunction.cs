@@ -2,6 +2,7 @@
 using SharpSapRfc.Types;
 using System;
 using System.Collections;
+using System.Text;
 using System.Xml;
 
 namespace SharpSapRfc.Soap
@@ -22,6 +23,7 @@ namespace SharpSapRfc.Soap
         public override RfcResult Execute()
         {
             XmlDocument body = new XmlDocument();
+            body.PreserveWhitespace = true;
             XmlNode parametersNode = body.CreateElement("urn", this.function.Name, "urn:sap-com:document:sap:rfc:functions");
             body.AppendChild(parametersNode);
 
@@ -61,7 +63,8 @@ namespace SharpSapRfc.Soap
                         default:
                             XmlNode valueNode = body.CreateElement(param.Name.ToUpper());
                             valueNode.InnerText = this.structureMapper.ToRemoteValue(param.DataType, parameter.Value).ToString();
-                            parametersNode.AppendChild(valueNode);
+                            //if (!string.IsNullOrEmpty(valueNode.InnerText))
+                                parametersNode.AppendChild(valueNode);
                             break;
                     }
                 }
@@ -78,7 +81,7 @@ namespace SharpSapRfc.Soap
                 }
             }
 
-            var responseXml = this.webClient.SendRfcRequest(this.function.Name, body);
+            var responseXml = this.webClient.SendRfcRequest(this.function.Name, Beautify(body));
 
             var responseTag = responseXml.GetElementsByTagName(string.Format("urn:{0}.Response", this.function.Name));
             if (responseTag.Count > 0)
@@ -98,6 +101,22 @@ namespace SharpSapRfc.Soap
             }
 
             throw new Exception("Could not fetch response tag.");
+        }
+
+        static public string Beautify(XmlDocument doc)
+        {
+            StringBuilder sb = new StringBuilder();
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.OmitXmlDeclaration = true;
+            settings.Indent = true;
+            settings.IndentChars = "  ";
+            settings.NewLineChars = "\r\n";
+            settings.NewLineHandling = NewLineHandling.Replace;
+            using (XmlWriter writer = XmlWriter.Create(sb, settings))
+            {
+                doc.Save(writer);
+            }
+            return sb.ToString();
         }
     }
 }

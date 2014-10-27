@@ -99,6 +99,7 @@ namespace SharpSapRfc.Test.TestCases
             {
                 var result = conn.ExecuteFunction("Z_SSRT_IN_OUT", new
                 {
+                    I_NAME = "",
                     I_ID = 2,
                     I_INT1 = 200,
                     I_FLOAT = 20.12f,
@@ -113,6 +114,7 @@ namespace SharpSapRfc.Test.TestCases
                     i_mara = new ZMaraSingleDateTime { Id = 4, DateTime = new DateTime(2014, 4, 6, 12, 10, 53) }
                 });
 
+                Assert.Equal("", result.GetOutput<string>("E_NAME"));
                 Assert.Equal(2, result.GetOutput<int>("E_ID"));
                 Assert.Equal(200, result.GetOutput<byte>("E_INT1"));
                 Assert.Equal(4.52m, result.GetOutput<decimal>("E_DEC_3_2"));
