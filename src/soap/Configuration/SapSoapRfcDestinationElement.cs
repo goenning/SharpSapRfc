@@ -29,16 +29,28 @@ namespace SharpSapRfc.Soap.Configuration
             get { return this["client"] as string; }
         }
 
-        [ConfigurationProperty("user", IsRequired = false)]
+        [ConfigurationProperty("user", IsRequired = true)]
         public string User
         {
             get { return this["user"] as string; }
         }
 
-        [ConfigurationProperty("password", IsRequired = false)]
+        [ConfigurationProperty("password", IsRequired = true)]
         public string Password
         {
             get { return this["password"] as string; }
+        }
+
+        [ConfigurationProperty("timeout", IsRequired = false, DefaultValue=30000)]
+        public int Timeout
+        {
+            get { return (int)this["timeout"]; }
+            set { this["timeout"] = value; }
+        }
+
+        public override bool IsReadOnly()
+        {
+ 	        return false;
         }
     }
 }

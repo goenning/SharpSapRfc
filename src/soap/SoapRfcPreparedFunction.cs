@@ -100,6 +100,16 @@ namespace SharpSapRfc.Soap
                 throw new SharpRfcException(errorMessage);
             }
 
+            var soapFaultTag = responseXml.GetElementsByTagName("SOAP-ENV:Fault");
+            if (soapFaultTag.Count > 0)
+            {
+                string faultstring = soapFaultTag[0].SelectSingleNode("faultstring").InnerText;
+                string detail = soapFaultTag[0].SelectSingleNode("detail").InnerText;
+                string requestBody = body.InnerXml.ToString();
+                string errorMessage = string.Format("Fault: {0} Detail: {1} Request Body: {2}", faultstring, detail, requestBody);
+                throw new SharpRfcException(errorMessage);
+            }
+
             throw new Exception("Could not fetch response tag.");
         }
 

@@ -64,6 +64,9 @@ namespace SharpSapRfc.Soap
                         responseXml.Load(rd);
                 }
 
+                if (ex.Status == WebExceptionStatus.Timeout)
+                    throw new TimeoutException(string.Format("Timeout on function call. Current timeout is {0} milliseconds.", request.Timeout));
+
                 if (responseXml.InnerXml.Length == 0)
                     throw ex;
             }
@@ -78,6 +81,7 @@ namespace SharpSapRfc.Soap
             request.ContentType = "text/xml; charset=\"UTF-8\"";
             request.Accept = "text/xml";
             request.Method = httpMethod;
+            request.Timeout = this.destination.Timeout;
             request.KeepAlive = false;
             request.PreAuthenticate = true;
             request.Credentials = new NetworkCredential(this.destination.User, this.destination.Password);

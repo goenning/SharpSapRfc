@@ -17,8 +17,9 @@ namespace SharpSapRfc.Test.TestCases
             Assert.Equal("http://sap-vm:8000/sap/bc/soap/rfc", destination.RfcUrl);
             Assert.Equal("http://sap-vm:8000/sap/bc/soap/wsdl", destination.WsdlUrl);
             Assert.Equal("001", destination.Client);
-            Assert.Equal("bcuser", destination.User);
-            Assert.Equal("sapadmin2", destination.Password);
+            Assert.Equal("rfc_super", destination.User);
+            Assert.Equal("rfcsuper1", destination.Password);
+            Assert.Equal(5000, destination.Timeout);
         }
     }
 }

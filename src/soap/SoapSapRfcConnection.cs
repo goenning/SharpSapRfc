@@ -34,5 +34,10 @@ namespace SharpSapRfc.Soap
         {
             return this._structureMapper;
         }
+
+        public override void SetTimeout(int timeout)
+        {
+            this.Destination.Timeout = timeout;
+        }
     }
 }

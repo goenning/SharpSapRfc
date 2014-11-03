@@ -1,4 +1,5 @@
 ﻿using SAP.Middleware.Connector;
+using System;
 
 namespace SharpSapRfc.Plain
 {
@@ -31,9 +32,15 @@ namespace SharpSapRfc.Plain
         {
             if (!_isOpen)
             {
-                this._destination = RfcDestinationManager.GetDestination(_destinationName);
-                this._repository = this._destination.Repository;
-                this._isOpen = true;
+                try { 
+                    this._destination = RfcDestinationManager.GetDestination(_destinationName);
+                    this._repository = this._destination.Repository;
+                    this._isOpen = true;
+                }
+                catch (Exception ex)
+                {
+                    throw new SharpRfcException("Could not connect to SAP.", ex);
+                }
             }
         }
 
@@ -57,6 +64,11 @@ namespace SharpSapRfc.Plain
         protected override RfcStructureMapper GetStructureMapper()
         {
             return this._structureMapper;
+        }
+
+        public override void SetTimeout(int timeout)
+        {
+            //there is no timeout for plain rfc
         }
     }
 }

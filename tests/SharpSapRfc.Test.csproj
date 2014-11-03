@@ -117,6 +117,7 @@
     <Compile Include="Extension\ImageAssert.cs" />
     <Compile Include="Mapper\AbapValueMapperFromRemoteExceptionTestData.cs" />
     <Compile Include="Mapper\AbapValueMapperToRemoteTestData.cs" />
+    <Compile Include="TestCases\AccessDeniedTestCase.cs" />
     <Compile Include="TestCases\Soap_AbapValueMapperTestCase.cs" />
     <Compile Include="TestCases\Plain_AbapValueMapperTestCase.cs" />
     <Compile Include="Metadata\FunctionMetadataTestCase.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="TestCases\SoapConfigurationSectionTestCase.cs" />
     <Compile Include="TestCases\StructureTestCase.cs" />
     <Compile Include="Model\ZCustomer.cs" />
+    <Compile Include="TestCases\TimeoutTestCase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

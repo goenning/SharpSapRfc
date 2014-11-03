@@ -9,6 +9,7 @@ namespace SharpSapRfc
         protected abstract RfcStructureMapper GetStructureMapper();
         public abstract RfcPreparedFunction PrepareFunction(string functionName);
         public abstract void Dispose();
+        public abstract void SetTimeout(int timeout);
 
         public RfcResult ExecuteFunction(string functionName)
         {
