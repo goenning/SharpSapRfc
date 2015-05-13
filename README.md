@@ -1,38 +1,13 @@
 SharpSapRfc
 ===========
 
-## Two options available
-
-SharpSapRfc comes with two flavors: RFC and SOAP. Both options have the same interface, so you can swap between them with a single line of code. ABAP requiriments are the same for both libraries, just create an RFC-enable Function Module and you're good to go, be it with RFC or SOAP.
-
-## Which one should I use?
-
-We generally recommend RFC protocol because it is faster than SOAP. The main advantage of SOAP is that enables you to publish you application outside your LAN and connect to SAP thought a common protocol (HTTP) combined with a DMZ and Reverse Proxy, for example. 
-
-## How to swap between Plain RFC and SOAP
-
-All examples on this document are using Plain RFC (type is **PlainSapRfcConnection**). If you want to use SOAP, just change to **SoapSapRfcConnection**. The configuration file is different for each library. Examples are on the bottom of this document.
-
-## How to install
-
-For Plain RFC x86 apps
-
-	PM> Install-Package SharpSapRfc.Plain.x86
+## What is SharpSapRfc?
 	
-For Plain RFC x64 apps
-	
-	PM> Install-Package SharpSapRfc.Plain.x64
+SAP NCo 3 is a library developed by SAP that allows .Net Developers connect to SAP through very easy to use API.
+**Sharp SAP RFC** is a top-level library that makes it **even easier** to call remote functions on SAP systems. 
+Just read the examples bellow and you will see how powerfull it is.
 
-For SOAP
-
-	PM> Install-Package SharpSapRfc.Soap
-
-## Why should I use it?
-	
-SAP NCo 3 has a very easy to use API.
-**Sharp SAP RFC** makes it **even easier** to call remote functions on SAP systems.
-
-Instead of this:
+Instead of this code:
 
 ```C#
 RfcDestination destination = RfcDestinationManager.GetDestination("TST");
@@ -44,7 +19,7 @@ function.Invoke(destination);
 int result = function.GetInt("e_result");
 ```
 
-You can write:
+You can write this:
 
 ```C#
 using (SapRfcConnection conn = new PlainSapRfcConnection("TST"))
@@ -58,7 +33,7 @@ using (SapRfcConnection conn = new PlainSapRfcConnection("TST"))
 }
 ```
 
-You might be asking. It's almost the same!
+You might be asking: It's almost the same!
 Well, yes, it is.
 
 But what about write this:
@@ -106,7 +81,7 @@ function.Invoke(destination);
 ```
 
 That's more code, but it's because of `Customer` class.
-But because of this class we can work with tables parameters!
+But because of this class we can work with strongly-typed parameters!
 
 Check this out.
 
@@ -120,6 +95,33 @@ using (SapRfcConnection conn = new PlainSapRfcConnection("TST"))
 
 It`s way easier than a iterating on each row and building the object by yourself.
 It also works for input parameters!
+
+## Two options available
+
+SharpSapRfc comes with two flavors: RFC and SOAP. Both options have the same interface, so you can swap between them with a single line of code. ABAP requiriments are the same for both libraries, just create an RFC-enable Function Module and you're good to go, be it with RFC or SOAP.
+
+## Which one should I use?
+
+We generally recommend RFC protocol because it is faster than SOAP. The main advantage of SOAP is that enables you to publish you application outside your LAN and connect to SAP thought a common protocol (HTTP/HTTPS) combined with DMZ and Reverse Proxy, for example. 
+
+## How to swap between Plain RFC and SOAP
+
+All examples on this document are using Plain RFC (class is **PlainSapRfcConnection**). If you want to use SOAP, just change to **SoapSapRfcConnection**. The configuration file is different for each library. Examples are on the bottom of this document.
+
+## How to install
+
+For Plain RFC x86 apps
+
+	PM> Install-Package SharpSapRfc.Plain.x86
+	
+For Plain RFC x64 apps
+	
+	PM> Install-Package SharpSapRfc.Plain.x64
+
+For SOAP
+
+	PM> Install-Package SharpSapRfc.Soap
+
 
 ## RFC Read Table
 
@@ -162,6 +164,8 @@ using (SapRfcConnection conn = new PlainSapRfcConnection("TST"))
 ## Configuration Example
 
 ###### Plain RFC
+
+```xml
 <configuration>
   <configSections>
     <sectionGroup name="SAP.Middleware.Connector">
@@ -183,9 +187,12 @@ using (SapRfcConnection conn = new PlainSapRfcConnection("TST"))
     </ClientSettings>
   </SAP.Middleware.Connector>
 </configuration>
+```
 
 
 ###### SOAP
+
+```xml
 <configuration>
   <configSections>
     <section name="sapSoapRfc" type="SharpSapRfc.Soap.Configuration.SapSoapRfcConfigurationSection, SharpSapRfc.Soap" />
@@ -202,6 +209,7 @@ using (SapRfcConnection conn = new PlainSapRfcConnection("TST"))
     </destinations>    
   </sapSoapRfc>
 </configuration>
+```
 
 ## All Features
 
