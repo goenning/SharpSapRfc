@@ -9,7 +9,7 @@ namespace SharpSapRfc.Plain
         {
             get {
                 this.EnsureConnectionIsOpen();
-                return this._repository;
+                return this.repository;
             }
         }
 
@@ -18,24 +18,24 @@ namespace SharpSapRfc.Plain
             get
             {
                 this.EnsureConnectionIsOpen();
-                return this._destination;
+                return this.destination;
             }
         }
 
         public PlainSapRfcConnection(string destinationName)
         {
-            this._destinationName = destinationName;
-            this._structureMapper = new PlainRfcStructureMapper(new PlainRfcValueMapper());
+            this.destinationName = destinationName;
+            this.structureMapper = new PlainRfcStructureMapper(new PlainRfcValueMapper());
         }
 
         private void EnsureConnectionIsOpen()
         {
-            if (!_isOpen)
+            if (!isOpen)
             {
                 try { 
-                    this._destination = RfcDestinationManager.GetDestination(_destinationName);
-                    this._repository = this._destination.Repository;
-                    this._isOpen = true;
+                    this.destination = RfcDestinationManager.GetDestination(destinationName);
+                    this.repository = this.destination.Repository;
+                    this.isOpen = true;
                 }
                 catch (Exception ex)
                 {
@@ -47,7 +47,7 @@ namespace SharpSapRfc.Plain
         public override RfcPreparedFunction PrepareFunction(string functionName)
         {
             EnsureConnectionIsOpen();
-            return new PlainRfcPreparedFunction(functionName, this._structureMapper, this.Repository, this.Destination);
+            return new PlainRfcPreparedFunction(functionName, this.structureMapper, this.Repository, this.Destination);
         }
 
         public override void Dispose()
@@ -55,15 +55,15 @@ namespace SharpSapRfc.Plain
             
         }
 
-        private string _destinationName;
-        private bool _isOpen = false;
-        private RfcRepository _repository;
-        private RfcDestination _destination;
-        private PlainRfcStructureMapper _structureMapper;
+        private string destinationName;
+        private bool isOpen = false;
+        private RfcRepository repository;
+        private RfcDestination destination;
+        private PlainRfcStructureMapper structureMapper;
 
         protected override RfcStructureMapper GetStructureMapper()
         {
-            return this._structureMapper;
+            return this.structureMapper;
         }
 
         public override void SetTimeout(int timeout)

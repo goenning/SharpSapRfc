@@ -113,11 +113,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Model\Flight.cs" />
     <Compile Include="TestCases\AbapBoolTestCase.cs" />
     <Compile Include="Extension\ImageAssert.cs" />
     <Compile Include="Mapper\AbapValueMapperFromRemoteExceptionTestData.cs" />
     <Compile Include="Mapper\AbapValueMapperToRemoteTestData.cs" />
     <Compile Include="TestCases\AccessDeniedTestCase.cs" />
+    <Compile Include="TestCases\FluentRfcReadTableTestCase.cs" />
     <Compile Include="TestCases\Soap_AbapValueMapperTestCase.cs" />
     <Compile Include="TestCases\Plain_AbapValueMapperTestCase.cs" />
     <Compile Include="Metadata\FunctionMetadataTestCase.cs" />

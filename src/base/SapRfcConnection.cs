@@ -58,5 +58,10 @@ namespace SharpSapRfc
                 result.GetTable<RfcDbField>("FIELDS")
             );
         }
+
+        public RfcReadTableQueryBuilder<T> Table<T>(string tableName)
+        {
+            return new RfcReadTableQueryBuilder<T>(this, tableName);
+        }
     }
 }

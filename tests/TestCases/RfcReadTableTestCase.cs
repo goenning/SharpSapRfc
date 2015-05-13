@@ -96,7 +96,7 @@ namespace SharpSapRfc.Test.TestCases
         }
 
         [Fact]
-        public void ReadTwoFieldDeltaAirlineCompanyTest()
+        public void ReadTwoFieldFromDeltaAirlineCompanyTest()
         {
             using (SapRfcConnection conn = this.GetConnection())
             {
@@ -122,7 +122,7 @@ namespace SharpSapRfc.Test.TestCases
             {
                 var objects = conn.ReadTable<RepositoryObject>("TADIR",
                     fields: new string[] { "DELFLAG", "OBJ_NAME" },
-                    where: new string[] { "OBJECT = 'TABL'", "AND OBJ_NAME = 'TADIR'" } 
+                    where: new string[] { "PGMID = 'R3TR'", "AND OBJECT = 'TABL'", "AND OBJ_NAME = 'TADIR'" } 
                 );
 
                 Assert.Equal(1, objects.Count());
@@ -138,7 +138,7 @@ namespace SharpSapRfc.Test.TestCases
             {
                 var objects = conn.ReadTable<RepositoryObject>("TADIR",
                     fields: new string[] { "OBJ_NAME", "DELFLAG" },
-                    where: new string[] { "OBJECT = 'TABL'", "AND OBJ_NAME = 'TADIR'" }
+                    where: new string[] { "PGMID = 'R3TR'", "AND OBJECT = 'TABL'", "AND OBJ_NAME = 'TADIR'" }
                 );
 
                 Assert.Equal(1, objects.Count());

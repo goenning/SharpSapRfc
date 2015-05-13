@@ -74,6 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RfcReadTableOption.cs" />
+    <Compile Include="RfcReadTableQueryBuilder.cs" />
     <Compile Include="RfcValueMapper.cs" />
     <Compile Include="RfcMetadataCache.cs" />
     <Compile Include="Metadata\FieldMetadata.cs" />

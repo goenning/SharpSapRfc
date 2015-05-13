@@ -71,12 +71,22 @@ namespace SharpSapRfc
             
             if (type.Equals(typeof(DateTime?)))
                 return AbapDateTime.FromString(value.ToString(), true);
-            
-            if (type.Equals(typeof(Decimal)))
+
+            if (type.Equals(typeof(Decimal))) 
+            {
+                if (value.ToString().StartsWith("*"))
+                    throw new SharpRfcException(string.Format("SAP truncated value {0}. Operation aborted", value));
+
                 return Convert.ToDecimal(value, value.ToString().Contains(",") ? this.CommaDecimalNumberFormat : this.PeriodDecimalNumberFormat);
-            
+            }
+
             if (type.Equals(typeof(Double)))
+            {
+                if (value.ToString().StartsWith("*"))
+                    throw new SharpRfcException(string.Format("SAP truncated value {0}. Operation aborted", value));
+
                 return Convert.ToDouble(value, value.ToString().Contains(",") ? this.CommaDecimalNumberFormat : this.PeriodDecimalNumberFormat);
+            }
 
             if (type.Equals(typeof(byte[])))
                 return this.ToBytes(value);
