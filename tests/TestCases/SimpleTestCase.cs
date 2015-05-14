@@ -231,7 +231,7 @@ namespace SharpSapRfc.Test.TestCases
         {
             using (SapRfcConnection conn = this.GetConnection())
             {
-                Exception ex = Assert.Throws(typeof(SharpRfcException), () =>
+                SharpRfcCallException ex = Assert.Throws<SharpRfcCallException>(() =>
                 {
                     var result = conn.ExecuteFunction("Z_SSRT_DIVIDE",
                         new RfcParameter("i_num1", 5),

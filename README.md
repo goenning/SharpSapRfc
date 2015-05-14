@@ -217,7 +217,7 @@ using (SapRfcConnection conn = new PlainSapRfcConnection("TST"))
 - 2 remote fields (DATE and TIME) mapped to a single DateTime property
 - Enum Mapping (both numbers and strings)
 - Boolean. Use True and False instead of "X" and "
-- Shortcut to RFC_READ_TABLE
+- Shortcut to RFC_READ_TABLE (with Fluent API)
 - Easier RFC calls
 
 Take a look at the **tests** project for more examples.

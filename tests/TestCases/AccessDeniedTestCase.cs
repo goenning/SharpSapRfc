@@ -33,7 +33,7 @@ namespace SharpSapRfc.Test.TestCases
         {
             using (SapRfcConnection conn = this.GetConnection())
             {
-                Assert.Throws<SharpRfcException>(() => {
+                Assert.Throws<SharpRfcCallException>(() => {
                     var result = conn.ExecuteFunction("Z_SSRT_SUM",
                         new RfcParameter("i_num1", 2),
                         new RfcParameter("i_num2", 4)

@@ -39,7 +39,7 @@ namespace SharpSapRfc.Plain
                 }
                 catch (Exception ex)
                 {
-                    throw new SharpRfcException("Could not connect to SAP.", ex);
+                    throw new SharpRfcCallException("Could not connect to SAP.", ex);
                 }
             }
         }

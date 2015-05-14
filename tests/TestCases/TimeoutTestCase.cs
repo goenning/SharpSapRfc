@@ -20,13 +20,15 @@ namespace SharpSapRfc.Test.TestCases
         {
             using (SapRfcConnection conn = this.GetConnection())
             {
-                Assert.Throws<TimeoutException>(() =>
+                Exception ex = Assert.Throws<SharpRfcCallException>(() =>
                 {
                     var result = conn.ExecuteFunction("Z_SSRT_LONG_PROCESS", new
                     {
                         i_seconds = 6
                     });
                 });
+
+                Assert.IsType<TimeoutException>(ex.InnerException);
             }
         }
     }

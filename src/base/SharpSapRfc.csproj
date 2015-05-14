@@ -84,6 +84,7 @@
     <Compile Include="Metadata\StructureMetadata.cs" />
     <Compile Include="Metadata\TableMetadata.cs" />
     <Compile Include="RfcStructureMapper.cs" />
+    <Compile Include="SharpRfcCallException.cs" />
     <Compile Include="TypeExtension.cs" />
     <Compile Include="Types\AbapBool.cs" />
     <Compile Include="Types\AbapDateTime.cs" />
