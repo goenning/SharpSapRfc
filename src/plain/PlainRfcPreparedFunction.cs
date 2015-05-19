@@ -24,6 +24,7 @@ namespace SharpSapRfc.Plain
         public override RfcResult Execute()
         {
             IRfcFunction function = this.repository.CreateFunction(functionName);
+            
             try
             {
                 foreach (var parameter in this.parameters)

@@ -114,7 +114,11 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="FunctionObjects\DivideTwoNumbersFunction.cs" />
+    <Compile Include="FunctionObjects\GetAllCustomersFunction.cs" />
+    <Compile Include="FunctionObjects\SumOfTwoNumbersFunction.cs" />
     <Compile Include="Model\Flight.cs" />
+    <Compile Include="TestCases\FunctionObjectTestCase.cs" />
     <Compile Include="TestCases\Soap_ExceptionDetailsTestCase.cs" />
     <Compile Include="TestCases\AbapBoolTestCase.cs" />
     <Compile Include="Extension\ImageAssert.cs" />

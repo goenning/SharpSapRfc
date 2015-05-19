@@ -63,5 +63,11 @@ namespace SharpSapRfc
         {
             return new RfcReadTableQueryBuilder<T>(this, tableName);
         }
+
+        public T ExecuteFunction<T>(RfcFunctionObject<T> function)
+        {
+            var result = this.ExecuteFunction(function.FunctionName, function.Parameters);
+            return function.GetOutput(result);
+        }
     }
 }

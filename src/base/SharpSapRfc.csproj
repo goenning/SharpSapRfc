@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRfcFunctionObject.cs" />
     <Compile Include="RfcReadTableOption.cs" />
     <Compile Include="RfcReadTableQueryBuilder.cs" />
     <Compile Include="RfcValueMapper.cs" />

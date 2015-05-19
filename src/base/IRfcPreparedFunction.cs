@@ -28,10 +28,13 @@ namespace SharpSapRfc
 
         public RfcPreparedFunction AddParameter(object parameters)
         {
-            Type t = parameters.GetType();
-            PropertyInfo[] properties = t.GetProperties();
-            for (int i = 0; i < properties.Length; i++)
-                this.parameters.Add(new RfcParameter(properties[i].Name, properties[i].GetValue(parameters, null)));
+            if (parameters != null)
+            {
+                Type t = parameters.GetType();
+                PropertyInfo[] properties = t.GetProperties();
+                for (int i = 0; i < properties.Length; i++)
+                    this.parameters.Add(new RfcParameter(properties[i].Name, properties[i].GetValue(parameters, null)));
+            }
             return this;
         }
     }
