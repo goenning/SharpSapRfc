@@ -150,7 +150,7 @@ public class GetAllCustomersFunction : RfcFunctionObject<IEnumerable<ZCustomer>>
 }
 ```
 
-For more examples, please check test case named [FunctionObjectTestCase](https://github.com/oenning/SharpSapRfc/blob/master/tests/TestCases/FunctionObjectTestCase.cs)
+For more examples using simple return type and multiple return values, please check test case named [FunctionObjectTestCase](https://github.com/oenning/SharpSapRfc/blob/master/tests/TestCases/FunctionObjectTestCase.cs)
 
 
 ## RFC Read Table
