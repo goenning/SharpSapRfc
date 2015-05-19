@@ -123,6 +123,36 @@ For SOAP
 	PM> Install-Package SharpSapRfc.Soap
 
 
+## RFC Function Object
+
+If you think your code that calls RFC is too much complicated, you can take advantage of the **RFC Function Object Pattern**.
+With this pattern you can encapsulate your RFC call in a class that is used by SharpSapRfc. 
+Take a look at the following example.
+
+```C#
+using (SapRfcConnection conn = new PlainSapRfcConnection("TST"))
+{
+    var customers = conn.ExecuteFunction(new GetAllCustomersFunction());
+}
+
+//GetAllCustomersFunction is a RFC Function Object that encapsulate the configuration and parameters for calling the remote function
+public class GetAllCustomersFunction : RfcFunctionObject<IEnumerable<ZCustomer>>
+{
+    public override string FunctionName
+    {
+        get { return "Z_SSRT_GET_ALL_CUSTOMERS2"; }
+    }
+
+    public override IEnumerable<ZCustomer> GetOutput(RfcResult result)
+    {
+        return result.GetTable<ZCustomer>("e_customers");
+    }
+}
+```
+
+For more examples, please check test case named [FunctionObjectTestCase](https://github.com/oenning/SharpSapRfc/blob/master/tests/TestCases/FunctionObjectTestCase.cs)
+
+
 ## RFC Read Table
 
 There's also a shortcut to the RFC_READ_TABLE function.
@@ -218,6 +248,7 @@ using (SapRfcConnection conn = new PlainSapRfcConnection("TST"))
 - Enum Mapping (both numbers and strings)
 - Boolean. Use True and False instead of "X" and "
 - Shortcut to RFC_READ_TABLE (with Fluent API)
+- RFC Object Function Pattern
 - Easier RFC calls
 
 Take a look at the **tests** project for more examples.
