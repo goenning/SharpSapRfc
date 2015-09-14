@@ -26,7 +26,7 @@ namespace SharpSapRfc.Test.Mapper
         protected override List<object[]> AdditionalTestData()
         {
             return new List<object[]> { 
-                 new object[] { "56,2", AbapDataType.DECIMAL, 56.2m },
+                 new object[] { "56.2", AbapDataType.DECIMAL, 56.2m },
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Threading;
 
 namespace SharpSapRfc.Plain
 {
@@ -6,7 +7,7 @@ namespace SharpSapRfc.Plain
     {
         protected override NumberFormatInfo GetNumberFormat()
         {
-            return this.CommaDecimalNumberFormat;
+            return Thread.CurrentThread.CurrentCulture.NumberFormat;
         }
     }
 }
