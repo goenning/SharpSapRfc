@@ -6,7 +6,7 @@ namespace SharpSapRfc
 {
     public abstract class SapRfcConnection : IDisposable
     {
-        protected abstract RfcStructureMapper GetStructureMapper();
+        public abstract RfcStructureMapper GetStructureMapper();
         public abstract RfcPreparedFunction PrepareFunction(string functionName);
         public abstract void Dispose();
         public abstract void SetTimeout(int timeout);
