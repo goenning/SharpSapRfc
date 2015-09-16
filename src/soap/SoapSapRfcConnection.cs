@@ -9,20 +9,20 @@ namespace SharpSapRfc.Soap
         private SoapRfcWebClient _webClient;
         private SoapRfcMetadataCache metadataCache;
 
-        private SoapRfcStructureMapper _structureMapper;
+        private SoapRfcStructureMapper structureMapper;
 
         public SoapSapRfcConnection(string name)
         {
             this.Destination = SapSoapRfcConfigurationSection.GetConfiguration(name);
             this._webClient = new SoapRfcWebClient(this.Destination);
             this.metadataCache = new SoapRfcMetadataCache(this._webClient);
-            this._structureMapper = new SoapRfcStructureMapper(new SoapRfcValueMapper());
+            this.structureMapper = new SoapRfcStructureMapper(new SoapRfcValueMapper());
         }
 
         public override RfcPreparedFunction PrepareFunction(string functionName)
         {
             FunctionMetadata metadata = this.metadataCache.GetFunctionMetadata(functionName);
-            return new SoapRfcPreparedFunction(metadata, this._structureMapper, this._webClient);
+            return new SoapRfcPreparedFunction(metadata, this.structureMapper, this._webClient);
         }
 
         public override void Dispose()
@@ -30,9 +30,9 @@ namespace SharpSapRfc.Soap
 
         }
 
-        protected override RfcStructureMapper GetStructureMapper()
+        public override RfcStructureMapper GetStructureMapper()
         {
-            return this._structureMapper;
+            return this.structureMapper;
         }
 
         public override void SetTimeout(int timeout)

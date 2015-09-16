@@ -61,7 +61,7 @@ namespace SharpSapRfc.Plain
         private RfcDestination destination;
         private PlainRfcStructureMapper structureMapper;
 
-        protected override RfcStructureMapper GetStructureMapper()
+        public override RfcStructureMapper GetStructureMapper()
         {
             return this.structureMapper;
         }

@@ -5,7 +5,6 @@ namespace SharpSapRfc.Plain
 {
     public class PlainRfcPreparedFunction : RfcPreparedFunction
     {
-        private string functionName;
         private RfcRepository repository;
         private RfcDestination destination;
         private PlainRfcStructureMapper structureMapper;
@@ -14,8 +13,8 @@ namespace SharpSapRfc.Plain
                                         PlainRfcStructureMapper structureMapper, 
                                         RfcRepository repository, 
                                         RfcDestination destination)
+            : base(functionName)
         {
-            this.functionName = functionName;
             this.repository = repository;
             this.destination = destination;
             this.structureMapper = structureMapper;
@@ -23,15 +22,15 @@ namespace SharpSapRfc.Plain
 
         public override RfcResult Execute()
         {
-            IRfcFunction function = this.repository.CreateFunction(functionName);
+            IRfcFunction function = this.repository.CreateFunction(this.FunctionName);
             
             try
             {
-                foreach (var parameter in this.parameters)
+                foreach (var parameter in this.Parameters)
                 {
                     int idx = function.Metadata.TryNameToIndex(parameter.Name);
                     if (idx == -1)
-                        throw new UnknownRfcParameterException(parameter.Name, functionName);
+                        throw new UnknownRfcParameterException(parameter.Name, this.FunctionName);
 
                     RfcDataType pType = function.Metadata[idx].DataType;
                     switch (pType)

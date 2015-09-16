@@ -24,7 +24,7 @@ namespace SharpSapRfc.Test.TestCases
                 {
                     var result = conn.ExecuteFunction("Z_SSRT_LONG_PROCESS", new
                     {
-                        i_seconds = 6
+                        i_seconds = 10
                     });
                 });
 

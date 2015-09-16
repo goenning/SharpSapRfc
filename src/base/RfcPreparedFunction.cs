@@ -6,12 +6,20 @@ namespace SharpSapRfc
 {
     public abstract class RfcPreparedFunction
     {
-        public RfcPreparedFunction()
+        public string FunctionName { get; private set; }
+        public IEnumerable<RfcParameter> Parameters
         {
+            get { return this.parameters; }
+        }
+
+        private List<RfcParameter> parameters;
+
+        public RfcPreparedFunction(string functionName)
+        {
+            this.FunctionName = functionName;
             this.parameters = new List<RfcParameter>();
         }
 
-        protected List<RfcParameter> parameters;
         public abstract RfcResult Execute();
 
         public RfcPreparedFunction AddParameter(RfcParameter parameter)

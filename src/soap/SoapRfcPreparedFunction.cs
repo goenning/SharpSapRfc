@@ -3,6 +3,7 @@ using SharpSapRfc.Types;
 using System;
 using System.Collections;
 using System.Text;
+using System.Linq;
 using System.Xml;
 
 namespace SharpSapRfc.Soap
@@ -14,6 +15,7 @@ namespace SharpSapRfc.Soap
         private SoapRfcStructureMapper structureMapper;
 
         public SoapRfcPreparedFunction(FunctionMetadata function, SoapRfcStructureMapper structureMapper, SoapRfcWebClient webClient)
+            : base(function.Name)
         {
             this.function = function;
             this.webClient = webClient;
@@ -29,7 +31,7 @@ namespace SharpSapRfc.Soap
                 XmlNode parametersNode = body.CreateElement("urn", this.function.Name, "urn:sap-com:document:sap:rfc:functions");
                 body.AppendChild(parametersNode);
 
-                foreach (var parameter in this.parameters)
+                foreach (var parameter in this.Parameters)
                 {
                     var param = this.function.GetInputParameter(parameter.Name);
                     if (parameter.Value != null)
@@ -77,7 +79,7 @@ namespace SharpSapRfc.Soap
                 {
                     if (param.DataType == AbapDataType.TABLE)
                     {
-                        bool notAdded = this.parameters.TrueForAll(x => x.Name != param.Name);
+                        bool notAdded = this.Parameters.All(x => x.Name != param.Name);
                         if (notAdded)
                             parametersNode.AppendChild(body.CreateElement(param.Name));
                     }

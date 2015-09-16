@@ -83,7 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IRfcFunctionObject.cs" />
+    <Compile Include="RfcFunctionObject.cs" />
     <Compile Include="RfcReadTableOption.cs" />
     <Compile Include="RfcReadTableQueryBuilder.cs" />
     <Compile Include="RfcValueMapper.cs" />
@@ -102,7 +102,7 @@
     <Compile Include="SharpRfcException.cs" />
     <Compile Include="RfcMappingException.cs" />
     <Compile Include="RfcParameter.cs" />
-    <Compile Include="IRfcPreparedFunction.cs" />
+    <Compile Include="RfcPreparedFunction.cs" />
     <Compile Include="RfcResult.cs" />
     <Compile Include="RfcStructureFieldAttribute.cs" />
     <Compile Include="SapRfcConnection.cs" />
