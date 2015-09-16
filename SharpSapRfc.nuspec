@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>SharpSapRfc</id>
+    <version>2.0.5</version>
+    <title>Sharp SAP RFC</title>
+    <authors>goenning</authors>
+    <owners>goenning</owners>
+    <licenseUrl>https://github.com/goenning/SharpSapRfc/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/goenning/SharpSapRfc</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      This package contains shared code for SharpSapRfc.Plain and SharpSapRfc.Soap. It does not have public API, you'll need Plain or Soap NuGet package.
+
+      For code samples, please check the project site. https://github.com/goenning/SharpSapRfc
+    </description>
+    <tags>sap rfc nco</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0" />
+    </dependencies>
+    <files>
+      <file src="bin\Release\SharpSapRfc.dll" target="lib\net40" />
+    </files>
+  </metadata>
+</package>

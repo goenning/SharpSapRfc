@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>SharpSapRfc.Plain.x64</id>
+    <version>2.0.5</version>
+    <title>Sharp SAP RFC - RFC Interface x64</title>
+    <authors>goenning</authors>
+    <owners>goenning</owners>
+    <licenseUrl>https://github.com/goenning/SharpSapRfc/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/goenning/SharpSapRfc</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      SAP NCo 3 is an easy to use API. Sharp SAP RFC makes it even easier to call remote functions on SAP systems. This package uses RFC protocol. You can also use SharpSapRfc.Soap if you are looking for HTTP procotol.
+
+      For code samples, please check the project site. https://github.com/goenning/SharpSapRfc
+    </description>
+    <tags>sap rfc nco</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="SharpSapRfc" version="2.0.5" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\x64\Release\SharpSapRfc.Plain.dll" target="lib\net40" />
+  </files>
+</package>
