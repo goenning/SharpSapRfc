@@ -117,10 +117,14 @@ For Plain RFC x86 apps
 For Plain RFC x64 apps
 	
 	PM> Install-Package SharpSapRfc.Plain.x64
+	
+`Important:` To use Plain RFC we need to reference assemblies `sapnco.dll` and `sapnco_utils.dll` found in `SAP .NET Connector 3.0` (x86 or x64). Downloads for SAP Connectors are available at SAP Service Marketplace for customers and partners. More info at [http://service.sap.com/connectors](http://service.sap.com/connectors).
 
 For SOAP
 
 	PM> Install-Package SharpSapRfc.Soap
+	
+`Important:` There are no additional dependencies to run Soap RFC, but the target SAP server has to enable RFC calls in ICF.
 
 
 ## RFC Function Object
