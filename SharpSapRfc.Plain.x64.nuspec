@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>SharpSapRfc.Plain.x64</id>
-    <version>2.0.5</version>
+    <version>2.0.6</version>
     <title>Sharp SAP RFC - RFC Interface x64</title>
     <authors>goenning</authors>
     <owners>goenning</owners>

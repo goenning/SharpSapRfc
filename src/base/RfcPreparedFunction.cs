@@ -20,6 +20,7 @@ namespace SharpSapRfc
             this.parameters = new List<RfcParameter>();
         }
 
+        public abstract RfcPreparedFunction Prepare();
         public abstract RfcResult Execute();
 
         public RfcPreparedFunction AddParameter(RfcParameter parameter)

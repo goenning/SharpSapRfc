@@ -2,8 +2,8 @@
 using SharpSapRfc.Types;
 using System;
 using System.Collections;
-using System.Text;
 using System.Linq;
+using System.Text;
 using System.Xml;
 
 namespace SharpSapRfc.Soap
@@ -13,6 +13,15 @@ namespace SharpSapRfc.Soap
         private SoapRfcWebClient webClient;
         private FunctionMetadata function;
         private SoapRfcStructureMapper structureMapper;
+        private XmlDocument requestBody;
+
+        public override string ToString()
+        {
+            if (this.requestBody != null)
+                return Beautify(this.requestBody);
+
+            return "<Empty XML>";
+        }
 
         public SoapRfcPreparedFunction(FunctionMetadata function, SoapRfcStructureMapper structureMapper, SoapRfcWebClient webClient)
             : base(function.Name)
@@ -22,7 +31,7 @@ namespace SharpSapRfc.Soap
             this.structureMapper = structureMapper;
         }
 
-        public override RfcResult Execute()
+        public override RfcPreparedFunction Prepare()
         {
             XmlDocument body = new XmlDocument();
             try
@@ -85,7 +94,26 @@ namespace SharpSapRfc.Soap
                     }
                 }
 
-                var responseXml = this.webClient.SendRfcRequest(this.function.Name, Beautify(body));
+                this.requestBody = body;
+                return this;
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetBaseException() is SharpRfcException)
+                    throw ex;
+
+                throw new SharpRfcCallException("RFC SOAP prepare failed.", body.InnerXml, ex);
+            }
+        }
+
+        public override RfcResult Execute()
+        {
+            if (this.requestBody == null)
+                this.Prepare();
+
+            try
+            {
+                var responseXml = this.webClient.SendRfcRequest(this.function.Name, Beautify(this.requestBody));
 
                 var responseTag = responseXml.GetElementsByTagName(string.Format("urn:{0}.Response", this.function.Name));
                 if (responseTag.Count > 0)
@@ -93,13 +121,13 @@ namespace SharpSapRfc.Soap
 
                 var exceptionTag = responseXml.GetElementsByTagName(string.Format("rfc:{0}.Exception", this.function.Name));
                 if (exceptionTag.Count > 0)
-                    throw new SharpRfcCallException(exceptionTag[0].InnerText, body.InnerXml);
+                    throw new SharpRfcCallException(exceptionTag[0].InnerText, this.requestBody.InnerXml);
 
                 var faultErrorTag = responseXml.GetElementsByTagName("rfc:Error");
                 if (faultErrorTag.Count > 0)
                 {
                     string errorText = faultErrorTag[0].SelectSingleNode("message").InnerText;
-                    throw new SharpRfcCallException(errorText, body.InnerXml);
+                    throw new SharpRfcCallException(errorText, this.requestBody.InnerXml);
                 }
 
                 var soapFaultTag = responseXml.GetElementsByTagName("SOAP-ENV:Fault");
@@ -108,18 +136,17 @@ namespace SharpSapRfc.Soap
                     string faultstring = soapFaultTag[0].SelectSingleNode("faultstring").InnerText;
                     string detail = soapFaultTag[0].SelectSingleNode("detail").InnerText;
                     string errorMessage = string.Format("Fault: {0} Detail: {1}", faultstring, detail);
-                    throw new SharpRfcCallException(errorMessage, body.InnerXml);
+                    throw new SharpRfcCallException(errorMessage, this.requestBody.InnerXml);
                 }
 
-                throw new SharpRfcCallException("Could not fetch response tag.", body.InnerXml);
-
+                throw new SharpRfcCallException("Could not fetch response tag.", this.requestBody.InnerXml);
             }
             catch (Exception ex)
             {
                 if (ex.GetBaseException() is SharpRfcException)
                     throw ex;
 
-                throw new SharpRfcCallException("RFC SOAP call failed.", body.InnerXml, ex);
+                throw new SharpRfcCallException("RFC SOAP call failed.", this.requestBody.InnerXml, ex);
             }
         }
 

@@ -16,6 +16,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpSapRfc.Soap", "src\soa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpSapRfc.Plain", "src\plain\SharpSapRfc.Plain.csproj", "{64507431-51D3-4B2E-BEE3-A1BBE333B228}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{4415360D-1DFA-4B0F-8A9B-F9B842B1042B}"
+	ProjectSection(SolutionItems) = preProject
+		SharpSapRfc.nuspec = SharpSapRfc.nuspec
+		SharpSapRfc.Plain.x64.nuspec = SharpSapRfc.Plain.x64.nuspec
+		SharpSapRfc.Plain.x86.nuspec = SharpSapRfc.Plain.x86.nuspec
+		SharpSapRfc.Soap.nuspec = SharpSapRfc.Soap.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
