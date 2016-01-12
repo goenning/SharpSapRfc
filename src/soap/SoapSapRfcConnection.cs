@@ -12,8 +12,13 @@ namespace SharpSapRfc.Soap
         private SoapRfcStructureMapper structureMapper;
 
         public SoapSapRfcConnection(string name)
+            : this(SapSoapRfcConfigurationSection.GetConfiguration(name))
         {
-            this.Destination = SapSoapRfcConfigurationSection.GetConfiguration(name);
+        }
+
+        public SoapSapRfcConnection(SapSoapRfcDestinationElement destination)
+        {
+            this.Destination = destination;
             this._webClient = new SoapRfcWebClient(this.Destination);
             this.metadataCache = new SoapRfcMetadataCache(this._webClient);
             this.structureMapper = new SoapRfcStructureMapper(new SoapRfcValueMapper());
