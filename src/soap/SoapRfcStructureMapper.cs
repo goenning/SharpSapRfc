@@ -1,6 +1,7 @@
 ﻿
 using SharpSapRfc.Metadata;
 using System;
+using System.Collections;
 using System.Reflection;
 using System.Xml;
 
@@ -11,8 +12,8 @@ namespace SharpSapRfc.Soap
         public SoapRfcStructureMapper(RfcValueMapper valueMapper)
             : base(valueMapper)
         {
-
         }
+
 
         public T FromXml<T>(StructureMetadata metadata, XmlNode node)
         {
@@ -32,12 +33,12 @@ namespace SharpSapRfc.Soap
                 XmlNode valueNode = node.SelectSingleNode(fieldName);
                 PropertyInfo property = null;
                 if (typeProperties[type].TryGetValue(fieldName.ToLower(), out property))
-                    SetProperty(returnObject, property, valueNode.InnerText);
+                    SetProperty(returnObject, property, valueNode.InnerXml);
             }
             return returnObject;
         }
 
-        public XmlNode FromStructure(XmlDocument body, string nodeName, ParameterMetadata param, object parameterObject)
+        public XmlNode FromStructure(XmlDocument body, string nodeName, FieldMetadata param, object parameterObject)
         {
             XmlNode node = body.CreateElement(nodeName);
             Type type = parameterObject.GetType();
@@ -72,6 +73,16 @@ namespace SharpSapRfc.Soap
                 }
             }
             return node;
+        }
+
+        protected override IList FromRemoteTable(Type type, object remoteValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override object FromRemoteStructure(Type type, object remoteValue)
+        {
+            throw new NotImplementedException();
         }
     }
 }

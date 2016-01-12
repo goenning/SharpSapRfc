@@ -92,7 +92,7 @@ namespace SharpSapRfc
                 return this.ToBytes(value);
 
             if (type.Equals(typeof(Stream)))
-                return new MemoryStream(this.ToBytes(value));   
+                return new MemoryStream(this.ToBytes(value)); 
 
             return Convert.ChangeType(value, type);
         }

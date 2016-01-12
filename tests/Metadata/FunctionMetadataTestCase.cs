@@ -5,6 +5,7 @@ using SharpSapRfc.Soap.Configuration;
 using SharpSapRfc.Types;
 using System;
 using Xunit;
+using System.Linq;
 
 namespace SharpSapRfc.Test.Metadata
 {
@@ -58,6 +59,24 @@ namespace SharpSapRfc.Test.Metadata
             AssertInputParameter(metadata, "I_NUM1", AbapDataType.INTEGER);
             AssertInputParameter(metadata, "I_NUM2", AbapDataType.INTEGER);
             AssertOutputParameter(metadata, "E_RESULT", AbapDataType.INTEGER);
+        }
+
+        [Fact]
+        public void GetStructureMetadataDetailsTest()
+        {
+            var cache = GetMetadataCache();
+            var metadata = cache.GetFunctionMetadata("Z_SSRT_GET_ORDER");
+            var orderMetadata = metadata.GetOutputParameter("E_ORDER");
+
+            Assert.Equal(orderMetadata.DataType, AbapDataType.STRUCTURE);
+            Assert.Equal(orderMetadata.StructureMetadata.Name, "ZSTR_SSRT_ORDER");
+            Assert.Equal(orderMetadata.StructureMetadata.Fields.Count(), 2);
+
+            var idField = orderMetadata.StructureMetadata.GetField("ID");
+            Assert.Equal(idField.DataType, AbapDataType.INTEGER);
+
+            var itemsField = orderMetadata.StructureMetadata.GetField("ITEMS");
+            Assert.Equal(itemsField.DataType, AbapDataType.TABLE);
         }
 
         [Fact]

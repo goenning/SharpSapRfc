@@ -2,6 +2,7 @@
 using SAP.Middleware.Connector;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace SharpSapRfc.Plain
@@ -66,27 +67,49 @@ namespace SharpSapRfc.Plain
             return structure;
         }
 
-        public T FromStructure<T>(IRfcStructure structure)
+        public object FromStructure(Type type, IRfcStructure structure)
         {
-            Type type = typeof(T);
             EnsureTypeIsCached(type);
 
-            T returnObject = default(T);
-            if (!type.Equals(typeof(string)))
-                returnObject= Activator.CreateInstance<T>();
+            object returnObject = type == typeof(string) 
+                                    ? "" 
+                                    : Activator.CreateInstance(type);
 
             for (int i = 0; i < structure.Metadata.FieldCount; i++)
             {
                 string fieldName = structure.Metadata[i].Name;
                 object value = structure.GetValue(fieldName);
                 if (string.IsNullOrEmpty(fieldName))
-                    return (T)this.FromRemoteValue(type, value);
+                    return this.FromRemoteValue(type, value);
 
                 PropertyInfo property = null;
                 if (typeProperties[type].TryGetValue(fieldName.ToLower(), out property))
                     this.SetProperty(returnObject, property, value);
             }
             return returnObject;
+        }
+
+        public T FromStructure<T>(IRfcStructure structure)
+        {
+            return (T)this.FromStructure(typeof(T), structure);
+        }
+
+        protected override IList FromRemoteTable(Type type, object remoteValue)
+        {
+            IRfcTable table = remoteValue as IRfcTable;
+            Type itemType = type.GetEnumerableInnerType();
+            Type listType = typeof(List<>).MakeGenericType(new [] { itemType } );
+            IList list = (IList)Activator.CreateInstance(listType);
+            
+            for (int i = 0; i < table.RowCount; i++)
+                list.Add(this.FromStructure(itemType, table[i]));
+
+            return list;
+        }
+
+        protected override object FromRemoteStructure(Type type, object remoteValue)
+        {
+            return this.FromStructure(type, remoteValue as IRfcStructure);
         }
     }
 }

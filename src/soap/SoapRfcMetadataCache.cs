@@ -23,8 +23,8 @@ namespace SharpSapRfc.Soap
         {
             this.responseXml = this.webClient.SendWsdlRequest(functionName);
 
-            List<ParameterMetadata> inputParameters = new List<ParameterMetadata>();
-            List<ParameterMetadata> outputParameters = new List<ParameterMetadata>();
+            List<FieldMetadata> inputParameters = new List<FieldMetadata>();
+            List<FieldMetadata> outputParameters = new List<FieldMetadata>();
 
             this.nsmgr = new XmlNamespaceManager(this.responseXml.NameTable);
             this.nsmgr.AddNamespace("xsd", "http://www.w3.org/2001/XMLSchema");
@@ -51,7 +51,7 @@ namespace SharpSapRfc.Soap
             return new FunctionMetadata(functionName, inputParameters, outputParameters);
         }
 
-        private ParameterMetadata ExtractParameterFromXmlNode(XmlNode node)
+        private FieldMetadata ExtractParameterFromXmlNode(XmlNode node)
         {
             string parameterName = node.Attributes["name"].Value;
             if (node.Attributes["type"] != null)
@@ -71,14 +71,14 @@ namespace SharpSapRfc.Soap
             throw new SharpRfcException("Error when trying to parse XmlNode to ParameterMetadata.");
         }
 
-        private ParameterMetadata CreateParameterMetadata(string name, string typeName, bool isSequence)
+        private FieldMetadata CreateParameterMetadata(string name, string typeName, bool isSequence)
         {
             AbapDataType parameterType = AbapDataTypeParser.ParseFromTypeAttribute(typeName, isSequence);
             StructureMetadata metadata = null;
             if (typeName.StartsWith("s0:"))
                 metadata = this.LoadStructureMetadata(typeName.Replace("s0:", ""));
 
-            return new ParameterMetadata(name, parameterType, metadata);
+            return new FieldMetadata(name, parameterType, metadata);
         }
 
         protected override StructureMetadata LoadStructureMetadata(string structureName)
@@ -89,7 +89,7 @@ namespace SharpSapRfc.Soap
             List<FieldMetadata> fields = new List<FieldMetadata>();
             foreach(XmlNode node in nodes)
             {
-                ParameterMetadata param = this.ExtractParameterFromXmlNode(node);
+                FieldMetadata param = this.ExtractParameterFromXmlNode(node);
                 fields.Add(new FieldMetadata(param.Name, param.DataType));
             }
 

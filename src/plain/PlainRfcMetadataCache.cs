@@ -20,8 +20,8 @@ namespace SharpSapRfc.Plain
         {
             var remoteFunctionMetadata = this.connection.Repository.GetFunctionMetadata(functionName);
 
-            List<ParameterMetadata> inputParameters = new List<ParameterMetadata>();
-            List<ParameterMetadata> outputParameters = new List<ParameterMetadata>();
+            List<FieldMetadata> inputParameters = new List<FieldMetadata>();
+            List<FieldMetadata> outputParameters = new List<FieldMetadata>();
 
             for (int i = 0; i < remoteFunctionMetadata.ParameterCount; i++)
             {
@@ -37,7 +37,7 @@ namespace SharpSapRfc.Plain
                     structureMetadata = this.GetStructureMetadata(structureName);
                 }
 
-                var parameter = new ParameterMetadata(remoteFunctionMetadata[i].Name, remoteFunctionMetadata[i].GetAbapDataType(), structureMetadata);
+                var parameter = new FieldMetadata(remoteFunctionMetadata[i].Name, remoteFunctionMetadata[i].GetAbapDataType(), structureMetadata);
                 switch (remoteFunctionMetadata[i].Direction)
                 {
                     case RfcDirection.EXPORT:

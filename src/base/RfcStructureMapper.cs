@@ -1,7 +1,9 @@
 ﻿using SharpSapRfc.Structure;
 using SharpSapRfc.Types;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace SharpSapRfc
@@ -83,19 +85,35 @@ namespace SharpSapRfc
 
         protected void SetProperty(object targetObject, PropertyInfo property, object remoteValue)
         {
-            object formattedValue = this.valueMapper.FromRemoteValue(property.PropertyType, remoteValue);
-
-            if (property.PropertyType == typeof(DateTime) ||
-                property.PropertyType == typeof(DateTime?))
+            object formattedValue = null;
+            Type type = property.PropertyType;
+            if (type.IsEnumerable())
             {
-                DateTime? formattedDateTimeValue = (DateTime?)formattedValue;
-                DateTime? actualValue = (DateTime?)property.GetValue(targetObject, null);
-                if (actualValue.HasValue && formattedDateTimeValue.HasValue && actualValue.Value != DateTime.MinValue)
-                    formattedValue = actualValue.Value.AddTicks(formattedDateTimeValue.Value.Ticks);
+                formattedValue = this.FromRemoteTable(property.PropertyType, remoteValue);
+            }
+            else if (type.IsComplexType())
+            {
+                formattedValue = this.FromRemoteStructure(property.PropertyType, remoteValue);
+            }
+            else 
+            {
+                formattedValue = this.valueMapper.FromRemoteValue(property.PropertyType, remoteValue);
+
+                if (property.PropertyType == typeof(DateTime) ||
+                    property.PropertyType == typeof(DateTime?))
+                {
+                    DateTime? formattedDateTimeValue = (DateTime?)formattedValue;
+                    DateTime? actualValue = (DateTime?)property.GetValue(targetObject, null);
+                    if (actualValue.HasValue && formattedDateTimeValue.HasValue && actualValue.Value != DateTime.MinValue)
+                        formattedValue = actualValue.Value.AddTicks(formattedDateTimeValue.Value.Ticks);
+                }
             }
 
             property.SetValue(targetObject, formattedValue, null);
         }
+
+        protected abstract object FromRemoteStructure(Type type, object remoteValue);
+        protected abstract IList FromRemoteTable(Type type, object remoteValue);
 
         public object FromRemoteValue(Type type, object value)
         {

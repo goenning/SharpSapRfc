@@ -52,9 +52,8 @@
     <Compile Include="RfcReadTableQueryBuilder.cs" />
     <Compile Include="RfcValueMapper.cs" />
     <Compile Include="RfcMetadataCache.cs" />
-    <Compile Include="Metadata\FieldMetadata.cs" />
     <Compile Include="Metadata\FunctionMetadata.cs" />
-    <Compile Include="Metadata\ParameterMetadata.cs" />
+    <Compile Include="Metadata\FieldMetadata.cs" />
     <Compile Include="Metadata\StructureMetadata.cs" />
     <Compile Include="Metadata\TableMetadata.cs" />
     <Compile Include="RfcStructureMapper.cs" />

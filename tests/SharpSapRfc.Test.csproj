@@ -101,7 +101,10 @@
     <Compile Include="FunctionObjects\GetAllCustomersFunction.cs" />
     <Compile Include="FunctionObjects\SumOfTwoNumbersFunction.cs" />
     <Compile Include="Model\Flight.cs" />
+    <Compile Include="Model\ZOrder.cs" />
+    <Compile Include="Model\ZOrderLine.cs" />
     <Compile Include="TestCases\FunctionObjectTestCase.cs" />
+    <Compile Include="TestCases\NestedTableTestCase.cs" />
     <Compile Include="TestCases\Soap_ExceptionDetailsTestCase.cs" />
     <Compile Include="TestCases\AbapBoolTestCase.cs" />
     <Compile Include="Extension\ImageAssert.cs" />
@@ -128,6 +131,7 @@
     <Compile Include="TestCases\StructureTestCase.cs" />
     <Compile Include="Model\ZCustomer.cs" />
     <Compile Include="TestCases\TimeoutTestCase.cs" />
+    <Compile Include="TestCases\TypeExtensionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
