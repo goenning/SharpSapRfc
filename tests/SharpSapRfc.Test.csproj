@@ -103,6 +103,7 @@
     <Compile Include="Model\Flight.cs" />
     <Compile Include="Model\ZOrder.cs" />
     <Compile Include="Model\ZOrderLine.cs" />
+    <Compile Include="TestCases\ConnectionTestCase.cs" />
     <Compile Include="TestCases\FunctionObjectTestCase.cs" />
     <Compile Include="TestCases\NestedTableTestCase.cs" />
     <Compile Include="TestCases\Soap_ExceptionDetailsTestCase.cs" />
