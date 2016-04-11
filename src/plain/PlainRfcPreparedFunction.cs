@@ -94,7 +94,7 @@ namespace SharpSapRfc.Plain
                 if (ex.GetBaseException() is SharpRfcException)
                     throw ex;
 
-                throw new SharpRfcCallException(ex.Message, function.ToString(), ex);
+                throw new SharpRfcCallException(ex.Message, function == null ? "null" : function.ToString(), ex);
             }
         }
 
@@ -112,7 +112,7 @@ namespace SharpSapRfc.Plain
                 if (ex.GetBaseException() is SharpRfcException)
                     throw ex;
 
-                throw new SharpRfcCallException(ex.Message, function.ToString(), ex);
+                throw new SharpRfcCallException(ex.Message, function == null ? "null" : function.ToString(), ex);
             }
 
             return new PlainRfcResult(function, this.structureMapper);
