@@ -21,34 +21,44 @@ namespace SharpSapRfc.Soap
 
         protected override FunctionMetadata LoadFunctionMetadata(string functionName)
         {
-            this.responseXml = this.webClient.SendWsdlRequest(functionName);
-
-            List<ParameterMetadata> inputParameters = new List<ParameterMetadata>();
-            List<ParameterMetadata> outputParameters = new List<ParameterMetadata>();
-
-            this.nsmgr = new XmlNamespaceManager(this.responseXml.NameTable);
-            this.nsmgr.AddNamespace("xsd", "http://www.w3.org/2001/XMLSchema");
-
-            var types = this.responseXml.GetElementsByTagName("types");
-            if (types.Count > 0)
+            try
             {
-                var inputElement = types[0].SelectSingleNode(string.Format("xsd:schema/xsd:element[@name='{0}']", functionName), nsmgr);
-                if (inputElement != null)
-                {
-                    var nodes = inputElement.SelectNodes("xsd:complexType/xsd:all/xsd:element", this.nsmgr);
-                    foreach (XmlNode node in nodes)
-                        inputParameters.Add(this.ExtractParameterFromXmlNode(node));
-                }
+                this.responseXml = this.webClient.SendWsdlRequest(functionName);
 
-                var outputElement = types[0].SelectSingleNode(string.Format("xsd:schema/xsd:element[@name='{0}.Response']", functionName), nsmgr);
-                if (outputElement != null)
+                List<ParameterMetadata> inputParameters = new List<ParameterMetadata>();
+                List<ParameterMetadata> outputParameters = new List<ParameterMetadata>();
+
+                this.nsmgr = new XmlNamespaceManager(this.responseXml.NameTable);
+                this.nsmgr.AddNamespace("xsd", "http://www.w3.org/2001/XMLSchema");
+
+                var types = this.responseXml.GetElementsByTagName("types");
+                if (types.Count > 0)
                 {
-                    var nodes = outputElement.SelectNodes("xsd:complexType/xsd:all/xsd:element", this.nsmgr);
-                    foreach (XmlNode node in nodes)
-                        outputParameters.Add(this.ExtractParameterFromXmlNode(node));
+                    var inputElement = types[0].SelectSingleNode(string.Format("xsd:schema/xsd:element[@name='{0}']", functionName), nsmgr);
+                    if (inputElement != null)
+                    {
+                        var nodes = inputElement.SelectNodes("xsd:complexType/xsd:all/xsd:element", this.nsmgr);
+                        foreach (XmlNode node in nodes)
+                            inputParameters.Add(this.ExtractParameterFromXmlNode(node));
+                    }
+
+                    var outputElement = types[0].SelectSingleNode(string.Format("xsd:schema/xsd:element[@name='{0}.Response']", functionName), nsmgr);
+                    if (outputElement != null)
+                    {
+                        var nodes = outputElement.SelectNodes("xsd:complexType/xsd:all/xsd:element", this.nsmgr);
+                        foreach (XmlNode node in nodes)
+                            outputParameters.Add(this.ExtractParameterFromXmlNode(node));
+                    }
                 }
+                return new FunctionMetadata(functionName, inputParameters, outputParameters);
             }
-            return new FunctionMetadata(functionName, inputParameters, outputParameters);
+            catch (Exception ex)
+            {
+                if (ex.GetBaseException() is SharpRfcException)
+                    throw ex;
+
+                throw new SharpRfcCallException(string.Format("Metadata loading failed for function {0}.", functionName), string.Empty, ex);
+            }
         }
 
         private ParameterMetadata ExtractParameterFromXmlNode(XmlNode node)
