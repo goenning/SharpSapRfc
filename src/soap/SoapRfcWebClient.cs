@@ -60,13 +60,8 @@ namespace SharpSapRfc.Soap
                 var response = ex.Response as HttpWebResponse;
                 if (response != null)
                 {
-                    // this is to prevent that "META start tag" error string
-                    // and throw error status "Unathorized" from StatusCode
-                    // hence more meaningful
                     if (response.StatusCode == HttpStatusCode.Unauthorized)
-                    {
                         throw ex;
-                    }
                     
                     using (StreamReader rd = new StreamReader(response.GetResponseStream()))
                         responseXml.Load(rd);
