@@ -27,27 +27,21 @@ namespace SharpSapRfc
                     return;
 
                 IDictionary<string, PropertyInfo> propertyByFieldName = new Dictionary<string, PropertyInfo>();
-                if (typeProperties.ContainsKey(type))
+
+                PropertyInfo[] properties = type.GetProperties();
+                foreach (var property in properties)
                 {
-                    propertyByFieldName = typeProperties[type];
-                }
-                else
-                {
-                    PropertyInfo[] properties = type.GetProperties();
-                    foreach (var property in properties)
+                    if (property.IsDefined(typeof(RfcStructureFieldAttribute), true))
                     {
-                        if (property.IsDefined(typeof(RfcStructureFieldAttribute), true))
-                        {
-                            var attribute = ((RfcStructureFieldAttribute[])property.GetCustomAttributes(typeof(RfcStructureFieldAttribute), true))[0];
-                            propertyByFieldName.Add(attribute.FieldName.ToLower(), property);
-                            if (!string.IsNullOrWhiteSpace(attribute.SecondFieldName))
-                                propertyByFieldName.Add(attribute.SecondFieldName.ToLower(), property);
-                        }
-                        else
-                            propertyByFieldName.Add(property.Name.ToLower(), property);
+                        var attribute = ((RfcStructureFieldAttribute[])property.GetCustomAttributes(typeof(RfcStructureFieldAttribute), true))[0];
+                        propertyByFieldName.Add(attribute.FieldName.ToLower(), property);
+                        if (!string.IsNullOrWhiteSpace(attribute.SecondFieldName))
+                            propertyByFieldName.Add(attribute.SecondFieldName.ToLower(), property);
                     }
-                    typeProperties.Add(type, propertyByFieldName);
+                    else
+                        propertyByFieldName.Add(property.Name.ToLower(), property);
                 }
+                typeProperties.Add(type, propertyByFieldName);
             }
         }
 
