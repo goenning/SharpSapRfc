@@ -55,12 +55,12 @@ public class ZCustomer
     [RfcStructureField("ACTIVE")]
     public bool IsActive { get; set; }
 
-	public ZCustomer(int id, string name, bool isActive)
-	{
-		this.Id = id;
-		this.Name = name;
-		this.IsActive = isActive;
-	}
+    public ZCustomer(int id, string name, bool isActive)
+    {
+	this.Id = id;
+	this.Name = name;
+	this.IsActive = isActive;
+    }
 }
 ```
 
